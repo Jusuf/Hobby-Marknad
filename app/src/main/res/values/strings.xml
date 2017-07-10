@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="nav_myhobby">My Hobby</string>
+    <string name="nav_service_book">Service Book</string>
+    <string name="nav_catalog_and_magazines">Catalogue and Magazines</string>
+    <string name="nav_resellers">Resellers</string>
+    <string name="nav_faq">Faq</string>
 </resources>
