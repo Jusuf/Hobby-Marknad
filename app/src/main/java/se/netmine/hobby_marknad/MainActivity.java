@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,17 +58,56 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (fragmentStack.size() == 1) {
+//                    drawer.openDrawer(GravityCompat.START);
+//                } else {
+//                    onBackPressed();
+//                }
+//            }
+//        });
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (fragmentStack.size() > 1) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left);
+
+                fragmentStack.peek().onPause();
+                ft.hide(fragmentStack.peek());
+                ft.remove(fragmentStack.pop());
+
+                if (fragmentStack.size() == 1) {
+                    toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+                }
+
+                fragmentStack.peek().onResume();
+
+
+                ft.show(fragmentStack.peek());
+
+                //((IFragment)fragmentStack.peek()).updateUi();
+
+                ft.commit();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -76,14 +116,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_my_hobby) {
-            // Handle the camera action
+            MyHobbyFragment fragment = new MyHobbyFragment();
+            onNavigateToFragment(fragment);
         } else if (id == R.id.nav_service_book) {
 
         } else if (id == R.id.nav_catalog_and_magazines) {
 
         } else if (id == R.id.nav_resellers) {
 
-        }else if (id == R.id.nav_faq) {
+        } else if (id == R.id.nav_faq) {
 
         }
 
@@ -92,8 +133,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void navigateToFragment(Fragment fragment)
-    {
+    private void navigateToFragment(Fragment fragment) {
 //        if( fragmentStack.isEmpty() == false &&
 //                fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0 &&
 //                fragment.getClass().getSimpleName().compareTo(RobotListFragment.class.getSimpleName()) != 0)
@@ -101,9 +141,8 @@ public class MainActivity extends AppCompatActivity
 //            return;
 //        }
 
-        if( fragmentStack.isEmpty() == false &&
-                fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0 )
-        {
+        if (fragmentStack.isEmpty() == false &&
+                fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0) {
             return;
         }
 
@@ -111,8 +150,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_right);
 
-        if(fragmentStack.size() > 0)
-        {
+        if (fragmentStack.size() > 0) {
             fragmentStack.peek().onPause();
             ft.hide(fragmentStack.peek());
         }
@@ -124,11 +162,21 @@ public class MainActivity extends AppCompatActivity
 
         //fragmentStack.peek().onResume();
 
-        if(fragmentStack.size() > 1) {
+        if (fragmentStack.size() > 1) {
             toolbar.setNavigationIcon(R.drawable.ic_navigate_back);
-        }
-        else {
+        } else {
             toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         }
     }
+
+    @Override
+    public void onNavigateToFragment(Fragment fragment) {
+        navigateToFragment(fragment);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        toolbar.setTitle(title);
+    }
+
 }
