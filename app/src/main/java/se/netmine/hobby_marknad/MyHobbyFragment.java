@@ -18,12 +18,19 @@ public class MyHobbyFragment extends Fragment implements IFragment {
 
     private ImageView imgBattery = null;
     private TextView txtBatteryPercentage = null;
-    private TextView txtBatteryStatus = null;
 
     private ImageView imgWater = null;
     private TextView txtWaterPercentage = null;
-    private TextView txtWaterStatus = null;
 
+    private ImageView imgTemp = null;
+    private TextView txtTempInCaravanHeat = null;
+
+    private ImageView imgCarvan = null;
+    private TextView txtTempOutsideHeat = null;
+    private TextView txtCity = null;
+
+    private TextView txtAmountOfTimers = null;
+    private TextView txtAmountOfLamps;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,16 +44,28 @@ public class MyHobbyFragment extends Fragment implements IFragment {
         }
 
         txtBatteryPercentage = view.findViewById(R.id.batteryPercentText);
-        txtBatteryStatus = view.findViewById(R.id.batteryChargingText);
-
         txtWaterPercentage = view.findViewById(R.id.waterPercentText);
-        txtWaterStatus = view.findViewById(R.id.waterInTankText);
 
-        txtBatteryPercentage.setText("100 %");
-        txtBatteryStatus.setText("Laddar");
+        txtTempInCaravanHeat = view.findViewById(R.id.tempInCaravanHeatText);
+        txtCity  = view.findViewById(R.id.cityText);
+        txtTempOutsideHeat = view.findViewById(R.id.tempOutsideHeatText);
+
+        txtAmountOfTimers = view.findViewById(R.id.amountOfTimersText);
+        txtAmountOfLamps = view.findViewById(R.id.amountOfLampsText);
+
+
+
+        txtBatteryPercentage.setText("50%");
 
         txtWaterPercentage.setText("85%");
-        txtWaterStatus.setText("Vatten i tanken");
+
+        txtTempInCaravanHeat.setText("22°C");
+
+        txtCity.setText("Värnamo");
+        txtTempOutsideHeat.setText("22°C" + " " + getString(R.string.temp_outside ));
+
+        txtAmountOfTimers.setText("0");
+        txtAmountOfLamps.setText("0");
 
         return view;
     }

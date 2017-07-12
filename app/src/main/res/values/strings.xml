@@ -11,4 +11,12 @@
     <string name="nav_catalog_and_magazines">Catalogue and Magazines</string>
     <string name="nav_resellers">Resellers</string>
     <string name="nav_faq">Faq</string>
+
+    <string name="my_hobby_battery_loading">Battery Loading</string>
+    <string name="my_hobby_water_in_tank">Water In Tank</string>
+
+    <string name="temp_outside">Outside</string>
+    <string name="temp_in_caravan">In Caravan</string>
+    <string name="active_timers">Active timers</string>
+    <string name="active_lamps">Active lamps</string>
 </resources>
