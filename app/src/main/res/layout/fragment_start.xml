@@ -1,0 +1,282 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
+    tools:context="se.netmine.hobby_marknad.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/power_supply_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/remoteControlImage"
+                android:layout_width="228dp"
+                android:layout_height="204dp"
+                android:layout_centerInParent="true"
+                app:srcCompat="@mipmap/ic_remote_control" />
+
+            <ImageView
+                android:id="@+id/myhobbyLogoImage"
+                android:layout_width="196dp"
+                android:layout_height="53dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:srcCompat="@mipmap/ic_myhobby_logo" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.16"
+                android:paddingTop="10dp"
+                android:text="@string/start_my_hobby_control_caravan"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/power_supply_bg"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/serviceBookImage"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/ic_battery_3_el" />
+
+                    <TextView
+                        android:id="@+id/serviceBookText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:text="@string/start_service_book"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/serviceControlText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:text="@string/start_service_book_keep_control"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/power_supply_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/resellerImage"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/ic_battery_3_el" />
+
+                    <TextView
+                        android:id="@+id/startResellerText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:text="@string/start_resellers"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1"
+
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/water_tank_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/catalogImage"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/ic_water_3" />
+
+                    <TextView
+                        android:id="@+id/startCatalogText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:text="@string/start_catalog_and_magazines"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/water_tank_bg"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/startFaqImage"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        app:srcCompat="@mipmap/ic_water_3" />
+
+                    <TextView
+                        android:id="@+id/startFaqText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:text="@string/start_faq"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/startFaqForCaravanOwnersText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="0.1"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:text="@string/start_faq_for_caravan_owners"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="201dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/power_supply_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/personImage"
+                    android:layout_width="166dp"
+                    android:layout_height="156dp"
+                    android:layout_centerInParent="true"
+                    app:srcCompat="@mipmap/ic_person" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textMinePage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Min Sida" />
+                <TextView
+                    android:id="@+id/textMinePageSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inställningar och notiser" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    app:srcCompat="@drawable/ic_nav_right_white" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    </ScrollView>
