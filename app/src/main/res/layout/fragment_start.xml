@@ -225,7 +225,6 @@
             <LinearLayout
                 android:layout_width="201dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/power_supply_bg"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:weightSum="1">

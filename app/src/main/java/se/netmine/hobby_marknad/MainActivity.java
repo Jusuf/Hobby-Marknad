@@ -180,6 +180,8 @@ public class MainActivity extends AppCompatActivity
             toolbar.setVisibility(View.GONE);
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+            // change to loginfragnment
             startFragment =  new StartFragment();
         }
         else
