@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity
 //                }
 //            }
 //        });
+
+        navigateToStartFragment();
     }
 
     @Override
@@ -134,12 +136,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void navigateToFragment(Fragment fragment) {
-//        if( fragmentStack.isEmpty() == false &&
-//                fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0 &&
-//                fragment.getClass().getSimpleName().compareTo(RobotListFragment.class.getSimpleName()) != 0)
-//        {
-//            return;
-//        }
+        if( fragmentStack.isEmpty() == false &&
+                fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0 &&
+                fragment.getClass().getSimpleName().compareTo(StartFragment.class.getSimpleName()) != 0)
+        {
+            return;
+        }
 
         if (fragmentStack.isEmpty() == false &&
                 fragment.getClass().getSimpleName().compareTo(fragmentStack.peek().getClass().getSimpleName()) == 0) {
@@ -167,6 +169,45 @@ public class MainActivity extends AppCompatActivity
         } else {
             toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         }
+    }
+
+    private void navigateToStartFragment()
+    {
+        Fragment startFragment = null;
+
+        if(Hobby.getInstance().isUserLoggedIn() == false)
+        {
+            toolbar.setVisibility(View.GONE);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            startFragment =  new StartFragment();
+        }
+        else
+        {
+            startFragment =  new StartFragment();
+            //startService();
+
+            //Wemo.getInstance().getRobotTreeAsync();
+        }
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        if(fragmentStack.size() > 0)
+        {
+            fragmentStack.peek().onPause();
+            ft.hide(fragmentStack.peek());
+            ft.commit();
+        }
+
+        // Clear all previously fragments.
+        fragmentStack.clear();
+
+        if(startFragment != null)
+        {
+            navigateToFragment(startFragment);;
+        }
+
     }
 
     @Override

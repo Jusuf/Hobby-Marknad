@@ -53,8 +53,6 @@ public class MyHobbyFragment extends BaseFragment {
         txtAmountOfTimers = view.findViewById(R.id.amountOfTimersText);
         txtAmountOfLamps = view.findViewById(R.id.amountOfLampsText);
 
-
-
         txtBatteryPercentage.setText("50%");
 
         txtWaterPercentage.setText("85%");
