@@ -10,4 +10,6 @@ public interface IMainActivity {
     public void setTitle(String title);
 
     public void onNavigateToFragment(Fragment fragment);
+
+    public void onNavigateBack();
 }

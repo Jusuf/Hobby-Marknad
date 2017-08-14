@@ -61,16 +61,16 @@ public class MainActivity extends AppCompatActivity
 
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (fragmentStack.size() == 1) {
-//                    drawer.openDrawer(GravityCompat.START);
-//                } else {
-//                    onBackPressed();
-//                }
-//            }
-//        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragmentStack.size() == 1) {
+                    drawer.openDrawer(GravityCompat.START);
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
 
         navigateToStartFragment();
     }
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
 
         if(startFragment != null)
         {
-            navigateToFragment(startFragment);;
+            navigateToFragment(startFragment);
         }
 
     }
@@ -213,6 +213,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNavigateToFragment(Fragment fragment) {
         navigateToFragment(fragment);
+    }
+
+    @Override
+    public void onNavigateBack()
+    {
+        onBackPressed();
     }
 
     @Override
