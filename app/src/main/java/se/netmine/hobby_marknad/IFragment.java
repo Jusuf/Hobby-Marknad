@@ -5,4 +5,5 @@ package se.netmine.hobby_marknad;
  */
 
 public interface IFragment {
+    void Test();
 }

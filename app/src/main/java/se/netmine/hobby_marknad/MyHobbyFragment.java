@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Created by jusuf on 2017-07-11.
  */
 
-public class MyHobbyFragment extends Fragment implements IFragment {
+public class MyHobbyFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
 
