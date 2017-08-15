@@ -1,0 +1,33 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="2.5dp"
+    android:paddingLeft="2.5dp"
+    android:paddingRight="2.5dp"
+    tools:context="se.netmine.hobby_marknad.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/catalogueMenuButton"
+            android:layout_width="match_parent"
+            android:layout_height="324dp"
+            android:background="@drawable/hobby2017"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

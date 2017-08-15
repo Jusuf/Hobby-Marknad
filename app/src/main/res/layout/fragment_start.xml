@@ -4,8 +4,7 @@
     android:id="@+id/scrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-
-    android:paddingTop="5dp"
+    android:paddingTop="2.5dp"
     tools:context="se.netmine.hobby_marknad.MainActivity">
 
     <LinearLayout
@@ -31,9 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="2.5dp"
                 android:layout_weight="1"
-
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -44,7 +41,6 @@
                     android:background="@drawable/start_servicebook"
                     android:gravity="center"
                     android:orientation="vertical">
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -62,18 +58,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="2.5dp"
                 android:layout_weight="1"
-
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/catalogueAndMagazinesMenu"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:background="@drawable/start_catalogue"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                 </LinearLayout>
