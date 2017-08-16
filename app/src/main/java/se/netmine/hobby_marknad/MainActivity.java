@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_service_book) {
 
         } else if (id == R.id.nav_catalog_and_magazines) {
-
+            CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
+            onNavigateToFragment(fragment);
         } else if (id == R.id.nav_resellers) {
 
         } else if (id == R.id.nav_faq) {
