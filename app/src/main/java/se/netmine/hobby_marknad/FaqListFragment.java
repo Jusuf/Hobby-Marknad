@@ -72,7 +72,8 @@ public class FaqListFragment extends BaseFragment {
         faqs = getResources().getStringArray(R.array.array_faqs);
         listFaqs = new ArrayList<>(Arrays.asList(faqs));
         adapter = new ArrayAdapter<>(mainActivity.getContext(),
-                android.R.layout.simple_list_item_1,
+                R.layout.faq_item,
+                R.id.txtFaqItem,
                 listFaqs);
 
         listViewFaqs.setAdapter(adapter);

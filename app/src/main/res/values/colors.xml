@@ -7,4 +7,6 @@
     <color name="blackTransparent">#66000000</color>
     <color name="background_material_light">#1dffffff</color>
     <color name="white">#ffffff</color>
+    <color name="faq_text_dark_grey">#5e5e5d</color>
+    <color name="myhobby_blue">#488fc3</color>
 </resources>
