@@ -229,4 +229,9 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(title);
     }
 
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
 }

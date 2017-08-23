@@ -33,6 +33,23 @@
     <string name="temp_in_caravan">In Caravan</string>
     <string name="active_timers">Active timers</string>
     <string name="active_lamps">Active lamps</string>
-    
+
+
+    <string-array name="array_faqs">
+        <item>Faq 1</item>
+        <item>Faq 12</item>
+        <item>Faq 13</item>
+        <item>Faq 14</item>
+        <item>Faq 15</item>
+        <item>Faq 16</item>
+        <item>Faq 17</item>
+        <item>Faq 18</item>
+        <item>Faq 19</item>
+        <item>Faq 199</item>
+        <item>Faq 177</item>
+        <item>Faq 166</item>
+        <item>Faq 144</item>
+        <item>Faq 122</item>
+    </string-array>
 
 </resources>
