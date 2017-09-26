@@ -38,8 +38,8 @@ public class FaqListFragment extends BaseFragment {
             mainActivity.setTitle("Faqs");
         }
 
-        listViewFaqs = view.findViewById(R.id.listViewFaqs);
-        txtSearchFaq = view.findViewById(R.id.txtSearchFaq);
+        listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
+        txtSearchFaq = (EditText) view.findViewById(R.id.txtSearchFaq);
 
         initList();
 

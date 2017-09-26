@@ -31,7 +31,7 @@ public class StartFragment extends BaseFragment {
             mainActivity.setTitle("Hobby");
         }
 
-        catalogueAndMagazinesMenuButton =  view.findViewById(R.id.catalogueAndMagazinesMenu);
+        catalogueAndMagazinesMenuButton = (LinearLayout) view.findViewById(R.id.catalogueAndMagazinesMenu);
 
         catalogueAndMagazinesMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +41,7 @@ public class StartFragment extends BaseFragment {
             }
         });
 
-        faqMenuButton =  view.findViewById(R.id.faqStartMenu);
+        faqMenuButton = (LinearLayout) view.findViewById(R.id.faqStartMenu);
 
         faqMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override

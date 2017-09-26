@@ -28,7 +28,7 @@ public class CatalogueAndMagazinesFragment extends BaseFragment{
             mainActivity.setTitle("Catalogue & Magazines");
         }
 
-        catalogueMenuButton =  view.findViewById(R.id.catalogueMenuButton);
+        catalogueMenuButton =  (LinearLayout) view.findViewById(R.id.catalogueMenuButton);
 
         catalogueMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override

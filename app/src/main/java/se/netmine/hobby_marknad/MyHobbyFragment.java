@@ -43,15 +43,15 @@ public class MyHobbyFragment extends BaseFragment {
             mainActivity.setTitle("My Hobby");
         }
 
-        txtBatteryPercentage = view.findViewById(R.id.batteryPercentText);
-        txtWaterPercentage = view.findViewById(R.id.waterPercentText);
+        txtBatteryPercentage = (TextView) view.findViewById(R.id.batteryPercentText);
+        txtWaterPercentage = (TextView) view.findViewById(R.id.waterPercentText);
 
-        txtTempInCaravanHeat = view.findViewById(R.id.tempInCaravanHeatText);
-        txtCity  = view.findViewById(R.id.cityText);
-        txtTempOutsideHeat = view.findViewById(R.id.tempOutsideHeatText);
+        txtTempInCaravanHeat = (TextView) view.findViewById(R.id.tempInCaravanHeatText);
+        txtCity  = (TextView) view.findViewById(R.id.cityText);
+        txtTempOutsideHeat = (TextView) view.findViewById(R.id.tempOutsideHeatText);
 
-        txtAmountOfTimers = view.findViewById(R.id.amountOfTimersText);
-        txtAmountOfLamps = view.findViewById(R.id.amountOfLampsText);
+        txtAmountOfTimers = (TextView) view.findViewById(R.id.amountOfTimersText);
+        txtAmountOfLamps = (TextView) view.findViewById(R.id.amountOfLampsText);
 
         txtBatteryPercentage.setText("50%");
 

@@ -27,7 +27,7 @@ public class CatalogueFragment extends BaseFragment{
             mainActivity.setTitle("Catalogue 2017");
         }
 
-        pdfView = view.findViewById(R.id.catalogueView);
+        pdfView = (PDFView) view.findViewById(R.id.catalogueView);
         pdfView.fromAsset("hobby2017.pdf").load();
 
         return view;
