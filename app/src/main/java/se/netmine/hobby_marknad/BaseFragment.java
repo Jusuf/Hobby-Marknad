@@ -8,4 +8,8 @@ import android.app.Fragment;
 
 public class BaseFragment extends Fragment implements IFragment{
 
+    @Override
+    public void setTitle() {
+
+    }
 }

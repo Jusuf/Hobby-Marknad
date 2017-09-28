@@ -31,6 +31,7 @@ public class StartFragment extends BaseFragment {
             mainActivity.setTitle("Hobby");
         }
 
+
         catalogueAndMagazinesMenuButton = (LinearLayout) view.findViewById(R.id.catalogueAndMagazinesMenu);
 
         catalogueAndMagazinesMenuButton.setOnClickListener(new View.OnClickListener() {

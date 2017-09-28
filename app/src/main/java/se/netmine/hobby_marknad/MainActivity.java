@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     private final Context context = this;
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
     Toolbar toolbar;
+    private TextView userName = null;
+    private NavigationView navigationView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,131 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onRegistered()
+    {
+
+    }
+
+    @Override
+    public void onLoggedIn()
+    {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_right);
+
+        while(fragmentStack.size() > 1)
+        {
+            fragmentStack.peek().onPause();
+            ft.hide(fragmentStack.peek());
+            fragmentStack.pop();
+        }
+        Fragment fragment = new StartFragment();
+        fragmentStack.push(fragment);
+
+        ft.add(R.id.mainContent, fragment);
+        ft.show(fragmentStack.peek());
+        ft.commit();
+        toolbar.setNavigationIcon(R.drawable.ic_nav_left_white);
+
+        // Show logout option in menu
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem navDemo = menu.findItem(R.id.nav_logout);
+        navDemo.setVisible(true);
+
+        setUserName();
+    }
+
+    @Override
+    public void onLoggedOut()
+    {
+        navigateToFragment(this.setStartFragment());
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
+        setUserName();
+
+        // Hide logout option in menu
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem navDemo = menu.findItem(R.id.nav_logout);
+        navDemo.setVisible(false);
+    }
+
+    private void setUserName()
+    {
+        if(MyHobbyMarket.getInstance().isUserLoggedIn())
+        {
+            String firstName = MyHobbyMarket.getInstance().getFirstName();
+            String lastName = MyHobbyMarket.getInstance().getLastName();
+            String email = MyHobbyMarket.getInstance().getEmail();
+
+            if(firstName != null && firstName.isEmpty() == false)
+            {
+                if(lastName != null && lastName.isEmpty() == false)
+                {
+                    userName.setText(firstName + " " + lastName);
+                }
+                else {
+                    userName.setText(firstName);
+                }
+            }
+            else
+            {
+                if(email != null && email.isEmpty() == false)
+                {
+                    userName.setText(email);
+                }
+                else {
+                    userName.setText("No name");
+                }
+            }
+        }
+        else {
+            userName.setText(getResources().getString(R.string.menu_header_logged_out));
+        }
+    }
+
+    private Fragment setStartFragment()
+    {
+        Fragment startFragment;
+
+        startFragment =  new StartFragment();
+
+        if(MyHobbyMarket.getInstance().isUserLoggedIn() == false)
+        {
+            // Not logged
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
+
+            Menu menu = navigationView.getMenu();
+            MenuItem navDemo = menu.findItem(R.id.nav_logout);
+            navDemo.setVisible(false);
+        }
+        else
+        {
+            // Logged in
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+
+        }
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        if(fragmentStack.size() > 0)
+        {
+            fragmentStack.peek().onPause();
+            ft.hide(fragmentStack.peek());
+            ft.commit();
+        }
+
+        // Clear all previously fragments.
+        fragmentStack.clear();
+
+        return startFragment;
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

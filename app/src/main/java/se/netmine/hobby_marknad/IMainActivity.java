@@ -9,11 +9,11 @@ import android.content.Context;
 
 public interface IMainActivity {
 
-//    void onLoggedIn();
+    void onLoggedIn();
 
-//    void onRegistered();
+    void onRegistered();
 
-//    void onLoggedOut();
+    void onLoggedOut();
 
 //    void onResetPassword();
 
