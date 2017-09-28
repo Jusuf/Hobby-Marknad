@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoggedOut()
     {
-        navigateToFragment(this.setStartFragment());
+        navigateToStartFragment();
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
@@ -199,45 +199,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private Fragment setStartFragment()
-    {
-        Fragment startFragment;
 
-        startFragment =  new StartFragment();
-
-        if(MyHobbyMarket.getInstance().isUserLoggedIn() == false)
-        {
-            // Not logged
-            navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
-
-            Menu menu = navigationView.getMenu();
-            MenuItem navDemo = menu.findItem(R.id.nav_logout);
-            navDemo.setVisible(false);
-        }
-        else
-        {
-            // Logged in
-            navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.activity_main_drawer);
-
-        }
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-
-        if(fragmentStack.size() > 0)
-        {
-            fragmentStack.peek().onPause();
-            ft.hide(fragmentStack.peek());
-            ft.commit();
-        }
-
-        // Clear all previously fragments.
-        fragmentStack.clear();
-
-        return startFragment;
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -302,10 +264,22 @@ public class MainActivity extends AppCompatActivity
 
     private void navigateToStartFragment()
     {
-        Fragment startFragment = null;
-
-
+        Fragment startFragment;
         startFragment =  new StartFragment();
+
+        if(MyHobbyMarket.getInstance().isUserLoggedIn() == false)
+        {
+            // Not logged
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
+        }
+        else
+        {
+            // Logged in
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
