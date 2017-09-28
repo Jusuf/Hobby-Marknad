@@ -8,8 +8,4 @@ import android.app.Fragment;
 
 public class BaseFragment extends Fragment implements IFragment{
 
-    public void Test() {
-
-    }
-
 }

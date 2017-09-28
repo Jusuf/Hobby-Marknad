@@ -8,11 +8,20 @@ import android.content.Context;
  */
 
 public interface IMainActivity {
-    public void setTitle(String title);
 
-    public Context getContext();
+//    void onLoggedIn();
 
-    public void onNavigateToFragment(Fragment fragment);
+//    void onRegistered();
 
-    public void onNavigateBack();
+//    void onLoggedOut();
+
+//    void onResetPassword();
+
+    void setTitle(String title);
+
+    Context getContext();
+
+    void onNavigateToFragment(Fragment fragment);
+
+    void onNavigateBack();
 }

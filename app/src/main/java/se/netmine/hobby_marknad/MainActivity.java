@@ -176,22 +176,8 @@ public class MainActivity extends AppCompatActivity
     {
         Fragment startFragment = null;
 
-        if(Hobby.getInstance().isUserLoggedIn() == false)
-        {
-            toolbar.setVisibility(View.GONE);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-            // change to loginfragnment
-            startFragment =  new StartFragment();
-        }
-        else
-        {
-            startFragment =  new StartFragment();
-            //startService();
-
-            //Wemo.getInstance().getRobotTreeAsync();
-        }
+        startFragment =  new StartFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -233,5 +219,7 @@ public class MainActivity extends AppCompatActivity
     public Context getContext() {
         return this;
     }
+
+
 
 }
