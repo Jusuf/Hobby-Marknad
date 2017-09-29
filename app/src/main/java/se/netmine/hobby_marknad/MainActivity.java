@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity
     private final Context context = this;
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
     Toolbar toolbar;
-    private TextView userName = null;
+    private TextView txtUserName = null;
     private NavigationView navigationView = null;
+    public static final String PREFS_NAME = "MyHobbyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        MyHobbyMarket.getInstance().init(settings);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,8 +62,14 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        txtUserName = (TextView) headerLayout.findViewById(R.id.txtUserName);
+        this.setUserName();
+
 
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
@@ -74,6 +83,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        MyHobbyMarket.getInstance().mainActivity = this;
 
         navigateToStartFragment();
     }
@@ -138,14 +149,11 @@ public class MainActivity extends AppCompatActivity
         ft.add(R.id.mainContent, fragment);
         ft.show(fragmentStack.peek());
         ft.commit();
-        toolbar.setNavigationIcon(R.drawable.ic_nav_left_white);
 
-        // Show logout option in menu
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
-        MenuItem navDemo = menu.findItem(R.id.nav_logout);
-        navDemo.setVisible(true);
-
+        navigateToStartFragment();
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.activity_main_drawer);
         setUserName();
     }
 
@@ -157,12 +165,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_main_drawer_not_logged_in);
         setUserName();
-
-        // Hide logout option in menu
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
-        MenuItem navDemo = menu.findItem(R.id.nav_logout);
-        navDemo.setVisible(false);
     }
 
     private void setUserName()
@@ -177,25 +179,25 @@ public class MainActivity extends AppCompatActivity
             {
                 if(lastName != null && lastName.isEmpty() == false)
                 {
-                    userName.setText(firstName + " " + lastName);
+                    txtUserName.setText(firstName + " " + lastName);
                 }
                 else {
-                    userName.setText(firstName);
+                    txtUserName.setText(firstName);
                 }
             }
             else
             {
                 if(email != null && email.isEmpty() == false)
                 {
-                    userName.setText(email);
+                    txtUserName.setText(email);
                 }
                 else {
-                    userName.setText("No name");
+                    txtUserName.setText("No name");
                 }
             }
         }
         else {
-            userName.setText(getResources().getString(R.string.menu_header_logged_out));
+            txtUserName.setText(getResources().getString(R.string.menu_header_logged_out));
         }
     }
 
@@ -229,6 +231,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_faq) {
 
+        }
+        else if (id == R.id.nav_logout) {
+            MyHobbyMarket.getInstance().logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

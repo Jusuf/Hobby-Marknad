@@ -3,6 +3,7 @@ package se.netmine.hobby_marknad;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -52,6 +53,11 @@ public class MyHobbyMarket {
 
     private MyHobbyMarket() {
         currentUser = new User();
+    }
+
+    public void init(SharedPreferences settings)
+    {
+        this.currentUser.init(settings);
     }
 
     public boolean isUserLoggedIn()
@@ -256,7 +262,6 @@ public class MyHobbyMarket {
                 this.currentUser.userId = null;
                 this.currentUser.firstName = null;
                 this.currentUser.lastName = null;
-                this.currentUser.bluetoothAddress = null;
                 this.currentUser.save();
                 mainActivity.onLoggedOut();
             }
@@ -484,7 +489,6 @@ public class MyHobbyMarket {
                         currentUser.myHobbyKey = null;
                         currentUser.firstName = null;
                         currentUser.lastName = null;
-                        currentUser.bluetoothAddress = null;
                         currentUser.save();
                         logout = true;
 
