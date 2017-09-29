@@ -213,7 +213,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_my_hobby) {
+        if (id == R.id.nav_login) {
+            LoginFragment fragment = new LoginFragment();
+            onNavigateToFragment(fragment);
+        }
+        else if (id == R.id.nav_my_hobby) {
             MyHobbyFragment fragment = new MyHobbyFragment();
             onNavigateToFragment(fragment);
         } else if (id == R.id.nav_service_book) {

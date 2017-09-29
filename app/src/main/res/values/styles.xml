@@ -18,4 +18,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="InputTextTheme" parent="android:Widget.EditText">
+        <item name="android:textColor">@color/faq_text_dark_grey</item>
+    </style>
+
 </resources>
