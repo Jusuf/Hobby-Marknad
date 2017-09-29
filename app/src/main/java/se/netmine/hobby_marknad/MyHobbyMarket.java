@@ -36,8 +36,9 @@ public class MyHobbyMarket {
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
 
-    public static  String url = "https://admin.myhobby.nu/";
+//    public static  String url = "https://admin.myhobby.nu/";
     //public static String url = "http://192.168.20.166/hobby/";
+    public static String url = "http://192.168.0.12/hobby/";
     public static String baseUrl = url + "api/myhobby/";
 
     public User currentUser = null;

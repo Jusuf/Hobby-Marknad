@@ -199,7 +199,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
+    @Override
+    public void onResetPassword()
+    {
+        String url = MyHobbyMarket.url + "#resetPasswordRequest";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

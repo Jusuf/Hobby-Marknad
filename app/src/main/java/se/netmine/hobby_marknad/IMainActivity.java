@@ -15,7 +15,7 @@ public interface IMainActivity {
 
     void onLoggedOut();
 
-//    void onResetPassword();
+    void onResetPassword();
 
     void setTitle(String title);
 

@@ -23,6 +23,12 @@
     <string name="nav_logout">Log out</string>
     <string name="menu_header_logged_out">Not signed in</string>
 
+    <string name="login_create_account">No account yet? Click to create!</string>
+    <string name="login_email">E-mail:</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_login">Log in</string>
+    <string name="login_password">Password:</string>
+
     <string name="start_my_hobby_title">My Hobby</string>
     <string name="start_my_hobby_control_caravan">Control a caravan with your phone</string>
     <string name="start_service_book">Service book</string>
@@ -41,6 +47,21 @@
     <string name="temp_in_caravan">In Caravan</string>
     <string name="active_timers">Active timers</string>
     <string name="active_lamps">Active lamps</string>
+
+    <!-- Position page -->
+    <string name="position_title">Position &amp; Weather</string>
+    <string name="position_today">Today</string>
+    <string name="position_tomorrow">Tomorrow</string>
+    <string name="register_activation_mail_sent">An activation mail is sent to activate your account</string>
+    <string name="register_email">E-mail:</string>
+    <string name="register_error_email_required">E-mail is a mandatory field!</string>
+    <string name="register_error_firstname_required">Sure name is a mandatory field!</string>
+    <string name="register_error_lastname_required">Last name is a mandatory field!</string>
+    <string name="register_error_password_required">Password is a mandatory field!</string>
+    <string name="register_firstname">Sure name:</string>
+    <string name="register_lastname">Last name:</string>
+    <string name="register_password">Password:</string>
+    <string name="register_register">Register</string>
 
 
     <string-array name="array_faqs">
