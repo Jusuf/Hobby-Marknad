@@ -36,10 +36,11 @@ public class MyHobbyMarket {
     private static final int API_TELL = 4;
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
+    private static final int API_FAQS = 7;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    //public static String url = "http://192.168.20.166/hobby/";
-    public static String url = "http://192.168.0.12/hobby/";
+    public static String url = "http://192.168.20.173/hobby/";
+//    public static String url = "http://192.168.0.12/hobby/";
     public static String baseUrl = url + "api/myhobby/";
 
     public User currentUser = null;
@@ -108,7 +109,7 @@ public class MyHobbyMarket {
     protected void register(String email, String password, String firstName, String lastName)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null);
         api.execute();
     }
 
@@ -146,7 +147,7 @@ public class MyHobbyMarket {
     protected void login(String email, String password)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null);
         api.execute();
     }
 
@@ -193,7 +194,7 @@ public class MyHobbyMarket {
     protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm);
+        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null);
         api.execute();
     }
 
@@ -233,11 +234,10 @@ public class MyHobbyMarket {
         }
     }
 
-
     protected void logout()
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null);
         api.execute();
     }
 
@@ -277,6 +277,48 @@ public class MyHobbyMarket {
 
     }
 
+    protected void getFaqList(String searchQuery, String deviceCulture)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture);
+        api.execute();
+    }
+
+    protected void getFaqListDone(String result, String searchQuery)
+    {
+        try
+        {
+            if(result == null || result.isEmpty())
+            {
+            }
+            result = "{\"success\": \"true\"}";
+
+
+            JSONObject jObject = new JSONObject(result);
+
+            boolean success = true;
+
+            if(jObject.has("success"))
+            {
+                success = jObject.getBoolean("success");
+            }
+
+            if(success == true)
+            {
+               // map faqs
+            }
+            else {
+                String message = jObject.getString("message");
+                this.showErrorDialog(message);
+            }
+
+
+        } catch (JSONException e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+    }
+
+
     private class MyHobbyApi extends AsyncTask<String, String, String> {
 
         private ProgressDialog pDialog;
@@ -292,6 +334,8 @@ public class MyHobbyMarket {
         private String oldPassword = null;
         private String newPassword = null;
         private String newPasswordConfirm = null;
+        private String searchQuery = null;
+        private String deviceCulture = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -304,7 +348,9 @@ public class MyHobbyMarket {
                           String lastName,
                           String oldPassword,
                           String newPassword,
-                          String newPasswordConfirm)
+                          String newPasswordConfirm,
+                          String searchQuery,
+                          String deviceCulture)
         {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
@@ -318,6 +364,8 @@ public class MyHobbyMarket {
             this.oldPassword = oldPassword;
             this.newPassword = newPassword;
             this.newPasswordConfirm = newPasswordConfirm;
+            this.searchQuery = searchQuery;
+            this.deviceCulture = deviceCulture;
         }
 
 
@@ -430,6 +478,29 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("SubPosition", MyHobbyMarket.getInstance().currentUser.notifyPosition  ? "true" : "false")
                                 .appendQueryParameter("SubNews", MyHobbyMarket.getInstance().currentUser.notifyNews ? "true" : "false")
                                 .appendQueryParameter("DeviceToken", MyHobbyMarket.getInstance().currentUser.deviceToken);
+
+                    }
+                    break;
+                    case API_FAQS:
+                    {
+                        if (isUserLoggedIn()){
+                            apiUrl = baseUrl + "faqListAuth";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+                        else{
+                            apiUrl = baseUrl + "faqList";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
 
                     }
                     break;
@@ -588,6 +659,9 @@ public class MyHobbyMarket {
 //                case API_SYNC:
 //                    syncDone(result);
 //                    break;
+                case API_FAQS:
+                    getFaqListDone(result, searchQuery);
+                    break;
             }
         }
 

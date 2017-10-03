@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Created by jusuf on 2017-08-16.
@@ -40,6 +41,9 @@ public class FaqListFragment extends BaseFragment {
 
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         txtSearchFaq = (EditText) view.findViewById(R.id.txtSearchFaq);
+
+        String language = Locale.getDefault().getCountry();
+        MyHobbyMarket.getInstance().getFaqList("", language);
 
         initList();
 
