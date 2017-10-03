@@ -42,7 +42,7 @@ public class FaqListFragment extends BaseFragment {
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("Faqs");
+            mainActivity.setTitle("FAQ");
         }
 
         adapter = new FaqListAdapter(mainActivity.getContext(), loadedFaqs);
