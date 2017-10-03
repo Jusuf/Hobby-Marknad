@@ -24,4 +24,6 @@ public interface IMainActivity {
     void onNavigateToFragment(Fragment fragment);
 
     void onNavigateBack();
+
+    void onFaqsLoaded(Faq[] faqs);
 }

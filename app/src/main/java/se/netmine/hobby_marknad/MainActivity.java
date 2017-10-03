@@ -124,6 +124,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void onFaqsLoaded(Faq[] faqs)
+    {
+        // Notify the active fragment that a faqs has bean loaded
+        ((IFragment)fragmentStack.peek()).onFaqsUpdated(faqs);
+    }
+
     @Override
     public void onRegistered()
     {

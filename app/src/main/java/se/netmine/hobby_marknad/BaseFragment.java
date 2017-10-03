@@ -12,4 +12,9 @@ public class BaseFragment extends Fragment implements IFragment{
     public void setTitle() {
 
     }
+
+    @Override
+    public void onFaqsUpdated(Faq[] faqs) {
+
+    }
 }

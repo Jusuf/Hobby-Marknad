@@ -6,11 +6,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -45,6 +44,7 @@ public class MyHobbyMarket {
 
     public User currentUser = null;
     public IMainActivity mainActivity;
+    public Faq[] faqs;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
 
@@ -286,36 +286,28 @@ public class MyHobbyMarket {
 
     protected void getFaqListDone(String result, String searchQuery)
     {
-        try
+        if(result == null || result.isEmpty())
         {
-            if(result == null || result.isEmpty())
-            {
-            }
-            result = "{\"success\": \"true\"}";
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
 
+        try {
 
-            JSONObject jObject = new JSONObject(result);
+            FaqResult faqResult = new Gson().fromJson(result, FaqResult.class);
 
-            boolean success = true;
+            faqs = faqResult.faqs;
 
-            if(jObject.has("success"))
-            {
-                success = jObject.getBoolean("success");
-            }
-
-            if(success == true)
-            {
-               // map faqs
-            }
-            else {
-                String message = jObject.getString("message");
-                this.showErrorDialog(message);
+            if(faqResult.success == true) {
+                System.out.println("MyHobby - return from getFaq, count=" + faqs.length);
+                mainActivity.onFaqsLoaded(faqs);
             }
 
-
-        } catch (JSONException e) {
+        } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
+
+
     }
 
 

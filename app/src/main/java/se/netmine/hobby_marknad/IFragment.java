@@ -6,4 +6,6 @@ package se.netmine.hobby_marknad;
 
 public interface IFragment {
     void setTitle();
+
+    void onFaqsUpdated(Faq[] faqs);
 }
