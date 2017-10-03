@@ -38,6 +38,8 @@
     <string name="start_faq">Faq</string>
     <string name="start_faq_for_caravan_owners">For caravan owners</string>
     <string name="start_settings_and_notifications">Settings &amp; Notifications</string>
+    <string name="start_camping">Camping</string>
+    <string name="start_camping_find_vacation_spot">Find vacation spot</string>
 
 
     <string name="my_hobby_battery_loading">Battery Loading</string>
