@@ -5,23 +5,23 @@
 
         <item
             android:id="@+id/nav_my_hobby"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_myhobby"
             android:title="@string/nav_myhobby" />
         <item
             android:id="@+id/nav_service_book"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_servicebook"
             android:title="@string/nav_service_book" />
         <item
             android:id="@+id/nav_catalog_and_magazines"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_catalogue"
             android:title="@string/nav_catalog_and_magazines" />
         <item
             android:id="@+id/nav_resellers"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_reseller"
             android:title="@string/nav_resellers" />
         <item
             android:id="@+id/nav_faq"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_faq"
             android:title="@string/nav_faq" />
         <item
             android:id="@+id/nav_logout"
