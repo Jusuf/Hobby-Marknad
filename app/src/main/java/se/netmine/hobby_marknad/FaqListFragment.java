@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -49,6 +50,18 @@ public class FaqListFragment extends BaseFragment {
 
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         listViewFaqs.setAdapter(adapter);
+
+        listViewFaqs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+
+                Faq node = loadedFaqs.get(pos);
+                FaqFragment fragment = new FaqFragment();
+                fragment.faq = node;
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
 
         txtSearchFaq = (EditText) view.findViewById(R.id.txtSearchFaq);
 
