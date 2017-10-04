@@ -62,9 +62,7 @@ public class FaqListFragment extends BaseFragment {
             }
         });
 
-
         txtSearchFaq = (EditText) view.findViewById(R.id.txtSearchFaq);
-
         language = Locale.getDefault().getCountry();
 
         loadFaqs();
