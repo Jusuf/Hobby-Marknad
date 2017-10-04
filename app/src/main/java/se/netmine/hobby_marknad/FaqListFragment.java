@@ -10,7 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,10 +31,16 @@ public class FaqListFragment extends BaseFragment {
     private IMainActivity mainActivity;
     EditText txtSearchFaq = null;
     ListView listViewFaqs = null;
+    ImageView imageSearchFilter = null;
+    RadioGroup radioGroup = null;
+    FrameLayout radioFrame = null;
     LayoutInflater inflater = null;
     public ArrayList<Faq> loadedFaqs = new  ArrayList<Faq>();
     ArrayAdapter<Faq> adapter;
     String language;
+    boolean caravanTag = false;
+    boolean campingtipsTag = false;
+    boolean myHobbyTag = false;
 
     public FaqListFragment() {
     }
@@ -39,7 +50,7 @@ public class FaqListFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         this.inflater = inflater;
-        View view = inflater.inflate(R.layout.fragment_faq_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_faq_list, container, false);
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
@@ -50,6 +61,82 @@ public class FaqListFragment extends BaseFragment {
 
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         listViewFaqs.setAdapter(adapter);
+
+        radioFrame = (FrameLayout) view.findViewById(R.id.frameFaqTags);
+
+        imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
+        imageSearchFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(radioFrame.getVisibility() == View.GONE){
+                    radioFrame.setVisibility(View.VISIBLE);
+                    listViewFaqs.setVisibility(View.GONE);
+
+                    txtSearchFaq.setEnabled(false);
+
+
+                }
+                else
+                {
+                    radioFrame.setVisibility(View.GONE);
+                    listViewFaqs.setVisibility(View.VISIBLE);
+
+                    txtSearchFaq.setEnabled(true);
+
+                }
+
+            }
+        });
+
+
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioTag);
+        radioGroup.clearCheck();
+        radioGroup.setOnCheckedChangeListener(new  RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                if (null != rb && checkedId > -1) {
+
+                    // checkedId is the RadioButton selected
+                    switch (checkedId) {
+                        case R.id.faqTagManageCaravan:
+                            if(rb.isChecked())
+                            {
+                                caravanTag = true;
+                            }
+                            else
+                            {
+                                caravanTag = false;
+                            }
+                            break;
+
+                        case R.id.faqTagCampingTips:
+                            if(rb.isChecked())
+                            {
+                                campingtipsTag = true;
+                            }
+                            else
+                            {
+                                campingtipsTag = false;
+                            }
+                            break;
+
+                        case R.id.faqTagMyHobby:
+                            if(rb.isChecked())
+                            {
+                                myHobbyTag = true;
+                            }
+                            else
+                            {
+                                myHobbyTag = false;
+                            }
+                            break;
+                    }
+                }
+            }
+
+        });
 
         listViewFaqs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -10,6 +10,7 @@
     android:paddingLeft="5dp">
 
     <LinearLayout
+        android:id="@+id/searchLaytout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -25,7 +26,7 @@
             android:hint="Sök" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageSearchFilter"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:srcCompat="@drawable/ic_search_filter"
@@ -37,4 +38,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/faq_list_bg"/>
+
+    <FrameLayout
+        android:id="@+id/frameFaqTags"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/radioTag"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/faqTagManageCaravan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_tag_manage_caravan"
+                />
+            <RadioButton android:id="@+id/faqTagCampingTips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_tag_tips_for_camping_life"
+                />
+            <RadioButton android:id="@+id/faqTagMyHobby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_tag_myhobby"
+                />
+        </RadioGroup>
+
+    </FrameLayout>
+
 </LinearLayout>
