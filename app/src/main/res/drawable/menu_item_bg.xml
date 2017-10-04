@@ -1,16 +1,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item>
-        <shape android:shape="rectangle" >
-
-            <gradient
-                android:angle="135"
-                android:centerColor="#9943C6AC"
-                android:endColor="#994ca2cd"
-                android:startColor="#99c2e59c"
-
-                android:type="linear" />
-        </shape>
+        <bitmap android:src="@drawable/menu_item_background"></bitmap>
     </item>
 
     <item android:top="-2dp" android:right="-2dp" android:left="-2dp">
