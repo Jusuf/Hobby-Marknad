@@ -236,7 +236,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_resellers) {
 
         } else if (id == R.id.nav_faq) {
-
+            FaqListFragment fragment = new FaqListFragment();
+            onNavigateToFragment(fragment);
         }
         else if (id == R.id.nav_logout) {
             MyHobbyMarket.getInstance().logout();
