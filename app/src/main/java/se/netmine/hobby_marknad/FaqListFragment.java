@@ -43,7 +43,7 @@ public class FaqListFragment extends BaseFragment {
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("FAQ");
+            mainActivity.setTitle(getString(R.string.nav_faq));
         }
 
         adapter = new FaqListAdapter(mainActivity.getContext(), loadedFaqs);
@@ -89,7 +89,6 @@ public class FaqListFragment extends BaseFragment {
 
             }
         });
-
 
         return view;
     }
@@ -145,7 +144,7 @@ public class FaqListFragment extends BaseFragment {
         // After a pause
         super.onResume();
         loadFaqs();
-        mainActivity.setTitle("FAQ");
+        mainActivity.setTitle(getString(R.string.nav_faq));
     }
 
 }
