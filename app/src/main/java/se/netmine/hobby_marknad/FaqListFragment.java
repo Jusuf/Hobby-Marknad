@@ -28,8 +28,9 @@ public class FaqListFragment extends BaseFragment {
     private IMainActivity mainActivity;
     EditText txtSearchFaq = null;
     ListView listViewFaqs = null;
+    ListView listViewTaqs = null;
     ImageView imageSearchFilter = null;
-    FrameLayout frameCheckBox = null;
+    LinearLayout layoutCheckBox = null;
     LinearLayout searchLayout = null;
     LayoutInflater inflater = null;
     public ArrayList<Faq> loadedFaqs = new  ArrayList<Faq>();
@@ -56,28 +57,35 @@ public class FaqListFragment extends BaseFragment {
             mainActivity.setTitle(getString(R.string.nav_faq));
         }
 
-
-
         searchLayout = (LinearLayout) view.findViewById(R.id.searchLaytout);
+        layoutCheckBox = (LinearLayout) view.findViewById(R.id.layoutCheckBox);
 
         adapter = new FaqListAdapter(mainActivity.getContext(), loadedFaqs);
-        tagAdapter = new TagListAdapter(mainActivity.getContext(), tags);
+
+
 
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         listViewFaqs.setAdapter(adapter);
+
+        loadTags();
+        tagAdapter = new TagListAdapter(mainActivity.getContext(), tags);
+        listViewTaqs = (ListView) view.findViewById(R.id.listViewTagCheckBoxes);
+        listViewTaqs.setAdapter(tagAdapter);
+
 
         imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(frameCheckBox.getVisibility() == View.GONE){
-                    frameCheckBox.setVisibility(View.VISIBLE);
+                if(layoutCheckBox.getVisibility() == View.GONE){
+
+                    layoutCheckBox.setVisibility(View.VISIBLE);
                     listViewFaqs.setVisibility(View.GONE);
                     searchLayout.setVisibility(View.GONE);
                 }
                 else
                 {
-                    frameCheckBox.setVisibility(View.GONE);
+                    layoutCheckBox.setVisibility(View.GONE);
                     listViewFaqs.setVisibility(View.VISIBLE);
                     searchLayout.setVisibility(View.VISIBLE);
 
@@ -178,8 +186,21 @@ public class FaqListFragment extends BaseFragment {
         MyHobbyMarket.getInstance().getFaqList(textToSearch, language);
     }
 
-    public void addTags() {
+    public void loadTags() {
+        FaqTag tag1 = new FaqTag();
+        tag1.id = "1";
+        tag1.tagText = getString(R.string.faq_tag_manage_caravan);
+        tags.add(tag1);
 
+        FaqTag tag2 = new FaqTag();
+        tag2.id = "1";
+        tag2.tagText = getString(R.string.faq_tag_tips_for_camping_life);
+        tags.add(tag2);
+
+        FaqTag tag3 = new FaqTag();
+        tag3.id = "1";
+        tag3.tagText = getString(R.string.faq_tag_myhobby);
+        tags.add(tag3);
     }
 
     @Override

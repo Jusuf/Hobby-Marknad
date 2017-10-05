@@ -39,41 +39,29 @@
         android:layout_height="wrap_content"
         android:background="@drawable/faq_list_bg"/>
 
-    <FrameLayout
-        android:id="@+id/frameCheckBox"
+    <LinearLayout
+        android:id="@+id/layoutCheckBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <!--<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:id="@+id/radioTag"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:orientation="vertical">-->
-            <!--<RadioButton android:id="@+id/faqTagManageCaravan"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/faq_tag_manage_caravan"-->
-                <!--/>-->
-            <!--<RadioButton android:id="@+id/faqTagCampingTips"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/faq_tag_tips_for_camping_life"-->
-                <!--/>-->
-            <!--<RadioButton android:id="@+id/faqTagMyHobby"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/faq_tag_myhobby"-->
-                <!--/>-->
-        <!--</RadioGroup>-->
         <ListView
             android:id="@+id/listViewTagCheckBoxes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
         </ListView>
 
-    </FrameLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/faq_tag_submit"
+            android:id="@+id/btnFilterSubmit"
+            android:background="@drawable/info_button"
+            android:textColor="#ffffff"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
