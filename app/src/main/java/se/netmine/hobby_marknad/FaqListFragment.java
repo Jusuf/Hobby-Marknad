@@ -3,12 +3,15 @@ package se.netmine.hobby_marknad;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -71,7 +74,6 @@ public class FaqListFragment extends BaseFragment {
         tagAdapter = new TagListAdapter(mainActivity.getContext(), tags);
         listViewTaqs = (ListView) view.findViewById(R.id.listViewTagCheckBoxes);
         listViewTaqs.setAdapter(tagAdapter);
-
 
         imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +157,7 @@ public class FaqListFragment extends BaseFragment {
 
             txtFaqItemTitle.setText(item.question);
 
+
             return convertView;
         }
 
@@ -169,13 +172,21 @@ public class FaqListFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            FaqTag item = getItem(position);
+            final FaqTag item = getItem(position);
 
             convertView = inflater.inflate(R.layout.faq_tag_item, null);
 
             TextView txtTagItem = (TextView) convertView.findViewById(R.id.txtTagItem);
+            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBoxTag);
 
             txtTagItem.setText(item.tagText);
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    setCheckboxValue(item.id, isChecked);
+                }
+            });
 
             return convertView;
         }
@@ -188,19 +199,29 @@ public class FaqListFragment extends BaseFragment {
 
     public void loadTags() {
         FaqTag tag1 = new FaqTag();
-        tag1.id = "1";
+        tag1.id = 1;
         tag1.tagText = getString(R.string.faq_tag_manage_caravan);
         tags.add(tag1);
 
         FaqTag tag2 = new FaqTag();
-        tag2.id = "1";
+        tag2.id = 2;
         tag2.tagText = getString(R.string.faq_tag_tips_for_camping_life);
         tags.add(tag2);
 
         FaqTag tag3 = new FaqTag();
-        tag3.id = "1";
+        tag3.id = 3;
         tag3.tagText = getString(R.string.faq_tag_myhobby);
         tags.add(tag3);
+    }
+
+    public void setCheckboxValue(int id, boolean value)
+    {
+        for(FaqTag faqTag : tags){
+            if(faqTag.id == id)
+            {
+                faqTag.value = value;
+            }
+        }
     }
 
     @Override

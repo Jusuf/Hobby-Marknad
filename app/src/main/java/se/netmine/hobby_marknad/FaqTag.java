@@ -5,6 +5,7 @@ package se.netmine.hobby_marknad;
  */
 
 public class FaqTag {
-    public String id;
+    public int id;
     public String tagText;
+    public boolean value;
 }
