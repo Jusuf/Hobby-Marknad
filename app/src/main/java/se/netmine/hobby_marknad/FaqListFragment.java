@@ -14,12 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -32,14 +29,16 @@ public class FaqListFragment extends BaseFragment {
     EditText txtSearchFaq = null;
     ListView listViewFaqs = null;
     ImageView imageSearchFilter = null;
-    RadioGroup radioGroup = null;
-    FrameLayout radioFrame = null;
+    FrameLayout frameCheckBox = null;
+    LinearLayout searchLayout = null;
     LayoutInflater inflater = null;
     public ArrayList<Faq> loadedFaqs = new  ArrayList<Faq>();
     ArrayAdapter<Faq> adapter;
+    public ArrayList<FaqTag> tags = new  ArrayList<FaqTag>();
+    ArrayAdapter<FaqTag> tagAdapter;
     String language;
     boolean caravanTag = false;
-    boolean campingtipsTag = false;
+    boolean campingTipsTag = false;
     boolean myHobbyTag = false;
 
     public FaqListFragment() {
@@ -57,85 +56,34 @@ public class FaqListFragment extends BaseFragment {
             mainActivity.setTitle(getString(R.string.nav_faq));
         }
 
+
+
+        searchLayout = (LinearLayout) view.findViewById(R.id.searchLaytout);
+
         adapter = new FaqListAdapter(mainActivity.getContext(), loadedFaqs);
+        tagAdapter = new TagListAdapter(mainActivity.getContext(), tags);
 
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         listViewFaqs.setAdapter(adapter);
-
-        radioFrame = (FrameLayout) view.findViewById(R.id.frameFaqTags);
 
         imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radioFrame.getVisibility() == View.GONE){
-                    radioFrame.setVisibility(View.VISIBLE);
+                if(frameCheckBox.getVisibility() == View.GONE){
+                    frameCheckBox.setVisibility(View.VISIBLE);
                     listViewFaqs.setVisibility(View.GONE);
-
-                    txtSearchFaq.setEnabled(false);
-
-
+                    searchLayout.setVisibility(View.GONE);
                 }
                 else
                 {
-                    radioFrame.setVisibility(View.GONE);
+                    frameCheckBox.setVisibility(View.GONE);
                     listViewFaqs.setVisibility(View.VISIBLE);
-
-                    txtSearchFaq.setEnabled(true);
+                    searchLayout.setVisibility(View.VISIBLE);
 
                 }
 
             }
-        });
-
-
-        radioGroup = (RadioGroup) view.findViewById(R.id.radioTag);
-        radioGroup.clearCheck();
-        radioGroup.setOnCheckedChangeListener(new  RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                if (null != rb && checkedId > -1) {
-
-                    // checkedId is the RadioButton selected
-                    switch (checkedId) {
-                        case R.id.faqTagManageCaravan:
-                            if(rb.isChecked())
-                            {
-                                caravanTag = true;
-                            }
-                            else
-                            {
-                                caravanTag = false;
-                            }
-                            break;
-
-                        case R.id.faqTagCampingTips:
-                            if(rb.isChecked())
-                            {
-                                campingtipsTag = true;
-                            }
-                            else
-                            {
-                                campingtipsTag = false;
-                            }
-                            break;
-
-                        case R.id.faqTagMyHobby:
-                            if(rb.isChecked())
-                            {
-                                myHobbyTag = true;
-                            }
-                            else
-                            {
-                                myHobbyTag = false;
-                            }
-                            break;
-                    }
-                }
-            }
-
         });
 
         listViewFaqs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -203,8 +151,35 @@ public class FaqListFragment extends BaseFragment {
         }
 
     }
+
+    public class TagListAdapter extends ArrayAdapter<FaqTag> {
+
+        public TagListAdapter(Context context, ArrayList<FaqTag> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            FaqTag item = getItem(position);
+
+            convertView = inflater.inflate(R.layout.faq_tag_item, null);
+
+            TextView txtTagItem = (TextView) convertView.findViewById(R.id.txtTagItem);
+
+            txtTagItem.setText(item.tagText);
+
+            return convertView;
+        }
+
+    }
+
     public void searchFaq(String textToSearch) {
         MyHobbyMarket.getInstance().getFaqList(textToSearch, language);
+    }
+
+    public void addTags() {
+
     }
 
     @Override

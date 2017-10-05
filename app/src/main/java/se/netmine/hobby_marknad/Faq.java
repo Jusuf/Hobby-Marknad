@@ -8,4 +8,5 @@ public class Faq {
     public String id;
     public String question;
     public String answer;
+    public String[] tags;
 }
