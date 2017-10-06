@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -109,7 +110,7 @@ public class MyHobbyMarket {
     protected void register(String email, String password, String firstName, String lastName)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null, null);
         api.execute();
     }
 
@@ -147,7 +148,7 @@ public class MyHobbyMarket {
     protected void login(String email, String password)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null, null);
         api.execute();
     }
 
@@ -194,7 +195,7 @@ public class MyHobbyMarket {
     protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null, null);
         api.execute();
     }
 
@@ -237,7 +238,7 @@ public class MyHobbyMarket {
     protected void logout()
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null, null);
         api.execute();
     }
 
@@ -277,10 +278,10 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getFaqList(String searchQuery, String deviceCulture)
+    protected void getFaqList(String searchQuery, String deviceCulture, String tags)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture);
+        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, tags);
         api.execute();
     }
 
@@ -328,6 +329,7 @@ public class MyHobbyMarket {
         private String newPasswordConfirm = null;
         private String searchQuery = null;
         private String deviceCulture = null;
+        private String faqTags = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -342,7 +344,8 @@ public class MyHobbyMarket {
                           String newPassword,
                           String newPasswordConfirm,
                           String searchQuery,
-                          String deviceCulture)
+                          String deviceCulture,
+                          String faqTags)
         {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
@@ -358,6 +361,7 @@ public class MyHobbyMarket {
             this.newPasswordConfirm = newPasswordConfirm;
             this.searchQuery = searchQuery;
             this.deviceCulture = deviceCulture;
+            this.faqTags = faqTags;
         }
 
 
@@ -482,7 +486,8 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("UserName", currentUser.email)
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
-                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                                    .appendQueryParameter("DeviceCulture", deviceCulture)
+                                    .appendQueryParameter("tags", faqTags);
                         }
                         else{
                             apiUrl = baseUrl + "faqList";
@@ -491,7 +496,8 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("UserName", currentUser.email)
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
-                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                                    .appendQueryParameter("DeviceCulture", deviceCulture)
+                                    .appendQueryParameter("tags", faqTags);
                         }
 
                     }

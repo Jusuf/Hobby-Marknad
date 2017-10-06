@@ -4,12 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -20,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -36,14 +39,14 @@ public class FaqListFragment extends BaseFragment {
     LinearLayout layoutCheckBox = null;
     LinearLayout searchLayout = null;
     LayoutInflater inflater = null;
+    Button btnFilterSubmit = null;
     public ArrayList<Faq> loadedFaqs = new  ArrayList<Faq>();
     ArrayAdapter<Faq> adapter;
     public ArrayList<FaqTag> tags = new  ArrayList<FaqTag>();
     ArrayAdapter<FaqTag> tagAdapter;
     String language;
-    boolean caravanTag = false;
-    boolean campingTipsTag = false;
-    boolean myHobbyTag = false;
+    String joinedTags;
+    String searchQuery;
 
     public FaqListFragment() {
     }
@@ -64,9 +67,6 @@ public class FaqListFragment extends BaseFragment {
         layoutCheckBox = (LinearLayout) view.findViewById(R.id.layoutCheckBox);
 
         adapter = new FaqListAdapter(mainActivity.getContext(), loadedFaqs);
-
-
-
         listViewFaqs = (ListView) view.findViewById(R.id.listViewFaqs);
         listViewFaqs.setAdapter(adapter);
 
@@ -74,6 +74,37 @@ public class FaqListFragment extends BaseFragment {
         tagAdapter = new TagListAdapter(mainActivity.getContext(), tags);
         listViewTaqs = (ListView) view.findViewById(R.id.listViewTagCheckBoxes);
         listViewTaqs.setAdapter(tagAdapter);
+
+        btnFilterSubmit = (Button) view.findViewById(R.id.btnFilterSubmit);
+        btnFilterSubmit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                List<String> tagStringList = new ArrayList<String>();
+                for(FaqTag faqTag : tags){
+                    if(faqTag.value == true)
+                    {
+                        tagStringList.add(Integer.toString(faqTag.id));
+                    }
+                }
+
+                joinedTags = TextUtils.join(", ", tagStringList);
+
+                if(layoutCheckBox.getVisibility() == View.GONE){
+
+                    layoutCheckBox.setVisibility(View.VISIBLE);
+                    listViewFaqs.setVisibility(View.GONE);
+                    searchLayout.setVisibility(View.GONE);
+                }
+                else
+                {
+                    layoutCheckBox.setVisibility(View.GONE);
+                    listViewFaqs.setVisibility(View.VISIBLE);
+                    searchLayout.setVisibility(View.VISIBLE);
+                }
+
+                searchFaq(searchQuery);
+            }
+        });
 
         imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +121,6 @@ public class FaqListFragment extends BaseFragment {
                     layoutCheckBox.setVisibility(View.GONE);
                     listViewFaqs.setVisibility(View.VISIBLE);
                     searchLayout.setVisibility(View.VISIBLE);
-
                 }
 
             }
@@ -99,7 +129,6 @@ public class FaqListFragment extends BaseFragment {
         listViewFaqs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-
                 Faq node = loadedFaqs.get(pos);
                 FaqFragment fragment = new FaqFragment();
                 fragment.faq = node;
@@ -123,7 +152,8 @@ public class FaqListFragment extends BaseFragment {
                 if (charSequence.toString().equals("")) {
                     loadFaqs();
                 } else {
-                    searchFaq(charSequence.toString());
+                    searchQuery = charSequence.toString();
+                    searchFaq(searchQuery);
                 }
             }
 
@@ -137,7 +167,7 @@ public class FaqListFragment extends BaseFragment {
     }
 
     private void loadFaqs() {
-        MyHobbyMarket.getInstance().getFaqList("", language);
+        MyHobbyMarket.getInstance().getFaqList("", language, joinedTags);
     }
 
     public class FaqListAdapter extends ArrayAdapter<Faq> {
@@ -194,7 +224,7 @@ public class FaqListFragment extends BaseFragment {
     }
 
     public void searchFaq(String textToSearch) {
-        MyHobbyMarket.getInstance().getFaqList(textToSearch, language);
+        MyHobbyMarket.getInstance().getFaqList(textToSearch, language, joinedTags);
     }
 
     public void loadTags() {
