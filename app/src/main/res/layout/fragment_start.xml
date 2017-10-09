@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="324dp"
-            android:background="@drawable/start_myhobby"
+            android:background="@mipmap/start_myhobby"
             android:gravity="bottom"
             android:orientation="vertical"
             android:weightSum="1"
@@ -27,15 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
                 android:orientation="vertical"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/start_my_hobby_title"
-                    android:textSize="30sp" />
+                android:gravity="bottom"
+                android:paddingBottom="15dp">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -67,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_weight="1"
-                    android:background="@drawable/start_servicebook"
+                    android:background="@mipmap/start_servicebook"
                     android:gravity="bottom"
                     android:orientation="vertical"
                     android:layout_margin="2.5dp">
@@ -105,7 +98,7 @@
                     android:layout_height="200dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
-                    android:background="@drawable/start_resellers"
+                    android:background="@mipmap/start_resellers"
                     android:orientation="vertical"
                     android:layout_margin="2.5dp">
 
@@ -144,7 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    android:background="@drawable/start_catalogue"
+                    android:background="@mipmap/start_catalogue"
                     android:gravity="bottom"
                     android:orientation="vertical"
                     android:layout_margin="2.5dp">
@@ -174,7 +167,7 @@
                     android:layout_height="300dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
-                    android:background="@drawable/start_faq"
+                    android:background="@mipmap/start_faq"
                     android:orientation="vertical"
                     android:layout_margin="2.5dp">
 
@@ -213,7 +206,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="324dp"
-            android:background="@drawable/start_campings"
+            android:background="@mipmap/start_campings"
             android:gravity="bottom"
             android:orientation="vertical"
             android:weightSum="1"
