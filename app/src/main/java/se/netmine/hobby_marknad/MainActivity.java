@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.Map;
@@ -234,6 +235,8 @@ public class MainActivity extends AppCompatActivity
             CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
             onNavigateToFragment(fragment);
         } else if (id == R.id.nav_resellers) {
+            ResellersFragment fragment = new ResellersFragment();
+            onNavigateToFragment(fragment);
 
         } else if (id == R.id.nav_faq) {
             FaqListFragment fragment = new FaqListFragment();

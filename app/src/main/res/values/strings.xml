@@ -1,4 +1,7 @@
 <resources>
+
+
+
     <string name="app_name">Hobby-Marknad</string>
 
 
@@ -69,6 +72,9 @@
     <string name="faq_tag_tips_for_camping_life">Tips for camping life</string>
     <string name="faq_tag_myhobby">My Hobby</string>
     <string name="faq_tag_submit">Submit</string>
+
+    <string name="resellers_map">Map</string>
+    <string name="resellers_list">List</string>
 
 
 </resources>

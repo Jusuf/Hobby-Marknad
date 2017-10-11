@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "375181514941",
+    "firebase_url": "https://hobby-marknad.firebaseio.com",
+    "project_id": "hobby-marknad",
+    "storage_bucket": "hobby-marknad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375181514941:android:1147a286b41526c1",
+        "android_client_info": {
+          "package_name": "se.netmine.hobby_marknad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375181514941-pap3sfu3kqkrmo7fp8e50ppc9slacm3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "se.netmine.hobby_marknad",
+            "certificate_hash": "92458018b11761aa3f211ca318f2333a60959701"
+          }
+        },
+        {
+          "client_id": "375181514941-f54svpet485vgpesttiqtj4dtee50tim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNX-1vL76w_jfzMGQI-dwETImWYl237U8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375181514941-f54svpet485vgpesttiqtj4dtee50tim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
