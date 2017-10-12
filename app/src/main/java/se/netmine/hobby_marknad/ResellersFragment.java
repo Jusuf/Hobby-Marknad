@@ -55,14 +55,6 @@ public class ResellersFragment extends BaseFragment implements OnMapReadyCallbac
         btnMap = (Button) view.findViewById(R.id.btnResellerMap);
         btnList = (Button) view.findViewById(R.id.btnResellerList);
 
-//        mapView = (MapView) view.findViewById(R.id.mapView);
-
-//        if (faq != null)
-//        {
-//            faqQuestion.setText(faq.question);
-//            faqAnswer.setText(faq.answer);
-//        }
-
         return view;
     }
 
