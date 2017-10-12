@@ -58,7 +58,7 @@ public class StartFragment extends BaseFragment {
         resellersMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ResellersFragment fragment = new ResellersFragment();
+                DealersFragment fragment = new DealersFragment();
                 mainActivity.onNavigateToFragment(fragment);
             }
         });

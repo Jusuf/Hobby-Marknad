@@ -37,6 +37,7 @@ public class MyHobbyMarket {
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
     private static final int API_FAQS = 7;
+    private static final int API_DEALERS = 8;
 
 //    public static  String url = "https://admin.myhobby.nu/";
     public static String url = "http://192.168.20.183/hobby/";
@@ -46,6 +47,7 @@ public class MyHobbyMarket {
     public User currentUser = null;
     public IMainActivity mainActivity;
     public Faq[] faqs;
+    public Dealer[] dealers;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
 
@@ -278,6 +280,39 @@ public class MyHobbyMarket {
 
     }
 
+    protected void getDealerList(String searchQuery, String deviceCulture)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null);
+        api.execute();
+    }
+
+    protected void getDealerListDone(String result, String searchQuery)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            DealerResult faqResult = new Gson().fromJson(result, DealerResult.class);
+
+            dealers = faqResult.dealers;
+
+            if(faqResult.success == true) {
+                System.out.println("MyHobby - return from getDealer, count=" + dealers.length);
+                mainActivity.onDealersLoaded(dealers);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+
+    }
+
     protected void getFaqList(String searchQuery, String deviceCulture, String tags)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
@@ -502,6 +537,29 @@ public class MyHobbyMarket {
 
                     }
                     break;
+                    case API_DEALERS:
+                    {
+                        if (isUserLoggedIn()){
+                            apiUrl = baseUrl + "dealerListAuth";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+                        else{
+                            apiUrl = baseUrl + "dealerList";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+
+                    }
+                    break;
                 }
 
 
@@ -659,6 +717,9 @@ public class MyHobbyMarket {
 //                    break;
                 case API_FAQS:
                     getFaqListDone(result, searchQuery);
+                    break;
+                case API_DEALERS:
+                    getDealerListDone(result, searchQuery);
                     break;
             }
         }

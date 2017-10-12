@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    android:layout_weight="10">
+
+    <LinearLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:weightSum="10">
+
+        <Button
+            android:id="@+id/btnDealerMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:backgroundTint="@color/myhobby_blue"
+            android:text="@string/resellers_map" />
+
+        <Button
+            android:id="@+id/btnDealerList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:backgroundTint="@color/whiteTransparent"
+            android:text="@string/resellers_list"
+            android:textColor="@color/myhobby_blue" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@id/btnLayout"
+        android:layout_margin="5dp">
+
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MapsActivity" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dealerListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/btnLayout"
+        android:layout_margin="5dp">
+
+        <LinearLayout
+            android:id="@+id/searchDealerLaytout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:background="@drawable/faq_list_search_bg">
+
+            <EditText
+                android:id="@+id/txtSearchDealer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/search_icon"
+                android:hint="Sök"
+                android:textColorHint="@color/faq_text_dark_grey"
+                android:textColor="@color/faq_text_dark_grey"/>
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewDealers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/faq_list_bg"/>
+    </LinearLayout>
+</RelativeLayout>

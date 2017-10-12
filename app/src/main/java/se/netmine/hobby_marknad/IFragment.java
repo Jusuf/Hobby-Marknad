@@ -8,4 +8,6 @@ public interface IFragment{
     void setTitle();
 
     void onFaqsUpdated(Faq[] faqs);
+
+    void onDealersUpdated(Dealer[] dealers);
 }

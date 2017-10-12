@@ -14,7 +14,8 @@ public class BaseFragment extends Fragment implements IFragment{
     }
 
     @Override
-    public void onFaqsUpdated(Faq[] faqs) {
+    public void onFaqsUpdated(Faq[] faqs) {}
 
-    }
+    @Override
+    public void onDealersUpdated(Dealer[] dealers) {}
 }

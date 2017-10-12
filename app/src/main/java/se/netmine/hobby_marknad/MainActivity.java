@@ -125,10 +125,18 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
     public void onFaqsLoaded(Faq[] faqs)
     {
         // Notify the active fragment that a faqs has bean loaded
         ((IFragment)fragmentStack.peek()).onFaqsUpdated(faqs);
+    }
+
+    @Override
+    public void onDealersLoaded(Dealer[] dealers)
+    {
+        // Notify the active fragment that a dealers has bean loaded
+        ((IFragment)fragmentStack.peek()).onDealersUpdated(dealers);
     }
 
     @Override
@@ -235,7 +243,7 @@ public class MainActivity extends AppCompatActivity
             CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
             onNavigateToFragment(fragment);
         } else if (id == R.id.nav_resellers) {
-            ResellersFragment fragment = new ResellersFragment();
+            DealersFragment fragment = new DealersFragment();
             onNavigateToFragment(fragment);
 
         } else if (id == R.id.nav_faq) {

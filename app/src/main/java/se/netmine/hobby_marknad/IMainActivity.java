@@ -26,4 +26,6 @@ public interface IMainActivity {
     void onNavigateBack();
 
     void onFaqsLoaded(Faq[] faqs);
+
+    void onDealersLoaded(Dealer[] dealers);
 }
