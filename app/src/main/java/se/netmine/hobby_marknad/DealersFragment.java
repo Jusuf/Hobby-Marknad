@@ -85,6 +85,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
 
         txtSearchDealer = (EditText) view.findViewById(R.id.txtSearchDealer);
         txtSearchDealer.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -171,15 +172,36 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap map) {
-        LatLng sydney = new LatLng(-33.867, 151.206);
 
-//        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        mMap = map;
+        map.clear();
 
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+        Double sumLat = 0.0;
+        Double sumLng = 0.0;
+
+        Double avgLat;
+        Double avgLng;
+
+        if(loadedDealers != null)
+        {
+            for (Dealer dealer : loadedDealers) {
+                LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
+
+                map.addMarker(new MarkerOptions()
+                        .title(dealer.name)
+                        .snippet(dealer.city)
+                        .position(marker));
+
+                sumLat += Double.parseDouble(dealer.lat);
+                sumLng += Double.parseDouble(dealer.lng);
+
+            }
+            avgLat = sumLat / loadedDealers.size();
+            avgLng = sumLng / loadedDealers.size();
+
+            LatLng avgPosition = new LatLng(avgLat, avgLng);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
+        }
     }
 
     @Override
@@ -191,6 +213,11 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
         {
             for (Dealer dealer : dealers) {
                 loadedDealers.add(dealer);
+            }
+
+            if(mMap != null){
+                MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+                mapFrag.getMapAsync(this);
             }
         }
         if (adapter != null) {
