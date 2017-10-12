@@ -2,6 +2,8 @@ package se.netmine.hobby_marknad;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +83,29 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
         btnMap = (Button) view.findViewById(R.id.btnDealerMap);
         btnList = (Button) view.findViewById(R.id.btnDealerList);
 
+        txtSearchDealer = (EditText) view.findViewById(R.id.txtSearchDealer);
+        txtSearchDealer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().equals("")) {
+                    loadDealers();
+                } else {
+                    searchQuery = charSequence.toString();
+                    searchDealer(searchQuery);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         btnList.setOnClickListener( new View.OnClickListener(){
 
             @Override
@@ -114,6 +139,10 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
 
     private void loadDealers() {
         MyHobbyMarket.getInstance().getDealerList("", language);
+    }
+
+    public void searchDealer(String textToSearch) {
+        MyHobbyMarket.getInstance().getDealerList(textToSearch, language);
     }
 
     public class DealerListAdapter extends ArrayAdapter<Dealer> {
