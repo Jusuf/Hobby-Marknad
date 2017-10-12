@@ -18,6 +18,7 @@ public class StartFragment extends BaseFragment {
 
     private LinearLayout catalogueAndMagazinesMenuButton = null;
     private LinearLayout faqMenuButton = null;
+    private LinearLayout resellersMenuButton = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +49,16 @@ public class StartFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 FaqListFragment fragment = new FaqListFragment();
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
+        resellersMenuButton = (LinearLayout) view.findViewById(R.id.resellersMenu);
+
+        resellersMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ResellersFragment fragment = new ResellersFragment();
                 mainActivity.onNavigateToFragment(fragment);
             }
         });
