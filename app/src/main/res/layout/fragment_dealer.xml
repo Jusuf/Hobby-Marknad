@@ -1,164 +1,252 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_centerInParent="true"
-    android:layout_marginTop="5dp"
-    android:paddingRight="5dp"
-    android:paddingLeft="5dp">
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="2.5dp"
+    tools:context="se.netmine.hobby_marknad.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:orientation="horizontal">
-
-        <fragment
-            android:id="@+id/mapDealerDetails"
-            class="com.google.android.gms.maps.MapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MapsActivity" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:weightSum="10">
-
-        <TextView
-            android:id="@+id/txtDealerName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="Dealer name"
-            android:textColor="@color/dealer_name_text"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="10"
-        android:background="@drawable/faq_list_search_bg"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp">
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp">
 
         <LinearLayout
+            android:id="@+id/dealerDetailsMapLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:layout_height="250dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtDealerAddressTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dealer address:"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtDealerAddress"
+            <fragment
+                android:id="@+id/mapDealerDetails"
+                class="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dealer address"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:paddingLeft="10dp"/>
+                android:layout_height="match_parent"
+                tools:context=".MapsActivity" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/dealerDetailsDealerNameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10">
-
-            <TextView
-                android:id="@+id/txtDealerTelTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dealer tel:"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtDealerTel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dealer tel"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:paddingLeft="10dp"/>
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="10"
-            android:paddingTop="10dp">
+            android:layout_below="@id/dealerDetailsMapLayout">
 
             <TextView
-                android:id="@+id/txtDealerEmailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dealer e-mail:"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtDealerEmail"
+                android:id="@+id/txtDealerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dealer e-mail"
-                android:textColor="@color/dealer_dark_grey"
+                android:padding="15dp"
+                android:text="Dealer name"
+                android:textColor="@color/dealer_name_text"
                 android:textSize="16sp"
-                android:paddingLeft="10dp"/>
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dealerDetailsDealerInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:background="@drawable/faq_list_search_bg"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:layout_below="@id/dealerDetailsDealerNameLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/txtDealerAddressTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer address:"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDealerAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer address"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/txtDealerTelTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer tel:"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDealerTel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer tel"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtDealerEmailTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer e-mail:"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDealerEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer e-mail"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txtDealerWebPageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer webpage:"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDealerWebPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dealer webpage"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:paddingBottom="10dp">
+            android:orientation="vertical"
+            android:background="@drawable/faq_list_search_bg"
+            android:paddingTop="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/dealerDetailsDealerInfoLayout">
 
-            <TextView
-                android:id="@+id/txtDealerWebPageTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dealer webpage:"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/myhobby_blue"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtDealerWebPage"
+                <TextView
+                    android:id="@+id/txtDealerServicesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:text="Services"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="bottom"
+                    android:paddingBottom="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dealer webpage"
-                android:textColor="@color/dealer_dark_grey"
-                android:textSize="16sp"
-                android:paddingLeft="10dp"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtDealerServiceReseller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reseller"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/txtDealerServiceWorkShop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Workshop"
+                    android:textColor="@color/dealer_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+    </RelativeLayout>
 
-    </LinearLayout>
+</ScrollView>
 
-</LinearLayout>
+
