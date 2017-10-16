@@ -10,4 +10,5 @@
     <color name="faq_text_dark_grey">#5e5e5d</color>
     <color name="myhobby_blue">#488fc3</color>
     <color name="dealer_name_text">#d2ccc3</color>
+    <color name="dealer_dark_grey">#656465</color>
 </resources>

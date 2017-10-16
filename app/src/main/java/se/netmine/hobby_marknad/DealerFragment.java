@@ -17,6 +17,11 @@ public class DealerFragment extends BaseFragment{
 
     private TextView dealerName = null;
 
+    private TextView dealerAddress = null;
+    private TextView dealerTel = null;
+    private TextView dealerEmail = null;
+    private TextView dealerWebPage = null;
+
     public DealerFragment(){
 
     }
@@ -33,10 +38,21 @@ public class DealerFragment extends BaseFragment{
         }
 
         dealerName = (TextView) view.findViewById(R.id.txtDealerName);
+        dealerAddress = (TextView) view.findViewById(R.id.txtDealerAddress);
+        dealerTel = (TextView) view.findViewById(R.id.txtDealerTel);
+        dealerEmail = (TextView) view.findViewById(R.id.txtDealerEmail);
+        dealerWebPage = (TextView) view.findViewById(R.id.txtDealerWebPage);
 
         if (dealer != null)
         {
+            mainActivity.setTitle(dealer.name);
+
             dealerName.setText(dealer.name);
+            dealerAddress.setText(dealer.street + ", " + dealer.postalcode + " " + dealer.city);
+            dealerTel.setText(dealer.phone);
+            dealerEmail.setText(dealer.email);
+            dealerWebPage.setText(dealer.webpage);
+
         }
 
         return view;
