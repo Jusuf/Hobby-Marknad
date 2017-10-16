@@ -6,13 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 /**
  * Created by jusuf on 2017-06-13.
  */
 
-public class DealerFragment extends BaseFragment{
+public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
 
     private IMainActivity mainActivity;
+    LayoutInflater inflater = null;
+    private GoogleMap mMap;
     public Dealer dealer = null;
 
     private TextView dealerName = null;
@@ -37,6 +46,11 @@ public class DealerFragment extends BaseFragment{
             mainActivity.setTitle(getResources().getString(R.string.reseller));
         }
 
+        final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.mapDealerDetails);
+
+        mapFragment.getMapAsync(this);
+
         dealerName = (TextView) view.findViewById(R.id.txtDealerName);
         dealerAddress = (TextView) view.findViewById(R.id.txtDealerAddress);
         dealerTel = (TextView) view.findViewById(R.id.txtDealerTel);
@@ -56,6 +70,25 @@ public class DealerFragment extends BaseFragment{
         }
 
         return view;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+
+        mMap = map;
+        map.clear();
+
+        if(dealer != null)
+        {
+            LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
+
+            map.addMarker(new MarkerOptions()
+                     .title(dealer.name)
+                     .snippet(dealer.city)
+                     .position(marker));
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 16));
+        }
     }
 
 }
