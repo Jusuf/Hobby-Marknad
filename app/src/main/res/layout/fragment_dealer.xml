@@ -12,28 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:weightSum="10"
-        android:background="@drawable/faq_list_search_bg">
+        android:weightSum="10">
 
         <TextView
-            android:id="@+id/txtFaqAnswerQuestion"
+            android:id="@+id/txtDealerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/faq_item_bg"
             android:padding="15dp"
-            android:text="Faq Item"
-            android:textColor="@color/faq_text_dark_grey"
+            android:text="Dealer name"
+            android:textColor="@color/dealer_name_text"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txtFaqAnswerAnswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/faq_item_bg"
-            android:padding="15dp"
-            android:text="Faq Item"
-            android:textColor="@color/faq_text_dark_grey"
-            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

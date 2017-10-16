@@ -1,5 +1,4 @@
 package se.netmine.hobby_marknad;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,13 +6,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -74,6 +73,17 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
         adapter = new DealerListAdapter(mainActivity.getContext(), loadedDealers);
         listViewDealers = (ListView) view.findViewById(R.id.listViewDealers);
         listViewDealers.setAdapter(adapter);
+
+        listViewDealers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+                Dealer node = loadedDealers.get(pos);
+                DealerFragment fragment = new DealerFragment();
+                fragment.dealer = node;
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
 
         layoutMap = (LinearLayout) view.findViewById(R.id.mapLayout);
         layoutDealerList = (LinearLayout) view.findViewById(R.id.dealerListLayout);
