@@ -15,6 +15,10 @@ public class User {
     public String email;
     public String myHobbyKey;
     public String userId;
+    public String dealerId;
+    public String dealerName;
+    public String workshopId;
+    public String workshopName;
     public boolean notifyBattery;
     public boolean notifyWater;
     public boolean notifyTemp;
@@ -33,11 +37,16 @@ public class User {
         this.myHobbyKey = settings.getString("myHobbyKey", "");
         this.userId = settings.getString("userId", "");
         this.deviceToken = settings.getString("deviceToken", "");
+        this.dealerId = settings.getString("dealerId", "");
+        this.dealerName = settings.getString("dealerName", "");
+        this.workshopId = settings.getString("workshopId", "");
+        this.workshopName = settings.getString("workshopName", "");
         this.notifyBattery = settings.getBoolean("notifyBattery", false);
         this.notifyWater = settings.getBoolean("notifyWater", false);
         this.notifyTemp = settings.getBoolean("notifyTemp", false);
         this.notifyPosition = settings.getBoolean("notifyPosition", false);
         this.notifyNews = settings.getBoolean("notifyNews", false);
+
     }
 
     public void save() {
@@ -50,7 +59,10 @@ public class User {
         editor.putString("myHobbyKey", this.myHobbyKey);
         editor.putString("userId", this.userId);
         editor.putString("deviceToken", this.deviceToken);
-
+        editor.putString("dealerId", this.dealerId);
+        editor.putString("dealerName", this.dealerName);
+        editor.putString("workshopId", this.dealerId);
+        editor.putString("workshopName", this.workshopName);
         editor.putBoolean("notifyBattery", notifyBattery);
         editor.putBoolean("notifyWater", notifyWater);
         editor.putBoolean("notifyTemp", notifyTemp);

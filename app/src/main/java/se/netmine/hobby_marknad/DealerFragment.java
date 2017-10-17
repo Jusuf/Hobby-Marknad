@@ -1,9 +1,12 @@
 package se.netmine.hobby_marknad;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,11 +28,13 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     public Dealer dealer = null;
 
     private TextView dealerName = null;
-
     private TextView dealerAddress = null;
     private TextView dealerTel = null;
     private TextView dealerEmail = null;
     private TextView dealerWebPage = null;
+
+    private ImageView imageDealerHeart = null;
+    private ImageView imageWorkshopHeart = null;
 
     public DealerFragment(){
 
@@ -57,16 +62,33 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         dealerEmail = (TextView) view.findViewById(R.id.txtDealerEmail);
         dealerWebPage = (TextView) view.findViewById(R.id.txtDealerWebPage);
 
+        imageDealerHeart = (ImageView) view.findViewById(R.id.imageDealerHeart);
+        imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
+
         if (dealer != null)
         {
             mainActivity.setTitle(dealer.name);
-
             dealerName.setText(dealer.name);
             dealerAddress.setText(dealer.street + ", " + dealer.postalcode + " " + dealer.city);
             dealerTel.setText(dealer.phone);
             dealerEmail.setText(dealer.email);
             dealerWebPage.setText(dealer.webpage);
 
+            if(MyHobbyMarket.getInstance().isUserLoggedIn())
+            {
+                User currentUser = MyHobbyMarket.getInstance().currentUser;
+
+                if(currentUser.dealerId.equals(dealer.id) )
+                {
+                    Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+                    imageDealerHeart.setImageDrawable(d);
+                }
+                if(currentUser.workshopId.equals(dealer.id))
+                {
+                    Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+                    imageWorkshopHeart.setImageDrawable(d);
+                }
+            }
         }
 
         return view;

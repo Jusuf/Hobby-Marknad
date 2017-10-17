@@ -40,8 +40,8 @@ public class MyHobbyMarket {
     private static final int API_DEALERS = 8;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.183/hobby/";
-//    public static String url = "http://192.168.0.12/hobby/";
+//    public static String url = "http://192.168.20.183/hobby/";
+    public static String url = "http://192.168.0.12/hobby/";
     public static String baseUrl = url + "api/myhobby/";
 
     public User currentUser = null;
@@ -176,9 +176,18 @@ public class MyHobbyMarket {
             {
                 String userId = jObject.getString("userId");
 
+                String dealerId = jObject.getString("dealerId");
+                String dealerName = jObject.getString("dealerName");
+                String workshopId = jObject.getString("workshopId");
+                String workshopName = jObject.getString("workshopName");
+
                 currentUser.email = email;
                 currentUser.password = password;
                 currentUser.userId = userId;
+                currentUser.dealerId = dealerId;
+                currentUser.dealerName = dealerName;
+                currentUser.workshopId = workshopId;
+                currentUser.workshopName = workshopName;
                 currentUser.save();
                 mainActivity.onLoggedIn();
             }
