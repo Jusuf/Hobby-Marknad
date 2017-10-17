@@ -65,6 +65,33 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         imageDealerHeart = (ImageView) view.findViewById(R.id.imageDealerHeart);
         imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
 
+        imageDealerHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(MyHobbyMarket.getInstance().isUserLoggedIn())
+                {
+                    User currentUser = MyHobbyMarket.getInstance().currentUser;
+
+                    if(currentUser.dealerId.equals(dealer.id) )
+                    {
+                        currentUser.dealerId = null;
+                        currentUser.save();
+                    }
+                    else
+                    {
+                        currentUser.dealerId = dealer.id;
+                        currentUser.save();
+                    }
+
+                    setUserDealerAndWorkshopIcon();
+                }
+                else
+                {
+                    mainActivity.showToast(getString(R.string.must_be_logged_in));
+                }
+            }
+        });
+
         if (dealer != null)
         {
             mainActivity.setTitle(dealer.name);
@@ -74,21 +101,8 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             dealerEmail.setText(dealer.email);
             dealerWebPage.setText(dealer.webpage);
 
-            if(MyHobbyMarket.getInstance().isUserLoggedIn())
-            {
-                User currentUser = MyHobbyMarket.getInstance().currentUser;
+            setUserDealerAndWorkshopIcon();
 
-                if(currentUser.dealerId.equals(dealer.id) )
-                {
-                    Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
-                    imageDealerHeart.setImageDrawable(d);
-                }
-                if(currentUser.workshopId.equals(dealer.id))
-                {
-                    Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
-                    imageWorkshopHeart.setImageDrawable(d);
-                }
-            }
         }
 
         return view;
@@ -110,6 +124,36 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
                      .position(marker));
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 16));
+        }
+    }
+
+    public  void setUserDealerAndWorkshopIcon()
+    {
+        if(MyHobbyMarket.getInstance().isUserLoggedIn())
+        {
+            User currentUser = MyHobbyMarket.getInstance().currentUser;
+
+            if(currentUser.dealerId != null && currentUser.dealerId.equals(dealer.id) )
+            {
+                Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+                imageDealerHeart.setImageDrawable(d);
+            }
+            else
+            {
+                Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
+                imageDealerHeart.setImageDrawable(d);
+            }
+
+            if(currentUser.workshopId != null && currentUser.workshopId.equals(dealer.id))
+            {
+                Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+                imageWorkshopHeart.setImageDrawable(d);
+            }
+            else
+            {
+                Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
+                imageWorkshopHeart.setImageDrawable(d);
+            }
         }
     }
 

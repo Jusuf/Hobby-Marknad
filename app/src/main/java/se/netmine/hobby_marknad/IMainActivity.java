@@ -28,4 +28,6 @@ public interface IMainActivity {
     void onFaqsLoaded(Faq[] faqs);
 
     void onDealersLoaded(Dealer[] dealers);
+
+    void showToast(String message);
 }

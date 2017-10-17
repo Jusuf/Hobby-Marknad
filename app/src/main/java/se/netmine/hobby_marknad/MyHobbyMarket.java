@@ -289,6 +289,51 @@ public class MyHobbyMarket {
 
     }
 
+    protected void sync(boolean showDialog)
+    {
+
+        String loadingMessage =  mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+
+        if(showDialog == false)
+        {
+            loadingMessage = null;
+        }
+
+        MyHobbyApi api = new MyHobbyApi(API_SYNC, loadingMessage, currentUser.userId, null, currentUser.password, currentUser.myHobbyKey, null, null, null, null, null, null, null, null, null);
+        api.execute();
+    }
+
+    protected void syncDone(String result)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+            JSONObject jObject = new JSONObject(result);
+
+            boolean success = true;
+
+            if(jObject.has("success"))
+            {
+                success = jObject.getBoolean("success");
+            }
+
+            if(success == true)
+            {
+                //mainActivity.onUserDetailsChanged();
+            }
+            else {
+                String message = jObject.getString("message");
+                this.showErrorDialog(message);
+            }
+        } catch (JSONException e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+    }
+
     protected void getDealerList(String searchQuery, String deviceCulture)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
@@ -517,6 +562,8 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("SubWater", MyHobbyMarket.getInstance().currentUser.notifyWater  ? "true" : "false")
                                 .appendQueryParameter("SubPosition", MyHobbyMarket.getInstance().currentUser.notifyPosition  ? "true" : "false")
                                 .appendQueryParameter("SubNews", MyHobbyMarket.getInstance().currentUser.notifyNews ? "true" : "false")
+                                .appendQueryParameter("DealerId", MyHobbyMarket.getInstance().currentUser.dealerId)
+                                .appendQueryParameter("WorkshopId", MyHobbyMarket.getInstance().currentUser.workshopId)
                                 .appendQueryParameter("DeviceToken", MyHobbyMarket.getInstance().currentUser.deviceToken);
 
                     }
@@ -583,7 +630,6 @@ public class MyHobbyMarket {
                 urlConnection.setDoOutput(true);
                 urlConnection.setUseCaches(false);
                 urlConnection.connect();
-
 
                 String query = builder.build().getEncodedQuery();
                 OutputStream os = urlConnection.getOutputStream();
@@ -721,9 +767,9 @@ public class MyHobbyMarket {
 //                case API_TELL:
 //                    tellDone(result);
 //                    break;
-//                case API_SYNC:
-//                    syncDone(result);
-//                    break;
+                case API_SYNC:
+                    syncDone(result);
+                    break;
                 case API_FAQS:
                     getFaqListDone(result, searchQuery);
                     break;

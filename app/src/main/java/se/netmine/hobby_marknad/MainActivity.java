@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Map;
 import java.util.Stack;
@@ -355,6 +356,11 @@ public class MainActivity extends AppCompatActivity
         return this;
     }
 
+    @Override
+    public void showToast(String message)
+    {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
 
 
 }

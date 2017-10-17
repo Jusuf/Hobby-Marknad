@@ -78,4 +78,6 @@
 
     <string name="reseller">Reseller</string>
 
+    <string name="must_be_logged_in">You must login to use this option!</string>
+
 </resources>
