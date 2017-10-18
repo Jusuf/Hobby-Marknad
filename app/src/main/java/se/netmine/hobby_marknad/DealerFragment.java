@@ -165,6 +165,23 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             }
         });
 
+        btnDealerVisitHompage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = dealer.webpage;
+
+                Uri webpage = Uri.parse(url);
+
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    webpage = Uri.parse("http://" + url);
+                }
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                browserIntent.setData(webpage);
+                startActivity(browserIntent);
+            }
+        });
+
         return view;
     }
 
