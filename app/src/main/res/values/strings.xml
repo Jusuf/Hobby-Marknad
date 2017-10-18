@@ -77,6 +77,10 @@
     <string name="resellers_list">List</string>
 
     <string name="reseller">Reseller</string>
+    <string name="reseller_call">Call</string>
+    <string name="reseller_send_email">Send E-mail</string>
+    <string name="reseller_visit_homepage">Visit homepage</string>
+    <string name="reseller_show_route">Show route directions</string>
 
     <string name="must_be_logged_in">You must login to use this option!</string>
 

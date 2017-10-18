@@ -175,12 +175,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutDealerWorkshop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/faq_list_search_bg"
             android:paddingTop="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/dealerDetailsDealerInfoLayout">
 
             <LinearLayout
@@ -188,8 +189,6 @@
                 android:layout_height="40dp"
                 android:background="@color/myhobby_blue"
                 android:orientation="horizontal">
-
-
 
                 <TextView
                     android:id="@+id/txtDealerServicesTitle"
@@ -263,14 +262,14 @@
                     android:id="@+id/txtDealerServiceWorkShop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
                     android:text="Workshop"
                     android:textColor="@color/dealer_dark_grey"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:layout_weight="9"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/imageWorkshopHeart"
@@ -284,6 +283,50 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnDealerCall"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layoutDealerWorkshop"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/reseller_call"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/btnDealerSendEmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnDealerCall"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/reseller_send_email"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/btnDealerVisitHomepage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnDealerSendEmail"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/reseller_visit_homepage"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/btnDealerShowRoute"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnDealerVisitHomepage"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/reseller_show_route"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
     </RelativeLayout>
 
 </ScrollView>
