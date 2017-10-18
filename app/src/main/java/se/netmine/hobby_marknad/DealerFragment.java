@@ -82,6 +82,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
                         currentUser.dealerId = dealer.id;
                     }
                     currentUser.save();
+                    MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
                 }
                 else
@@ -108,6 +109,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
                         currentUser.workshopId = dealer.id;
                     }
                     currentUser.save();
+                    MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
                 }
                 else
@@ -127,7 +129,6 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             dealerWebPage.setText(dealer.webpage);
 
             setUserDealerAndWorkshopIcon();
-
         }
 
         return view;
