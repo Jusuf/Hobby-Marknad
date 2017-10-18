@@ -1,4 +1,5 @@
 package se.netmine.hobby_marknad;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,16 +20,19 @@ import com.google.android.gms.maps.MapFragment;
 import android.support.v4.content.ContextCompat;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static se.netmine.hobby_marknad.R.id.map;
+
 /**
  * Created by jusuf on 2017-06-13.
  */
 
-public class DealersFragment extends BaseFragment implements OnMapReadyCallback  {
+public class DealersFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
@@ -41,9 +45,15 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
     ArrayAdapter<Dealer> adapter;
     String language;
     String searchQuery;
+    private Dealer markedDealer = null;
 
     private Button btnMap = null;
     private Button btnList = null;
+
+    private LinearLayout layoutShowDealer = null;
+    private TextView txtShowDealerName = null;
+    private TextView txtShowDealerAddress = null;
+    private Button btnShow = null;
 
     public DealersFragment(){
 
@@ -57,7 +67,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
         View view =  inflater.inflate(R.layout.fragment_dealers, container, false);
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(map);
 
         mapFragment.getMapAsync(this);
 
@@ -145,6 +155,24 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
             }
         });
 
+
+        layoutShowDealer = (LinearLayout) view.findViewById(R.id.layoutShowDealer);
+        layoutShowDealer.setVisibility(View.GONE);
+
+        txtShowDealerName = (TextView) view.findViewById(R.id.txtShowDealerName);
+        txtShowDealerAddress = (TextView) view.findViewById(R.id.txtShowDealerAddress);
+
+        btnShow = (Button) view.findViewById(R.id.btnDealerShowDealer);
+        btnShow.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                DealerFragment fragment = new DealerFragment();
+                fragment.dealer = markedDealer;
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
         return view;
     }
 
@@ -184,7 +212,15 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
     public void onMapReady(GoogleMap map) {
 
         mMap = map;
-        map.clear();
+        mMap.clear();
+
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng point) {
+                layoutShowDealer.setVisibility(View.GONE);
+            }
+        });
 
         Double sumLat = 0.0;
         Double sumLng = 0.0;
@@ -195,12 +231,13 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
         if(loadedDealers != null)
         {
             for (Dealer dealer : loadedDealers) {
-                LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
 
-                map.addMarker(new MarkerOptions()
+                LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
+                mMap.addMarker(new MarkerOptions()
                         .title(dealer.name)
                         .snippet(dealer.city)
                         .position(marker));
+
 
                 sumLat += Double.parseDouble(dealer.lat);
                 sumLng += Double.parseDouble(dealer.lng);
@@ -226,13 +263,35 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback 
             }
 
             if(mMap != null){
-                MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+                MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
                 mapFrag.getMapAsync(this);
             }
         }
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        String name = marker.getTitle();
+
+        for (Dealer dealer : loadedDealers) {
+
+            if (dealer.name.equalsIgnoreCase(name))
+            {
+                markedDealer = dealer;
+
+                txtShowDealerName.setText(dealer.name);
+                txtShowDealerAddress.setText(dealer.street + ", " + dealer.city);
+                layoutShowDealer.setVisibility(View.VISIBLE);
+            }
+        }
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+
+        return true;
     }
 
 }

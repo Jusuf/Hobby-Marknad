@@ -81,6 +81,7 @@
     <string name="reseller_send_email">Send E-mail</string>
     <string name="reseller_visit_homepage">Visit homepage</string>
     <string name="reseller_show_route">Show route directions</string>
+    <string name="reseller_show">Show</string>
 
     <string name="must_be_logged_in">You must login to use this option!</string>
 

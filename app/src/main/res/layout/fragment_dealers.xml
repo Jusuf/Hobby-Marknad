@@ -53,6 +53,47 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutShowDealer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteTransparent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <TextView
+            android:id="@+id/txtShowDealerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dealer address:"
+            android:textColor="@color/dealer_dark_grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtShowDealerAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dealer address"
+            android:textColor="@color/dealer_dark_grey"
+            android:textSize="16sp"
+            android:paddingTop="5dp" />
+
+        <Button
+            android:id="@+id/btnDealerShowDealer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnDealerVisitHomepage"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/reseller_show"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/dealerListLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
