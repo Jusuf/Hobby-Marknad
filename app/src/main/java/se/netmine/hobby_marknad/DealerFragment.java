@@ -72,17 +72,42 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
                 {
                     User currentUser = MyHobbyMarket.getInstance().currentUser;
 
-                    if(currentUser.dealerId.equals(dealer.id) )
+                    if(currentUser.dealerId != null && currentUser.dealerId.equals(dealer.id) )
                     {
                         currentUser.dealerId = null;
-                        currentUser.save();
+
                     }
                     else
                     {
                         currentUser.dealerId = dealer.id;
-                        currentUser.save();
                     }
+                    currentUser.save();
+                    setUserDealerAndWorkshopIcon();
+                }
+                else
+                {
+                    mainActivity.showToast(getString(R.string.must_be_logged_in));
+                }
+            }
+        });
 
+        imageWorkshopHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(MyHobbyMarket.getInstance().isUserLoggedIn())
+                {
+                    User currentUser = MyHobbyMarket.getInstance().currentUser;
+
+                    if(currentUser.workshopId != null && currentUser.workshopId.equals(dealer.id) )
+                    {
+                        currentUser.workshopId = null;
+
+                    }
+                    else
+                    {
+                        currentUser.workshopId = dealer.id;
+                    }
+                    currentUser.save();
                     setUserDealerAndWorkshopIcon();
                 }
                 else
