@@ -1,11 +1,14 @@
 package se.netmine.hobby_marknad;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +39,11 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     private ImageView imageDealerHeart = null;
     private ImageView imageWorkshopHeart = null;
 
+    private Button btnDealerCall = null;
+    private Button btnDealerSendEmail = null;
+    private Button btnDealerVisitHompage = null;
+    private Button btnDealerShowRoute = null;
+
     public DealerFragment(){
 
     }
@@ -64,6 +72,11 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
 
         imageDealerHeart = (ImageView) view.findViewById(R.id.imageDealerHeart);
         imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
+
+        btnDealerCall = (Button) view.findViewById(R.id.btnDealerCall);
+        btnDealerSendEmail = (Button) view.findViewById(R.id.btnDealerSendEmail);
+        btnDealerVisitHompage = (Button) view.findViewById(R.id.btnDealerVisitHomepage);
+        btnDealerShowRoute = (Button) view.findViewById(R.id.btnDealerShowRoute);
 
         imageDealerHeart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +143,15 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
 
             setUserDealerAndWorkshopIcon();
         }
+
+        btnDealerCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + dealer.phone));
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
