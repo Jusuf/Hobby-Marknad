@@ -153,6 +153,18 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             }
         });
 
+        btnDealerSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { dealer.email });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
+
         return view;
     }
 
