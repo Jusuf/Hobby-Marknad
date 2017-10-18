@@ -19,6 +19,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Locale;
+
 /**
  * Created by jusuf on 2017-06-13.
  */
@@ -179,6 +181,15 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW);
                 browserIntent.setData(webpage);
                 startActivity(browserIntent);
+            }
+        });
+
+        btnDealerShowRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + dealer.lat  + ">,<" + dealer.lng + ">?q=<" + dealer.lat  + ">,<" + dealer.lng + ">(" + dealer.name + ")"));
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
             }
         });
 
