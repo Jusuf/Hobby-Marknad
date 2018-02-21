@@ -35,8 +35,8 @@ public class ServiceBookFragment extends BaseFragment {
         testDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
-//                mainActivity.onNavigateToFragment(fragment);
+                ServiceBookDemoFragment fragment = new ServiceBookDemoFragment();
+                mainActivity.onNavigateToFragment(fragment);
             }
         });
 

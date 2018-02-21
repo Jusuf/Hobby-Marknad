@@ -90,5 +90,15 @@
     <string name="try_simulation">Prova simulering av serviceboken</string>
     <string name="connect_service_book">Anslut till serviceboken</string>
     <string name="required_key">Kräver nyckel eller chassinr</string>
+    <string name="model">Modell:</string>
+    <string name="model_year">Årsmodell:</string>
+    <string name="vehicle_identification_number_title">Chassinr:</string>
+    <string name="in_trafic_title">Togs i trafik:</string>
+    <string name="in_guarantee_date_title">Täthetsgaranti giltig t.o.m.:</string>
+    <string name="service_book">Servicebok</string>
+    <string name="approved">Godkänd</string>
+    <string name="not_approved">Ej godkänd</string>
+
+
 
 </resources>

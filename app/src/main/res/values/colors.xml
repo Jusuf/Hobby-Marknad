@@ -11,4 +11,7 @@
     <color name="myhobby_blue">#488fc3</color>
     <color name="dealer_name_text">#d2ccc3</color>
     <color name="dealer_dark_grey">#656465</color>
+    <color name="text_dark_grey">#656465</color>
+    <color name="text_red">#ff0000</color>
+    <color name="text_green">#008b00</color>
 </resources>

@@ -32,7 +32,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="2.5dp"
                     android:layout_weight="1"
-                    android:background="@mipmap/start_servicebook"
+                    android:background="@mipmap/bg_service_book"
                     android:gravity="bottom"
                     android:orientation="vertical">
 

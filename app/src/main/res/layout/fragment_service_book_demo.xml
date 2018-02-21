@@ -1,0 +1,228 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="2.5dp"
+    tools:context="se.netmine.hobby_marknad.MainActivity">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp"
+        android:orientation="vertical">
+
+            <LinearLayout
+            android:id="@+id/imgCaravanServiceDemo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@mipmap/service_book_demo_caravan"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+            </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/caravanInfoLaytout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:background="@drawable/bg_service_book_demo_caravan_info">
+
+            <LinearLayout
+                android:id="@+id/modelLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textModelTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/model"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textModelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:text="-------"
+                    android:textColor="@color/text_dark_grey"
+                    android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textModelYearTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/model_year"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textModelYearName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:text="----"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textVehicleIdentificationNumberTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/vehicle_identification_number_title"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textVehicleIdentificationNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:text="-------"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textInTraficDateTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/in_trafic_title"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textInTraficDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:text="xxxx-xx-xx"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textGuaranteeDateTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/in_guarantee_date_title"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textGuaranteeDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:text="xxxx-xx-xx"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_service_list">
+
+                <TextView
+                    android:id="@+id/txtServiceItemResponsible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/service_book"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+
+                <ListView
+                    android:id="@+id/lvServiceItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp">
+                </ListView>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+</ScrollView>
