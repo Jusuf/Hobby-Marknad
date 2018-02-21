@@ -41,8 +41,8 @@ public class MyHobbyMarket {
 
 //    public static  String url = "https://admin.myhobby.nu/";
 //    public static String url = "http://192.168.20.183/hobby/";
-    public static String url = "http://192.168.0.12/hobby/";
-    public static String baseUrl = url + "api/myhobby/";
+    public static String url = "http://192.168.20.165/hobby/";
+    public static String baseUrl = url + "api/myHobby/";
 
     public User currentUser = null;
     public IMainActivity mainActivity;
@@ -578,7 +578,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture)
-                                    .appendQueryParameter("tags", faqTags);
+                                    .appendQueryParameter("Tags", faqTags);
                         }
                         else{
                             apiUrl = baseUrl + "faqList";
@@ -588,7 +588,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture)
-                                    .appendQueryParameter("tags", faqTags);
+                                    .appendQueryParameter("Tags", faqTags);
                         }
 
                     }

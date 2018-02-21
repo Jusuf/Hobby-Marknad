@@ -239,7 +239,8 @@ public class MainActivity extends AppCompatActivity
             MyHobbyFragment fragment = new MyHobbyFragment();
             onNavigateToFragment(fragment);
         } else if (id == R.id.nav_service_book) {
-
+            ServiceBookFragment fragment = new ServiceBookFragment();
+            onNavigateToFragment(fragment);
         } else if (id == R.id.nav_catalog_and_magazines) {
             CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
             onNavigateToFragment(fragment);

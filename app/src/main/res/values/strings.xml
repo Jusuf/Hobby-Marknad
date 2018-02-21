@@ -85,4 +85,10 @@
 
     <string name="must_be_logged_in">You must login to use this option!</string>
 
+    <!-- Service book -->
+    <string name="test_demo">Testa demo</string>
+    <string name="try_simulation">Prova simulering av serviceboken</string>
+    <string name="connect_service_book">Anslut till serviceboken</string>
+    <string name="required_key">Kräver nyckel eller chassinr</string>
+
 </resources>

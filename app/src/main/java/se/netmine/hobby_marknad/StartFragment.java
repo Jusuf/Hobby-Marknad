@@ -16,6 +16,7 @@ public class StartFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
 
+    private LinearLayout serviceBookMenuButton = null;
     private LinearLayout catalogueAndMagazinesMenuButton = null;
     private LinearLayout faqMenuButton = null;
     private LinearLayout resellersMenuButton = null;
@@ -26,12 +27,20 @@ public class StartFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_start, container, false);
 
-
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle("Hobby");
         }
 
+        serviceBookMenuButton = (LinearLayout) view.findViewById(R.id.serviceBookMenu);
+
+        serviceBookMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServiceBookFragment fragment = new ServiceBookFragment();
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
 
         catalogueAndMagazinesMenuButton = (LinearLayout) view.findViewById(R.id.catalogueAndMagazinesMenu);
 

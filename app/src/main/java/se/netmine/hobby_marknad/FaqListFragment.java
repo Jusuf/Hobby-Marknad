@@ -45,7 +45,7 @@ public class FaqListFragment extends BaseFragment {
     public ArrayList<FaqTag> tags = new  ArrayList<FaqTag>();
     ArrayAdapter<FaqTag> tagAdapter;
     String language;
-    String joinedTags;
+    String joinedTags = "";
     String searchQuery;
 
     public FaqListFragment() {
