@@ -23,7 +23,7 @@ public class ServiceBookDemoFragment extends BaseFragment {
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
     private Caravan caravan;
-    ListView listViewServiceItems = null;
+    ExpandableHeightListView  listViewServiceItems = null;
     ArrayAdapter<Service> adapter;
 
     private TextView textModelName;
@@ -52,8 +52,9 @@ public class ServiceBookDemoFragment extends BaseFragment {
         createDemoData();
 
         adapter = new ServiceItemListAdapter(mainActivity.getContext(), caravan.serviceEntries);
-        listViewServiceItems = (ListView) view.findViewById(R.id.lvServiceItemList);
+        listViewServiceItems = (ExpandableHeightListView) view.findViewById(R.id.lvServiceItemList);
         listViewServiceItems.setAdapter(adapter);
+        listViewServiceItems.setExpanded(true);
 
         textModelName = (TextView) view.findViewById(R.id.textModelName);
         textModelName.setText(caravan.serieName);
@@ -129,8 +130,6 @@ public class ServiceBookDemoFragment extends BaseFragment {
                 txtServiceItemStatus.setTextColor(ContextCompat.getColor(mainActivity.getContext(), R.color.text_red));
             }
             txtServiceItemStatus.setText(statusText);
-
-
 
             return convertView;
         }

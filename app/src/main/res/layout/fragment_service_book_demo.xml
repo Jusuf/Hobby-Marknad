@@ -197,6 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_service_list">
 
                 <TextView
@@ -212,14 +213,13 @@
                     android:textAllCaps="true"
                     android:textSize="16sp" />
 
-                <ListView
+                <se.netmine.hobby_marknad.ExpandableHeightListView
                     android:id="@+id/lvServiceItemList"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp">
-                </ListView>
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp">
+                </se.netmine.hobby_marknad.ExpandableHeightListView>
             </LinearLayout>
-
-
 
         </LinearLayout>
 
