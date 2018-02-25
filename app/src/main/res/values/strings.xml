@@ -98,6 +98,7 @@
     <string name="service_book">Servicebok</string>
     <string name="approved">Godkänd</string>
     <string name="not_approved">Ej godkänd</string>
+    <string name="service_book_demo">Servicebok DEMO</string>
     <string name="find_reseller">Hitta återförsäljare för att boka servicetid!</string>
     <string name="logout_secvice_book">Logga ut servicebok</string>
 

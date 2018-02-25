@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -38,8 +35,8 @@ public class ServiceBookDemoFragment extends BaseFragment {
     private TextView textInTraficDate;
     private TextView textGuaranteeDate;
 
-    private LinearLayout testDemoButton = null;
-    private LinearLayout connectButton = null;
+    private Button btnFindReseller = null;
+    private Button btnLogoutService = null;
 
 
     @Override
@@ -52,7 +49,7 @@ public class ServiceBookDemoFragment extends BaseFragment {
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("Service book demo");
+            mainActivity.setTitle(getResources().getString(R.string.service_book_demo));
         }
 
         createDemoData();
@@ -80,17 +77,22 @@ public class ServiceBookDemoFragment extends BaseFragment {
         scrollViewServiceDemo = (ScrollView) view.findViewById(R.id.scrollViewServiceDemo);
         OverScrollDecoratorHelper.setUpOverScroll(scrollViewServiceDemo);
 
-//        testDemoButton = (LinearLayout) view.findViewById(R.id.testDemoButton);
-//
-//        testDemoButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
-//                mainActivity.onNavigateToFragment(fragment);
-//            }
-//        });
+        btnFindReseller = (Button) view.findViewById(R.id.btnFindReseller);
+        btnFindReseller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DealersFragment fragment = new DealersFragment();
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
 
-
+        btnLogoutService = (Button) view.findViewById(R.id.btnLogoutService);
+        btnLogoutService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.onNavigateBack();
+            }
+        });
 
         return view;
     }
@@ -174,7 +176,6 @@ public class ServiceBookDemoFragment extends BaseFragment {
         caravan.year = "2015";
         caravan.serviceEntries = new ArrayList<>();
 
-
         Service serviceEntry1 = new Service();
         serviceEntry1.id = "1";
         serviceEntry1.serviceDate = "2012-07-06";
@@ -225,7 +226,14 @@ public class ServiceBookDemoFragment extends BaseFragment {
 
         caravan.serviceEntries.add(serviceEntry5);
 
+    }
 
+    @Override
+    public void onResume()
+    {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle(getString(R.string.service_book_demo));
     }
 
     public ServiceBookDemoFragment(){}

@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * Created by jusuf on 2017-08-14.
@@ -16,6 +19,7 @@ public class StartFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
 
+    private ScrollView scrollViewStart;
     private LinearLayout serviceBookMenuButton = null;
     private LinearLayout catalogueAndMagazinesMenuButton = null;
     private LinearLayout faqMenuButton = null;
@@ -71,6 +75,9 @@ public class StartFragment extends BaseFragment {
                 mainActivity.onNavigateToFragment(fragment);
             }
         });
+
+        scrollViewStart = (ScrollView) view.findViewById(R.id.scrollViewStart);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollViewStart);
 
         return view;
     }

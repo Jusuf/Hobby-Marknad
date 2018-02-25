@@ -1,6 +1,10 @@
 package se.netmine.hobby_marknad;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +17,6 @@ import android.widget.LinearLayout;
 public class ServiceBookFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
-
     private LinearLayout testDemoButton = null;
     private LinearLayout connectButton = null;
 
@@ -47,6 +50,9 @@ public class ServiceBookFragment extends BaseFragment {
             public void onClick(View view) {
 //                FaqListFragment fragment = new FaqListFragment();
 //                mainActivity.onNavigateToFragment(fragment);
+
+                DialogFragment connectServiceDialog = new ConnectServiceDialog();
+                connectServiceDialog.show(getFragmentManager(), "Modal");
             }
         });
 
