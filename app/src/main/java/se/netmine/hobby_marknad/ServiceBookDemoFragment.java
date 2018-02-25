@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -100,14 +101,21 @@ public class ServiceBookDemoFragment extends BaseFragment {
 
             convertView = inflater.inflate(R.layout.service_item, null);
 
+            ImageView imageViewServiceIcon = (ImageView) convertView.findViewById(R.id.imageViewServiceIcon);
+
             TextView txtServiceItemDoneDate = (TextView) convertView.findViewById(R.id.txtServiceItemDoneDate);
             TextView txtServiceItemType = (TextView) convertView.findViewById(R.id.txtServiceItemType);
             TextView txtServiceItemStatus = (TextView) convertView.findViewById(R.id.txtServiceItemStatus);
 
+
+            if (item.type.equals("10")) {
+                imageViewServiceIcon.setImageResource(R.drawable.ic_service_item_seal_test);
+            } else {
+                imageViewServiceIcon.setImageResource(R.drawable.ic_service_item_warranty);
+            }
             txtServiceItemDoneDate.setText(item.serviceDate);
 
             String typeText;
-
             if(item.type.equals("10"))
             {
                 typeText = "Täthetskontroll";

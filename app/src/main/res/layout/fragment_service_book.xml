@@ -39,6 +39,7 @@
                     <LinearLayout
                         android:id="@+id/testDemoButton"
                         android:layout_width="match_parent"
+                        android:background="@drawable/bg_service_menu_options"
                         android:layout_height="65dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
@@ -69,6 +70,7 @@
                     <LinearLayout
                         android:id="@+id/connectButton"
                         android:layout_width="match_parent"
+                        android:background="@drawable/bg_service_menu_options"
                         android:layout_height="65dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
