@@ -10,10 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * Created by jusuf on 2017-08-14.
@@ -27,6 +30,7 @@ public class ServiceBookDemoFragment extends BaseFragment {
     ExpandableHeightListView  listViewServiceItems = null;
     ArrayAdapter<Service> adapter;
 
+    private ScrollView scrollViewServiceDemo;
     private TextView textModelName;
     private TextView textModelYearName;
     private TextView textVehicleIdentificationNumber;
@@ -52,6 +56,8 @@ public class ServiceBookDemoFragment extends BaseFragment {
 
         createDemoData();
 
+
+
         adapter = new ServiceItemListAdapter(mainActivity.getContext(), caravan.serviceEntries);
         listViewServiceItems = (ExpandableHeightListView) view.findViewById(R.id.lvServiceItemList);
         listViewServiceItems.setAdapter(adapter);
@@ -72,6 +78,8 @@ public class ServiceBookDemoFragment extends BaseFragment {
         textGuaranteeDate = (TextView) view.findViewById(R.id.textGuaranteeDate);
         textGuaranteeDate.setText(caravan.warrantyDate);
 
+        scrollViewServiceDemo = (ScrollView) view.findViewById(R.id.scrollViewServiceDemo);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollViewServiceDemo);
 
 //        testDemoButton = (LinearLayout) view.findViewById(R.id.testDemoButton);
 //

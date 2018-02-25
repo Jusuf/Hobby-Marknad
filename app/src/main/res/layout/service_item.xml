@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_service_item"
     android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp"
     android:layout_height="wrap_content">
-
-
 
     <ImageView
         android:id="@+id/imageViewServiceIcon"
@@ -14,12 +15,10 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_service_item_seal_test" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +67,6 @@
                 android:textColor="@color/faq_text_dark_grey"
                 android:textSize="12sp" />
         </LinearLayout>
-
 
     </LinearLayout>
 
