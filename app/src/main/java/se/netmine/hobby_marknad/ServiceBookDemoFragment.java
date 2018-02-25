@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,8 +56,6 @@ public class ServiceBookDemoFragment extends BaseFragment {
         }
 
         createDemoData();
-
-
 
         adapter = new ServiceItemListAdapter(mainActivity.getContext(), caravan.serviceEntries);
         listViewServiceItems = (ExpandableHeightListView) view.findViewById(R.id.lvServiceItemList);
@@ -146,6 +145,16 @@ public class ServiceBookDemoFragment extends BaseFragment {
                 txtServiceItemStatus.setTextColor(ContextCompat.getColor(mainActivity.getContext(), R.color.text_red));
             }
             txtServiceItemStatus.setText(statusText);
+
+            listViewServiceItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+                    Service node = caravan.serviceEntries.get(pos);
+                    ServiceDetailsFragment fragment = new ServiceDetailsFragment();
+                    fragment.service = node;
+                    mainActivity.onNavigateToFragment(fragment);
+                }
+            });
 
             return convertView;
         }

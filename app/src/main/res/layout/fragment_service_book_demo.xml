@@ -217,8 +217,7 @@
                 <se.netmine.hobby_marknad.ExpandableHeightListView
                     android:id="@+id/lvServiceItemList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp">
+                    android:layout_height="wrap_content">
                 </se.netmine.hobby_marknad.ExpandableHeightListView>
             </LinearLayout>
 
@@ -229,7 +228,18 @@
                 android:background="@drawable/find_reseller_button"
                 android:text="@string/find_reseller"
                 android:paddingLeft="30dp"
-                android:paddingRight="30dp"/>
+                android:paddingRight="30dp"
+                android:layout_marginBottom="5dp"/>
+
+            <Button
+                android:id="@+id/btnLogoutService"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_logout_service_button"
+                android:text="@string/logout_secvice_book"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_marginBottom="5dp"/>
 
         </LinearLayout>
 

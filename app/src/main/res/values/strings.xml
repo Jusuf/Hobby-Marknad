@@ -101,6 +101,13 @@
     <string name="find_reseller">Hitta återförsäljare för att boka servicetid!</string>
     <string name="logout_secvice_book">Logga ut servicebok</string>
 
+    <!--Service details -->
+    <string name="responsible_title">Ansvarig för utförande:</string>
+    <string name="status_title">Status:</string>
+    <string name="don_date_title">Utfördes:</string>
+    <string name="warranty">Garantijob</string>
+    <string name="seal_test">Täthetstest</string>
+
 
 
 </resources>
