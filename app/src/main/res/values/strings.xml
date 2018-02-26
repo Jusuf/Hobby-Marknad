@@ -109,6 +109,9 @@
     <string name="warranty">Garantijob</string>
     <string name="seal_test">Täthetstest</string>
 
+    <!--Connect to service -->
+    <string name="vin_number">Chassinummer</string>
+    <string name="enter_vin_number">Ange chassinummer</string>
 
 
 </resources>

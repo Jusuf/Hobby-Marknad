@@ -26,12 +26,10 @@ public class ServiceBookFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_service_book, container, false);
 
-
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle("Service book");
         }
-
 
         testDemoButton = (LinearLayout) view.findViewById(R.id.testDemoButton);
 
@@ -48,9 +46,6 @@ public class ServiceBookFragment extends BaseFragment {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FaqListFragment fragment = new FaqListFragment();
-//                mainActivity.onNavigateToFragment(fragment);
-
                 DialogFragment connectServiceDialog = new ConnectServiceDialog();
                 connectServiceDialog.show(getFragmentManager(), "Modal");
             }

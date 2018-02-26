@@ -38,10 +38,11 @@ public class MyHobbyMarket {
     private static final int API_CHANGE_PASSWORD = 6;
     private static final int API_FAQS = 7;
     private static final int API_DEALERS = 8;
+    private static final int API_SERVICE = 9;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.183/hobby/";
-    public static String url = "http://192.168.0.6/hobby/";
+    public static String url = "http://192.168.20.164/hobby/";
+//    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
 
     public User currentUser = null;
@@ -392,6 +393,39 @@ public class MyHobbyMarket {
 
     }
 
+    protected void connectToService(String vin)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_SERVICE, loadingMessage,null, null, null, null, null, null, null, null, null, null, null, null, null, vin);
+        api.execute();
+    }
+
+    protected void connectToServiceDone(String result)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            FaqResult faqResult = new Gson().fromJson(result, FaqResult.class);
+
+            faqs = faqResult.faqs;
+
+            if(faqResult.success == true) {
+                System.out.println("MyHobby - return from getFaq, count=" + faqs.length);
+                mainActivity.onFaqsLoaded(faqs);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+
+    }
+
 
     private class MyHobbyApi extends AsyncTask<String, String, String> {
 
@@ -411,6 +445,7 @@ public class MyHobbyMarket {
         private String searchQuery = null;
         private String deviceCulture = null;
         private String faqTags = null;
+        private String vin = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -426,7 +461,8 @@ public class MyHobbyMarket {
                           String newPasswordConfirm,
                           String searchQuery,
                           String deviceCulture,
-                          String faqTags)
+                          String faqTags,
+                          String vin)
         {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
@@ -443,6 +479,7 @@ public class MyHobbyMarket {
             this.searchQuery = searchQuery;
             this.deviceCulture = deviceCulture;
             this.faqTags = faqTags;
+            this.vin = vin;
         }
 
 
@@ -598,6 +635,29 @@ public class MyHobbyMarket {
                         }
                         else{
                             apiUrl = baseUrl + "dealerList";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+
+                    }
+                    break;
+                    case API_SERVICE:
+                    {
+                        if (isUserLoggedIn()){
+                            apiUrl = baseUrl + "";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+                        else{
+                            apiUrl = "api/sync/" + "syncServices";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)

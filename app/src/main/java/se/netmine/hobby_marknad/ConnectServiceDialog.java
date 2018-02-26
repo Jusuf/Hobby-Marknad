@@ -10,18 +10,20 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 /**
  * Created by jusuf on 2018-02-25.
  */
 
 public class ConnectServiceDialog extends DialogFragment {
-//
+    private IMainActivity mainActivity;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        if (getActivity() instanceof IMainActivity) {
+            mainActivity = (IMainActivity) getActivity();
+        }
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View connectServiceDialogView = inflater.inflate(R.layout.connect_service_dialog, null);
@@ -35,8 +37,9 @@ public class ConnectServiceDialog extends DialogFragment {
         buttonVinNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ConnectToServiceFragment fragment = new ConnectToServiceFragment();
-//                mainActivity.onNavigateToFragment(fragment);
+                ConnectToServiceFragment fragment = new ConnectToServiceFragment();
+                mainActivity.onNavigateToFragment(fragment);
+                dismiss();
             }
         });
 

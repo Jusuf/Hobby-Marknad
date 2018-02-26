@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingLeft="5dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:text="@string/vin_number"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="10"
+        android:background="@drawable/bg_connect_to_service_edit">
+
+        <EditText
+            android:id="@+id/txtVinNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:hint="*******"
+            android:textColorHint="@color/text_dark_grey"
+            android:textColor="@color/text_dark_grey"/>
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnConnectToServiceSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/faq_tag_submit"
+            android:background="@drawable/info_button"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"/>
+
+
+</LinearLayout>
