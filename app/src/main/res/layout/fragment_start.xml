@@ -15,19 +15,20 @@
         android:layout_marginRight="2.5dp">
 
         <LinearLayout
+            android:id="@+id/myHobbyMenu"
             android:layout_width="match_parent"
             android:layout_height="324dp"
+            android:layout_margin="2.5dp"
             android:background="@mipmap/start_myhobby"
             android:gravity="bottom"
             android:orientation="vertical"
-            android:weightSum="1"
-            android:layout_margin="2.5dp">
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
-                android:orientation="vertical"
                 android:gravity="bottom"
+                android:orientation="vertical"
                 android:paddingBottom="15dp">
 
                 <TextView

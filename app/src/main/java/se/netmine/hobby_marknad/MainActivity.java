@@ -247,8 +247,20 @@ public class MainActivity extends AppCompatActivity
             onNavigateToFragment(fragment);
         }
         else if (id == R.id.nav_my_hobby) {
-            MyHobbyFragment fragment = new MyHobbyFragment();
-            onNavigateToFragment(fragment);
+
+            Intent intent = getPackageManager().getLaunchIntentForPackage("se.netmine.myhobby");
+            if (intent != null) {
+                // We found the activity now start the activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                // Bring user to the market or let them choose an app?
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("market://details?id=" + "se.netmine.myhobby"));
+                startActivity(intent);
+            }
+
         } else if (id == R.id.nav_service_book) {
             if(MyHobbyMarket.getInstance().caravan == null)
             {
