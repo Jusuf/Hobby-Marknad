@@ -10,4 +10,6 @@ public interface IFragment{
     void onFaqsUpdated(Faq[] faqs);
 
     void onDealersUpdated(Dealer[] dealers);
+
+    void onCaravanUpdated(Caravan caravan);
 }

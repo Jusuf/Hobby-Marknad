@@ -37,7 +37,6 @@ public class StartFragment extends BaseFragment {
         }
 
         serviceBookMenuButton = (LinearLayout) view.findViewById(R.id.serviceBookMenu);
-
         serviceBookMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

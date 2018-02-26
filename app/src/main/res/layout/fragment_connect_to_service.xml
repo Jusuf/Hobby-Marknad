@@ -12,10 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingTop="15dp"
         android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         android:text="@string/vin_number"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"

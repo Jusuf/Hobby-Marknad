@@ -35,6 +35,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Stack;
 
@@ -141,6 +145,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onServiceConnected(Caravan caravan)
+    {
+        // Notify the active fragment that a caravan has bean loaded
+        ((IFragment)fragmentStack.peek()).onCaravanUpdated(caravan);
+    }
+
+    @Override
     public void onRegistered()
     {
 
@@ -239,8 +250,18 @@ public class MainActivity extends AppCompatActivity
             MyHobbyFragment fragment = new MyHobbyFragment();
             onNavigateToFragment(fragment);
         } else if (id == R.id.nav_service_book) {
-            ServiceBookFragment fragment = new ServiceBookFragment();
-            onNavigateToFragment(fragment);
+            if(MyHobbyMarket.getInstance().caravan == null)
+            {
+                ServiceBookFragment fragment = new ServiceBookFragment();
+                onNavigateToFragment(fragment);
+            }
+            else
+            {
+                ServiceBookConnectedFragment fragment = new ServiceBookConnectedFragment();
+                fragment.caravan = MyHobbyMarket.getInstance().caravan;
+                onNavigateToFragment(fragment);
+            }
+
         } else if (id == R.id.nav_catalog_and_magazines) {
             CatalogueAndMagazinesFragment fragment = new CatalogueAndMagazinesFragment();
             onNavigateToFragment(fragment);
@@ -363,5 +384,11 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public String formatDate(String dateString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = formatter.parse(dateString);
 
+        return formatter.format(date);
+    }
 }

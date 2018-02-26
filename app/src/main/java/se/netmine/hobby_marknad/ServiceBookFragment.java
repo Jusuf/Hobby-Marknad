@@ -2,9 +2,7 @@ package se.netmine.hobby_marknad;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +41,32 @@ public class ServiceBookFragment extends BaseFragment {
 
         connectButton = (LinearLayout) view.findViewById(R.id.connectButton);
 
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment connectServiceDialog = new ConnectServiceDialog();
-                connectServiceDialog.show(getFragmentManager(), "Modal");
-            }
-        });
+
+
+        if(MyHobbyMarket.getInstance().isUserLoggedIn())
+        {
+            connectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment connectServiceDialog = new ConnectServiceDialog();
+                    connectServiceDialog.show(getFragmentManager(), "Modal");
+                }
+            });
+        }
+        else
+        {
+            connectButton.setVisibility(View.GONE);
+        }
 
         return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle("");
     }
 
     public ServiceBookFragment(){}

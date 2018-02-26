@@ -17,7 +17,7 @@ import android.widget.EditText;
 public class ConnectToServiceFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
-    EditText txtSearchFaq = null;
+    EditText txtVinNumber = null;
     LayoutInflater inflater = null;
     Button btnConnectToServiceSubmit = null;
     String vin;
@@ -45,9 +45,9 @@ public class ConnectToServiceFragment extends BaseFragment {
             }
         });
 
-        txtSearchFaq = (EditText) view.findViewById(R.id.txtSearchFaq);
+        txtVinNumber = (EditText) view.findViewById(R.id.txtVinNumber);
 
-        txtSearchFaq.addTextChangedListener(new TextWatcher() {
+        txtVinNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -72,6 +72,7 @@ public class ConnectToServiceFragment extends BaseFragment {
     }
 
     private void connectToService() {
+//        vin = "Fd32696";
         MyHobbyMarket.getInstance().connectToService(vin);
     }
 

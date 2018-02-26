@@ -3,6 +3,8 @@ package se.netmine.hobby_marknad;
 import android.app.Fragment;
 import android.content.Context;
 
+import java.text.ParseException;
+
 /**
  * Created by jusuf on 2017-07-10.
  */
@@ -29,5 +31,9 @@ public interface IMainActivity {
 
     void onDealersLoaded(Dealer[] dealers);
 
+    void onServiceConnected(Caravan caravan);
+
     void showToast(String message);
+
+    String formatDate(String date) throws ParseException;
 }

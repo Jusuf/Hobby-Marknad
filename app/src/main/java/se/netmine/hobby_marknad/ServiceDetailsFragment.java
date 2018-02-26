@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
+
 /**
  * Created by jusuf on 2017-06-13.
  */
@@ -59,7 +61,14 @@ public class ServiceDetailsFragment extends BaseFragment{
                 txtStatus.setText(getResources().getString(R.string.not_approved));
             }
 
-            txtDoneDate.setText(service.serviceDate);
+            String dateString;
+            try {
+                dateString = mainActivity.formatDate(service.serviceDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                dateString = "";
+            }
+            txtDoneDate.setText(dateString);
         }
 
         return view;

@@ -1,6 +1,7 @@
 package se.netmine.hobby_marknad;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -49,6 +50,7 @@ public class MyHobbyMarket {
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
+    public Caravan caravan;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
 
@@ -113,7 +115,7 @@ public class MyHobbyMarket {
     protected void register(String email, String password, String firstName, String lastName)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null, null,null);
         api.execute();
     }
 
@@ -151,7 +153,7 @@ public class MyHobbyMarket {
     protected void login(String email, String password)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null, null,null);
         api.execute();
     }
 
@@ -199,7 +201,7 @@ public class MyHobbyMarket {
     protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null, null,null);
         api.execute();
     }
 
@@ -242,7 +244,7 @@ public class MyHobbyMarket {
     protected void logout()
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null, null,null);
         api.execute();
     }
 
@@ -268,6 +270,7 @@ public class MyHobbyMarket {
                 this.currentUser.firstName = null;
                 this.currentUser.lastName = null;
                 this.currentUser.save();
+                this.caravan = null;
                 mainActivity.onLoggedOut();
             }
             else {
@@ -292,7 +295,7 @@ public class MyHobbyMarket {
             loadingMessage = null;
         }
 
-        MyHobbyApi api = new MyHobbyApi(API_SYNC, loadingMessage, currentUser.userId, null, currentUser.password, currentUser.myHobbyKey, null, null, null, null, null, null, null, null, null);
+        MyHobbyApi api = new MyHobbyApi(API_SYNC, loadingMessage, currentUser.userId, null, currentUser.password, currentUser.myHobbyKey, null, null, null, null, null, null, null, null, null,null);
         api.execute();
     }
 
@@ -330,7 +333,7 @@ public class MyHobbyMarket {
     protected void getDealerList(String searchQuery, String deviceCulture)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null);
+        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null,null);
         api.execute();
     }
 
@@ -363,7 +366,7 @@ public class MyHobbyMarket {
     protected void getFaqList(String searchQuery, String deviceCulture, String tags)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, tags);
+        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, tags, null);
         api.execute();
     }
 
@@ -409,21 +412,23 @@ public class MyHobbyMarket {
         }
 
         try {
+            ServiceResult serviceResult = new Gson().fromJson(result, ServiceResult.class);
 
-            FaqResult faqResult = new Gson().fromJson(result, FaqResult.class);
-
-            faqs = faqResult.faqs;
-
-            if(faqResult.success == true) {
-                System.out.println("MyHobby - return from getFaq, count=" + faqs.length);
-                mainActivity.onFaqsLoaded(faqs);
+            if(serviceResult.success == true) {
+                caravan = serviceResult.caravan;
+                System.out.println("MyHobby - return from connectToService, count=" + caravan.serviceEntries.size());
+                ServiceBookConnectedFragment fragment = new ServiceBookConnectedFragment();
+                fragment.caravan = caravan;
+                mainActivity.onNavigateToFragment(fragment);
+            }
+            else
+            {
+                this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.caravan_not_found));
             }
 
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
-
-
     }
 
 
@@ -648,23 +653,22 @@ public class MyHobbyMarket {
                     case API_SERVICE:
                     {
                         if (isUserLoggedIn()){
-                            apiUrl = baseUrl + "";
+                            apiUrl = baseUrl + "syncServices";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
                                     .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("SearchQuery", searchQuery)
-                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                                    .appendQueryParameter("Vin", vin);
                         }
-                        else{
-                            apiUrl = "api/sync/" + "syncServices";
-
-                            builder = new Uri.Builder()
-                                    .appendQueryParameter("UserName", currentUser.email)
-                                    .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("SearchQuery", searchQuery)
-                                    .appendQueryParameter("DeviceCulture", deviceCulture);
-                        }
+//                        else{
+//                            apiUrl = "api/sync/" + "syncServices";
+//
+//                            builder = new Uri.Builder()
+//                                    .appendQueryParameter("UserName", currentUser.email)
+//                                    .appendQueryParameter("Password", currentUser.password)
+//                                    .appendQueryParameter("SearchQuery", searchQuery)
+//                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+//                        }
 
                     }
                     break;
@@ -827,6 +831,9 @@ public class MyHobbyMarket {
                     break;
                 case API_DEALERS:
                     getDealerListDone(result, searchQuery);
+                    break;
+                case API_SERVICE:
+                    connectToServiceDone(result);
                     break;
             }
         }

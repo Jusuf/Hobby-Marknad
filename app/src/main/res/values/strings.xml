@@ -112,6 +112,7 @@
     <!--Connect to service -->
     <string name="vin_number">Chassinummer</string>
     <string name="enter_vin_number">Ange chassinummer</string>
+    <string name="caravan_not_found">Hittade inte nån husvagn eller husbil!</string>
 
 
 </resources>
