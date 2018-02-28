@@ -207,19 +207,20 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/campingsMenu"
             android:layout_width="match_parent"
             android:layout_height="324dp"
+            android:layout_margin="2.5dp"
             android:background="@mipmap/start_campings"
             android:gravity="bottom"
             android:orientation="vertical"
-            android:weightSum="1"
-            android:layout_margin="2.5dp">
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView11"
@@ -234,10 +235,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:paddingTop="5dp"
                     android:text="@string/start_camping_find_vacation_spot"
                     android:textAllCaps="true"
-                    android:textSize="14sp"
-                    android:paddingTop="5dp"/>
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

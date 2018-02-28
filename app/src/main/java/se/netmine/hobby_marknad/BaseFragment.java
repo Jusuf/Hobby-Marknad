@@ -20,5 +20,5 @@ public class BaseFragment extends Fragment implements IFragment{
     public void onDealersUpdated(Dealer[] dealers) {}
 
     @Override
-    public void onCaravanUpdated(Caravan caravan) {}
+    public void onCampingsUpdated(Camping[] campings) {}
 }

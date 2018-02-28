@@ -31,7 +31,7 @@ public interface IMainActivity {
 
     void onDealersLoaded(Dealer[] dealers);
 
-    void onServiceConnected(Caravan caravan);
+    void onCampingsLoaded(Camping[] campings);
 
     void showToast(String message);
 

@@ -26,6 +26,7 @@ public class StartFragment extends BaseFragment {
     private LinearLayout serviceBookMenuButton;
     private LinearLayout catalogueAndMagazinesMenuButton;
     private LinearLayout faqMenuButton;
+    private LinearLayout campingsMenuButton;
     private LinearLayout resellersMenuButton;
 
     @Override
@@ -83,6 +84,16 @@ public class StartFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 FaqListFragment fragment = new FaqListFragment();
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
+        campingsMenuButton = (LinearLayout) view.findViewById(R.id.campingsMenu);
+
+        campingsMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CampingsFragment fragment = new CampingsFragment();
                 mainActivity.onNavigateToFragment(fragment);
             }
         });

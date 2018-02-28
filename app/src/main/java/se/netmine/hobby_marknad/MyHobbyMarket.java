@@ -40,9 +40,10 @@ public class MyHobbyMarket {
     private static final int API_FAQS = 7;
     private static final int API_DEALERS = 8;
     private static final int API_SERVICE = 9;
+    private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.164/hobby/";
+    public static String url = "http://192.168.20.157/hobby/";
 //    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
 
@@ -50,6 +51,7 @@ public class MyHobbyMarket {
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
+    public Camping[] campings;
     public Caravan caravan;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
@@ -347,13 +349,46 @@ public class MyHobbyMarket {
 
         try {
 
-            DealerResult faqResult = new Gson().fromJson(result, DealerResult.class);
+            DealerResult dealerResult = new Gson().fromJson(result, DealerResult.class);
 
-            dealers = faqResult.dealers;
+            dealers = dealerResult.dealers;
 
-            if(faqResult.success == true) {
+            if(dealerResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + dealers.length);
                 mainActivity.onDealersLoaded(dealers);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+
+    }
+
+    protected void getCampingList(String searchQuery, String deviceCulture)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null,null);
+        api.execute();
+    }
+
+    protected void getCampingListDone(String result, String searchQuery)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            CampingResult campingResult = new Gson().fromJson(result, CampingResult.class);
+
+            campings = campingResult.campings;
+
+            if(campingResult.success == true) {
+                System.out.println("MyHobby - return from getDealer, count=" + campings.length);
+                mainActivity.onCampingsLoaded(campings);
             }
 
         } catch (Exception e) {
@@ -650,6 +685,29 @@ public class MyHobbyMarket {
 
                     }
                     break;
+                    case API_CAMPINGS:
+                    {
+                        if (isUserLoggedIn()){
+                            apiUrl = baseUrl + "campingListAuth";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+                        else{
+                            apiUrl = baseUrl + "campingList";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("SearchQuery", searchQuery)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        }
+
+                    }
+                    break;
                     case API_SERVICE:
                     {
                         if (isUserLoggedIn()){
@@ -831,6 +889,9 @@ public class MyHobbyMarket {
                     break;
                 case API_DEALERS:
                     getDealerListDone(result, searchQuery);
+                    break;
+                case API_CAMPINGS:
+                    getCampingListDone(result, searchQuery);
                     break;
                 case API_SERVICE:
                     connectToServiceDone(result);

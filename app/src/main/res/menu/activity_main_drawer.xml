@@ -24,6 +24,10 @@
             android:icon="@drawable/ic_menu_faq"
             android:title="@string/nav_faq" />
         <item
+            android:id="@+id/nav_campings"
+            android:icon="@drawable/ic_menu_camping"
+            android:title="@string/nav_campings" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_logout"
             android:title="@string/nav_logout" />

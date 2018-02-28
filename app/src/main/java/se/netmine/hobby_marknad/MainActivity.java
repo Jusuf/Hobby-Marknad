@@ -145,10 +145,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onServiceConnected(Caravan caravan)
+    public void onCampingsLoaded(Camping[] campings)
     {
-        // Notify the active fragment that a caravan has bean loaded
-        ((IFragment)fragmentStack.peek()).onCaravanUpdated(caravan);
+        // Notify the active fragment that a dealers has bean loaded
+        ((IFragment)fragmentStack.peek()).onCampingsUpdated(campings);
     }
 
     @Override
@@ -283,6 +283,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_faq) {
             FaqListFragment fragment = new FaqListFragment();
+            onNavigateToFragment(fragment);
+        }
+        else if (id == R.id.nav_campings) {
+            CampingsFragment fragment = new CampingsFragment();
             onNavigateToFragment(fragment);
         }
         else if (id == R.id.nav_logout) {

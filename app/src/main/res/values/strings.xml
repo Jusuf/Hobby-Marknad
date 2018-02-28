@@ -23,6 +23,7 @@
     <string name="nav_catalog_and_magazines">Catalogue and Magazines</string>
     <string name="nav_resellers">Resellers</string>
     <string name="nav_faq">Faq</string>
+    <string name="nav_campings">Campingar</string>
     <string name="nav_logout">Log out</string>
     <string name="menu_header_logged_out">Not signed in</string>
 
@@ -114,5 +115,6 @@
     <string name="enter_vin_number">Ange chassinummer</string>
     <string name="caravan_not_found">Hittade inte nån husvagn eller husbil!</string>
 
-
+    <!--Campings -->
+    <string name="camping_show">Show</string>
 </resources>
