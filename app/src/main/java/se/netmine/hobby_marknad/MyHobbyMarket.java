@@ -43,15 +43,15 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.157/hobby/";
-//    public static String url = "http://192.168.0.6/hobby/";
+//    public static String url = "http://192.168.20.157/hobby/";
+    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
 
     public User currentUser = null;
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
-    public Camping[] campings;
+    public CampingMin[] campings;
     public Caravan caravan;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
@@ -381,12 +381,10 @@ public class MyHobbyMarket {
         }
 
         try {
+            CampingsResult campingsResult = new Gson().fromJson(result, CampingsResult.class);
+            campings = campingsResult.campings;
 
-            CampingResult campingResult = new Gson().fromJson(result, CampingResult.class);
-
-            campings = campingResult.campings;
-
-            if(campingResult.success == true) {
+            if(campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + campings.length);
                 mainActivity.onCampingsLoaded(campings);
             }
@@ -394,8 +392,6 @@ public class MyHobbyMarket {
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
-
-
     }
 
     protected void getFaqList(String searchQuery, String deviceCulture, String tags)

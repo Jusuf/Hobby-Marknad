@@ -24,7 +24,7 @@ public class Camping {
     public String descSV;
     public String stars;
 
-    public ArrayList<String> accommodations;
-    public ArrayList<String> facilities;
-    public ArrayList<String> serviceEntries;
+    public ArrayList<Accommodation> accommodations;
+    public ArrayList<Facility> facilities;
+    public ArrayList<String> images;
 }

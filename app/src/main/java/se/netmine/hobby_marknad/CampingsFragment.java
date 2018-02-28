@@ -42,11 +42,11 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     EditText txtSearchCamping = null;
     ListView listViewCampings = null;
     LinearLayout layoutCampingList = null;
-    public ArrayList<Camping> loadedCampings = new  ArrayList<Camping>();
-    ArrayAdapter<Camping> adapter;
+    public ArrayList<CampingMin> loadedCampings = new  ArrayList<CampingMin>();
+    ArrayAdapter<CampingMin> adapter;
     String language;
     String searchQuery;
-    private Camping markedCamping = null;
+    private CampingMin markedCamping = null;
 
     private Button btnMap = null;
     private Button btnList = null;
@@ -88,7 +88,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                Camping node = loadedCampings.get(pos);
+                CampingMin node = loadedCampings.get(pos);
                 CampingFragment fragment = new CampingFragment();
                 fragment.camping = node;
                 mainActivity.onNavigateToFragment(fragment);
@@ -185,16 +185,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         MyHobbyMarket.getInstance().getCampingList(textToSearch, language);
     }
 
-    public class CampingListAdapter extends ArrayAdapter<Camping> {
+    public class CampingListAdapter extends ArrayAdapter<CampingMin> {
 
-        public CampingListAdapter(Context context, ArrayList<Camping> objects) {
+        public CampingListAdapter(Context context, ArrayList<CampingMin> objects) {
             super(context, 0, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Camping item = getItem(position);
+            CampingMin item = getItem(position);
 
             convertView = inflater.inflate(R.layout.camping_item, null);
 
@@ -231,18 +231,22 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         if(loadedCampings != null)
         {
-            for (Camping camping : loadedCampings) {
+            for (CampingMin camping : loadedCampings) {
 
 //                LatLng marker = new LatLng(Double.parseDouble(camping.lat), Double.parseDouble(camping.lng));
-                LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
-                mMap.addMarker(new MarkerOptions()
-                        .title(camping.name)
-                        .snippet(camping.city)
-                        .position(marker));
+                if(!empty( camping.lng ) || !empty( camping.lat ))
+                {
+                    LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
+                    mMap.addMarker(new MarkerOptions()
+                            .title(camping.name)
+                            .snippet(camping.city)
+                            .position(marker));
 
 
-                sumLat += Double.parseDouble(camping.lng);
-                sumLng += Double.parseDouble(camping.lat);
+                    sumLat += Double.parseDouble(camping.lng);
+                    sumLng += Double.parseDouble(camping.lat);
+                }
+
 
             }
             avgLat = sumLat / loadedCampings.size();
@@ -254,13 +258,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onCampingsUpdated(Camping[] campings)
+    public void onCampingsUpdated(CampingMin[] campings)
     {
         loadedCampings.clear();
 
         if (campings != null)
         {
-            for (Camping camping : campings) {
+            for (CampingMin camping : campings) {
                 loadedCampings.add(camping);
             }
 
@@ -279,7 +283,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         String name = marker.getTitle();
 
-        for (Camping camping : loadedCampings) {
+        for (CampingMin camping : loadedCampings) {
 
             if (camping.name.equalsIgnoreCase(name))
             {
@@ -294,6 +298,11 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
 
         return true;
+    }
+
+    public static boolean empty( final String s ) {
+        // Null-safe, short-circuit evaluation.
+        return s == null || s.trim().isEmpty();
     }
 
 }

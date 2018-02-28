@@ -4,7 +4,7 @@ package se.netmine.hobby_marknad;
  * Created by jusuf on 2017-10-03.
  */
 
-public class CampingResult {
+public class CampingsResult {
     public boolean success;
-    public Camping camping;
+    public CampingMin[] campings;
 }

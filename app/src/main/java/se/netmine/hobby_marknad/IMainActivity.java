@@ -31,7 +31,7 @@ public interface IMainActivity {
 
     void onDealersLoaded(Dealer[] dealers);
 
-    void onCampingsLoaded(Camping[] campings);
+    void onCampingsLoaded(CampingMin[] campings);
 
     void showToast(String message);
 

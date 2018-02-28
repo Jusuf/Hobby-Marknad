@@ -27,7 +27,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
     private GoogleMap mMap;
-    public Camping camping = null;
+    public CampingMin camping = null;
 
     private TextView campingName = null;
     private TextView campingAddress = null;
@@ -83,16 +83,16 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             mainActivity.setTitle(camping.name);
             campingName.setText(camping.name);
             campingAddress.setText(camping.street + ", " + camping.postalcode + " " + camping.city);
-            campingTel.setText(camping.phone);
-            campingEmail.setText(camping.email);
-            campingWebPage.setText(camping.webpage);
+//            campingTel.setText(camping.phone);
+//            campingEmail.setText(camping.email);
+//            campingWebPage.setText(camping.webpage);
         }
 
         btnCampingCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + camping.phone));
+//                intent.setData(Uri.parse("tel:" + camping.phone));
                 startActivity(intent);
             }
         });
@@ -102,7 +102,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { camping.email });
+//                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { camping.email });
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(Intent.createChooser(intent, ""));
@@ -112,17 +112,17 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         btnCampingVisitHompage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = camping.webpage;
+//                String url = camping.webpage;
 
-                Uri webpage = Uri.parse(url);
-
-                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                    webpage = Uri.parse("http://" + url);
-                }
-
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
-                browserIntent.setData(webpage);
-                startActivity(browserIntent);
+//                Uri webpage = Uri.parse(url);
+//
+//                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+//                    webpage = Uri.parse("http://" + url);
+//                }
+//
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+//                browserIntent.setData(webpage);
+//                startActivity(browserIntent);
             }
         });
 
