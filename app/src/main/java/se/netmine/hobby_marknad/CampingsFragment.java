@@ -1,6 +1,8 @@
 package se.netmine.hobby_marknad;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -36,7 +41,9 @@ import static se.netmine.hobby_marknad.R.id.map;
 public class CampingsFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private IMainActivity mainActivity;
+    View view;
     LayoutInflater inflater = null;
+    private String imageBaseAddress = "http://scr.basetool.se/upload/";
     private GoogleMap mMap;
     private LinearLayout layoutMap;
     EditText txtSearchCamping = null;
@@ -65,7 +72,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                              Bundle savedInstanceState) {
 
         this.inflater = inflater;
-        View view =  inflater.inflate(R.layout.fragment_campings, container, false);
+        view =  inflater.inflate(R.layout.fragment_campings, container, false);
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(map);
@@ -81,9 +88,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         loadCampings();
 
-        adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
+
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
-        listViewCampings.setAdapter(adapter);
+
+        //listViewCampings.setAdapter(new ArrayAdapter<CampingMin>(mainActivity.getContext(), R.layout.camping_item, new ArrayList<CampingMin>()));
+
+//
+
+
+
+        new YourAsyncTask().execute();
 
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -156,7 +170,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             }
         });
 
-
         layoutShowCamping = (LinearLayout) view.findViewById(R.id.layoutShowCamping);
         layoutShowCamping.setVisibility(View.GONE);
 
@@ -198,8 +211,32 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             convertView = inflater.inflate(R.layout.camping_item, null);
 
+            final LinearLayout layoutCampingItem = (LinearLayout) convertView.findViewById(R.id.layoutCampingItem);
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
+
+            if(!empty(item.image)){
+
+
+
+
+
+                DownloadImage task = new DownloadImage(new AsyncResponse() {
+                    @Override
+                    public void processFinish(Drawable output) {
+
+                        layoutCampingItem.setBackground(output);
+                    }
+                });
+
+                task.execute(new String[] {imageBaseAddress + item.image});
+
+
+                //Drawable img = LoadImageFromWebOperations(imageBaseAddress + item.image);
+                //layoutCampingItem.setBackground(img);
+
+            }
+
 
             txtCampingItemName.setText(item.name);
             txtCampingItemCity.setText(item.city);
@@ -207,6 +244,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             return convertView;
         }
 
+    }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -233,7 +280,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         {
             for (CampingMin camping : loadedCampings) {
 
-//                LatLng marker = new LatLng(Double.parseDouble(camping.lat), Double.parseDouble(camping.lng));
                 if(!empty( camping.lng ) || !empty( camping.lat ))
                 {
                     LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
@@ -242,11 +288,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             .snippet(camping.city)
                             .position(marker));
 
-
                     sumLat += Double.parseDouble(camping.lng);
                     sumLng += Double.parseDouble(camping.lat);
                 }
-
 
             }
             avgLat = sumLat / loadedCampings.size();
@@ -304,6 +348,75 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
     }
+
+    private class YourAsyncTask extends AsyncTask<Void, CampingMin, String> {
+
+        ArrayAdapter<CampingMin> adapter;
+        @Override
+        protected void onPreExecute() {
+            // start loading animation maybe?
+//            adapter = (ArrayAdapter<CampingMin>) listViewCampings.getAdapter();
+//            adapter.clear(); // clear "old" entries (optional)
+
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // everything in here gets executed in a separate thread
+            adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
+
+            listViewCampings.setAdapter(adapter);
+
+
+//            for (CampingMin camping : loadedCampings)
+//            {
+//                publishProgress(camping);
+//            }
+            return "All campings ware loaded successfuly";
+        }
+
+        @Override
+        protected void onProgressUpdate(CampingMin[] values) {
+            adapter.add(values[0]);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            // stop the loading animation or something
+            Toast.makeText(mainActivity.getContext(), result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class DownloadImage extends AsyncTask<String, Drawable, Drawable> {
+
+        public AsyncResponse delegate = null;
+
+        public DownloadImage(AsyncResponse asyncResponse) {
+            delegate = asyncResponse;//Assigning call back interfacethrough constructor
+        }
+
+        @Override
+        protected Drawable doInBackground(String... urls) {
+            Drawable img = LoadImageFromWebOperations(urls[0]);
+            return img;
+        }
+
+        @Override
+        protected void onProgressUpdate(Drawable[] result) {
+            delegate.processFinish(result[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Drawable result) {
+            delegate.processFinish(result);
+        }
+    }
+
+    public interface AsyncResponse {
+        void processFinish(Drawable output);
+    }
+
 
 }
 

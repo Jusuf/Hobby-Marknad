@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutCampingItem"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/faq_item_bg"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
 
-    <TextView
-        android:id="@+id/txtCampingItemName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dealer item"
-        android:textColor="@color/text_dark_grey"
-        android:textSize="16sp" />
-    <TextView
-        android:id="@+id/txtCampingItemCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Dealer item"
-        android:textColor="@color/text_dark_grey"
-        android:textSize="12sp" />
+        android:orientation="vertical"
+        android:background="@drawable/faq_item_bg">
+
+        <TextView
+            android:id="@+id/txtCampingItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dealer item"
+            android:textColor="@color/myhobby_blue"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/txtCampingItemCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dealer item"
+            android:textColor="@color/myhobby_blue"
+            android:textSize="12sp" />
+    </LinearLayout>
+
 </LinearLayout>
