@@ -111,13 +111,20 @@
             <EditText
                 android:id="@+id/txtSearchCamping"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_weight="9"
                 android:drawableLeft="@drawable/search_icon"
                 android:hint="Sök"
                 android:textColorHint="@color/faq_text_dark_grey"
                 android:textColor="@color/faq_text_dark_grey"/>
 
+            <ImageView
+                android:id="@+id/imageSearchFilter"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_search_filter"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
@@ -125,6 +132,7 @@
             android:id="@+id/listViewCampings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             />
     </LinearLayout>
 </RelativeLayout>

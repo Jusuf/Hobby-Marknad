@@ -20,7 +20,7 @@
         <EditText
             android:id="@+id/txtSearchFaq"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="10"
             android:drawableLeft="@drawable/search_icon"
             android:hint="Sök"

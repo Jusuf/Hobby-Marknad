@@ -25,22 +25,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whiteTransparent"
+        android:weightSum="10">
 
-        <TextView
-            android:id="@+id/txtCampingItemName"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dealer item"
-            android:textColor="@color/myhobby_blue"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/txtCampingItemCity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dealer item"
-            android:textColor="@color/myhobby_blue"
-            android:textSize="12sp" />
+            android:orientation="vertical"
+            android:layout_weight="9">
+
+            <TextView
+                android:id="@+id/txtCampingItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dealer item"
+                android:textColor="@color/myhobby_blue"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtCampingItemCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dealer item"
+                android:textColor="@color/myhobby_blue"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_right_white" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </RelativeLayout>
