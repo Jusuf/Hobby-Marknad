@@ -125,6 +125,6 @@
             android:id="@+id/listViewCampings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/camping_list_bg"/>
+            />
     </LinearLayout>
 </RelativeLayout>

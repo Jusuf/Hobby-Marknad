@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static se.netmine.hobby_marknad.R.id.fill_horizontal;
 import static se.netmine.hobby_marknad.R.id.map;
 
 /**
@@ -90,6 +92,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
 
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
+        adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
+        listViewCampings.setAdapter(adapter);
 
         //listViewCampings.setAdapter(new ArrayAdapter<CampingMin>(mainActivity.getContext(), R.layout.camping_item, new ArrayList<CampingMin>()));
 
@@ -97,7 +101,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
 
 
-        new YourAsyncTask().execute();
+//        new YourAsyncTask().execute();
 
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -211,7 +215,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             convertView = inflater.inflate(R.layout.camping_item, null);
 
-            final LinearLayout layoutCampingItem = (LinearLayout) convertView.findViewById(R.id.layoutCampingItem);
+            final ImageView layoutCampingItem = (ImageView) convertView.findViewById(R.id.iv__camping_background);
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
 
@@ -225,7 +229,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                     @Override
                     public void processFinish(Drawable output) {
 
-                        layoutCampingItem.setBackground(output);
+                        layoutCampingItem.setImageDrawable(output);
+                        layoutCampingItem.setScaleType(ImageView.ScaleType.FIT_XY);
+
                     }
                 });
 
@@ -349,44 +355,42 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         return s == null || s.trim().isEmpty();
     }
 
-    private class YourAsyncTask extends AsyncTask<Void, CampingMin, String> {
-
-        ArrayAdapter<CampingMin> adapter;
-        @Override
-        protected void onPreExecute() {
-            // start loading animation maybe?
-//            adapter = (ArrayAdapter<CampingMin>) listViewCampings.getAdapter();
-//            adapter.clear(); // clear "old" entries (optional)
-
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            // everything in here gets executed in a separate thread
-            adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
-
-            listViewCampings.setAdapter(adapter);
-
-
+//    private class YourAsyncTask extends AsyncTask<Void, CampingMin, String> {
+//
+//        ArrayAdapter<CampingMin> adapter;
+//        @Override
+//        protected void onPreExecute() {
+//            // start loading animation maybe?
+////            adapter = (ArrayAdapter<CampingMin>) listViewCampings.getAdapter();
+////            adapter.clear(); // clear "old" entries (optional)
+//
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            // everything in here gets executed in a separate thread
+//
+//
+//
 //            for (CampingMin camping : loadedCampings)
 //            {
 //                publishProgress(camping);
 //            }
-            return "All campings ware loaded successfuly";
-        }
-
-        @Override
-        protected void onProgressUpdate(CampingMin[] values) {
-            adapter.add(values[0]);
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            // stop the loading animation or something
-            Toast.makeText(mainActivity.getContext(), result, Toast.LENGTH_LONG).show();
-        }
-    }
+//            return "All campings ware loaded successfuly";
+//        }
+//
+//        @Override
+//        protected void onProgressUpdate(CampingMin[] values) {
+//            adapter.add(values[0]);
+//        }
+//
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            // stop the loading animation or something
+//            Toast.makeText(mainActivity.getContext(), result, Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     private class DownloadImage extends AsyncTask<String, Drawable, Drawable> {
 
