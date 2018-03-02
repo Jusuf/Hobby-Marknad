@@ -41,6 +41,7 @@ public class MyHobbyMarket {
     private static final int API_DEALERS = 8;
     private static final int API_SERVICE = 9;
     private static final int API_CAMPINGS = 10;
+    private static final int API_CAMPING = 11;
 
 //    public static  String url = "https://admin.myhobby.nu/";
 //    public static String url = "http://192.168.20.157/hobby/";
@@ -52,6 +53,7 @@ public class MyHobbyMarket {
     public Faq[] faqs;
     public Dealer[] dealers;
     public CampingMin[] campings;
+    public Camping camping;
     public Caravan caravan;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
@@ -117,7 +119,22 @@ public class MyHobbyMarket {
     protected void register(String email, String password, String firstName, String lastName)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage, null, email, password, null, null, firstName, lastName, null, null, null, null, null, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage,
+                null,
+                email,
+                password,
+                null,
+                null,
+                firstName,
+                lastName,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         api.execute();
     }
 
@@ -155,7 +172,22 @@ public class MyHobbyMarket {
     protected void login(String email, String password)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage, null, email, password, null, null, null, null, null, null, null, null, null, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage,
+                null,
+                email,
+                password,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         api.execute();
     }
 
@@ -203,7 +235,23 @@ public class MyHobbyMarket {
     protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, oldPassword, newPassword, newPasswordConfirm, null, null, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD,
+                loadingMessage,
+                currentUser.userId,
+                null,
+                currentUser.password,
+                null,
+                null,
+                null,
+                null,
+                oldPassword,
+                newPassword,
+                newPasswordConfirm,
+                null,
+                null,
+                null,
+                null,
+                null);
         api.execute();
     }
 
@@ -246,7 +294,20 @@ public class MyHobbyMarket {
     protected void logout()
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage, currentUser.userId, null, currentUser.password, null, null, null, null, null, null, null, null, null, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage,
+                currentUser.userId,
+                null, currentUser.password,
+                null,
+                null,
+                null, null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         api.execute();
     }
 
@@ -297,7 +358,22 @@ public class MyHobbyMarket {
             loadingMessage = null;
         }
 
-        MyHobbyApi api = new MyHobbyApi(API_SYNC, loadingMessage, currentUser.userId, null, currentUser.password, currentUser.myHobbyKey, null, null, null, null, null, null, null, null, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_SYNC, loadingMessage,
+                currentUser.userId,
+                null,
+                currentUser.password,
+                currentUser.myHobbyKey,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         api.execute();
     }
 
@@ -335,8 +411,24 @@ public class MyHobbyMarket {
     protected void getDealerList(String searchQuery, String deviceCulture)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                searchQuery,
+                deviceCulture,
+                null,
+                null,
+                null);
         api.execute();
+
     }
 
     protected void getDealerListDone(String result, String searchQuery)
@@ -365,10 +457,69 @@ public class MyHobbyMarket {
 
     }
 
+    protected void getCamping(String campingId)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_CAMPING,
+                loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                campingId);
+        api.execute();
+    }
+
+    protected void getCampingDone(String result)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+            CampingResult campingResult = new Gson().fromJson(result, CampingResult.class);
+            camping = campingResult.camping;
+
+            if(campingResult.success == true) {
+                System.out.println("MyHobby - return from camping");
+                mainActivity.onCampingLoaded(camping);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+    }
+
     protected void getCampingList(String searchQuery, String deviceCulture)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, null,null);
+        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                searchQuery,
+                deviceCulture,
+                null,
+                null,null);
         api.execute();
     }
 
@@ -397,7 +548,22 @@ public class MyHobbyMarket {
     protected void getFaqList(String searchQuery, String deviceCulture, String tags)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,null, null, null, null, null, null, null, null, null, null, searchQuery, deviceCulture, tags, null);
+        MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                searchQuery,
+                deviceCulture,
+                tags,
+                null,
+                null);
         api.execute();
     }
 
@@ -430,7 +596,22 @@ public class MyHobbyMarket {
     protected void connectToService(String vin)
     {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_SERVICE, loadingMessage,null, null, null, null, null, null, null, null, null, null, null, null, null, vin);
+        MyHobbyApi api = new MyHobbyApi(API_SERVICE, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                vin,
+                null);
         api.execute();
     }
 
@@ -482,6 +663,7 @@ public class MyHobbyMarket {
         private String deviceCulture = null;
         private String faqTags = null;
         private String vin = null;
+        private String campingId = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -498,7 +680,8 @@ public class MyHobbyMarket {
                           String searchQuery,
                           String deviceCulture,
                           String faqTags,
-                          String vin)
+                          String vin,
+                          String campingId)
         {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
@@ -516,6 +699,7 @@ public class MyHobbyMarket {
             this.deviceCulture = deviceCulture;
             this.faqTags = faqTags;
             this.vin = vin;
+            this.campingId = campingId;
         }
 
 
@@ -704,6 +888,27 @@ public class MyHobbyMarket {
 
                     }
                     break;
+                    case API_CAMPING:
+                    {
+                        if (isUserLoggedIn()){
+                            apiUrl = baseUrl + "campingAuth";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("campingId", campingId);
+                        }
+                        else{
+                            apiUrl = baseUrl + "camping";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("campingId", campingId);
+                        }
+
+                    }
+                    break;
                     case API_SERVICE:
                     {
                         if (isUserLoggedIn()){
@@ -887,7 +1092,10 @@ public class MyHobbyMarket {
                     getDealerListDone(result, searchQuery);
                     break;
                 case API_CAMPINGS:
-                    getCampingListDone(result, searchQuery);
+                getCampingListDone(result, searchQuery);
+                break;
+                case API_CAMPING:
+                    getCampingDone(result);
                     break;
                 case API_SERVICE:
                     connectToServiceDone(result);

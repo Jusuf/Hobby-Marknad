@@ -21,4 +21,7 @@ public class BaseFragment extends Fragment implements IFragment{
 
     @Override
     public void onCampingsUpdated(CampingMin[] campings) {}
+
+    @Override
+    public void onCampingUpdated(Camping camping) {}
 }

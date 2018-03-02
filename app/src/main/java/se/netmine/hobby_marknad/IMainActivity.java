@@ -33,6 +33,8 @@ public interface IMainActivity {
 
     void onCampingsLoaded(CampingMin[] campings);
 
+    void onCampingLoaded(Camping camping);
+
     void showToast(String message);
 
     String formatDate(String date) throws ParseException;

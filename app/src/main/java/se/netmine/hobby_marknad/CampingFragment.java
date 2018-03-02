@@ -63,19 +63,19 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         mapFragment.getMapAsync(this);
 
-        campingName = (TextView) view.findViewById(R.id.txtDealerName);
-        campingAddress = (TextView) view.findViewById(R.id.txtDealerAddress);
-        campingTel = (TextView) view.findViewById(R.id.txtDealerTel);
-        campingEmail = (TextView) view.findViewById(R.id.txtDealerEmail);
-        campingWebPage = (TextView) view.findViewById(R.id.txtDealerWebPage);
+        campingName = (TextView) view.findViewById(R.id.txtCampingName);
+        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
+        campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
+        campingEmail = (TextView) view.findViewById(R.id.txtCampingEmail);
+        campingWebPage = (TextView) view.findViewById(R.id.txtCampingWebPage);
 
-        imageCampingHeart = (ImageView) view.findViewById(R.id.imageDealerHeart);
+        imageCampingHeart = (ImageView) view.findViewById(R.id.imageCampingHeart);
         imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
 
-        btnCampingCall = (Button) view.findViewById(R.id.btnDealerCall);
-        btnCampingSendEmail = (Button) view.findViewById(R.id.btnDealerSendEmail);
-        btnCampingVisitHompage = (Button) view.findViewById(R.id.btnDealerVisitHomepage);
-        btnCampingShowRoute = (Button) view.findViewById(R.id.btnDealerShowRoute);
+        btnCampingCall = (Button) view.findViewById(R.id.btnCampingCall);
+        btnCampingSendEmail = (Button) view.findViewById(R.id.btnCampingSendEmail);
+        btnCampingVisitHompage = (Button) view.findViewById(R.id.btnCampingVisitHomepage);
+        btnCampingShowRoute = (Button) view.findViewById(R.id.btnCampingShowRoute);
 
 
         if (camping != null)
@@ -146,7 +146,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         if(camping != null)
         {
-            LatLng marker = new LatLng(Double.parseDouble(camping.lat), Double.parseDouble(camping.lng));
+            LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
 
             map.addMarker(new MarkerOptions()
                      .title(camping.name)
