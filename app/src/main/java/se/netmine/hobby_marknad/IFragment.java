@@ -12,6 +12,4 @@ public interface IFragment{
     void onDealersUpdated(Dealer[] dealers);
 
     void onCampingsUpdated(CampingMin[] campings);
-
-    void onCampingUpdated(Camping camping);
 }

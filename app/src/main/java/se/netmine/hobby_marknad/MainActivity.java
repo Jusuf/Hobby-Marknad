@@ -154,8 +154,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCampingLoaded(Camping camping)
     {
-        // Notify the active fragment that a dealers has bean loaded
-        ((IFragment)fragmentStack.peek()).onCampingUpdated(camping);
+        CampingFragment fragment = new CampingFragment();
+        fragment.camping = camping;
+        onNavigateToFragment(fragment);
     }
 
     @Override

@@ -107,12 +107,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
                 CampingMin node = loadedCampings.get(pos);
-                CampingFragment fragment = new CampingFragment();
-                fragment.camping = node;
-                mainActivity.onNavigateToFragment(fragment);
+                MyHobbyMarket.getInstance().getCamping(node.id);
             }
         });
-
 
         layoutMap = (LinearLayout) view.findViewById(R.id.mapLayout);
         layoutCampingList = (LinearLayout) view.findViewById(R.id.campingListLayout);
@@ -185,9 +182,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                CampingFragment fragment = new CampingFragment();
-                fragment.camping = markedCamping;
-                mainActivity.onNavigateToFragment(fragment);
+                MyHobbyMarket.getInstance().getCamping(markedCamping.id);
             }
         });
 

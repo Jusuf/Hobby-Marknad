@@ -47,6 +47,7 @@ public class MyHobbyMarket {
 //    public static String url = "http://192.168.20.157/hobby/";
     public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
+    public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 
     public User currentUser = null;
     public IMainActivity mainActivity;
@@ -230,7 +231,6 @@ public class MyHobbyMarket {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
     }
-
 
     protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
     {
@@ -643,7 +643,6 @@ public class MyHobbyMarket {
         }
     }
 
-
     private class MyHobbyApi extends AsyncTask<String, String, String> {
 
         private ProgressDialog pDialog;
@@ -891,7 +890,7 @@ public class MyHobbyMarket {
                     case API_CAMPING:
                     {
                         if (isUserLoggedIn()){
-                            apiUrl = baseUrl + "campingAuth";
+                            apiUrl = baseUrlAndroid + "campingAuth";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
@@ -899,7 +898,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("campingId", campingId);
                         }
                         else{
-                            apiUrl = baseUrl + "camping";
+                            apiUrl = baseUrlAndroid + "camping";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)

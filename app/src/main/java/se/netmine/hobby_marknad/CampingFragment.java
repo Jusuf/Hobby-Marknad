@@ -18,6 +18,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static se.netmine.hobby_marknad.R.id.map;
+import static se.netmine.hobby_marknad.R.id.view_offset_helper;
+
 /**
  * Created by jusuf on 2017-06-13.
  */
@@ -26,8 +29,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
+    public String campingId;
     private GoogleMap mMap;
-    public CampingMin camping = null;
+    public Camping camping = null;
 
     private TextView campingName = null;
     private TextView campingAddress = null;
@@ -60,6 +64,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapCampingDetails);
+
 
         mapFragment.getMapAsync(this);
 
@@ -137,6 +142,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         return view;
     }
+
 
     @Override
     public void onMapReady(GoogleMap map) {
