@@ -1,9 +1,14 @@
 package se.netmine.hobby_marknad;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +23,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static se.netmine.hobby_marknad.R.id.map;
-import static se.netmine.hobby_marknad.R.id.view_offset_helper;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by jusuf on 2017-06-13.
@@ -29,10 +36,12 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
-    public String campingId;
+
+    ViewPager viewPagerCaravanimages = null;
     private GoogleMap mMap;
     public Camping camping = null;
-
+    private String imageBaseAddress = "http://scr.basetool.se/upload/";
+    private ArrayList<String> imageUrls = new ArrayList<>();
     private TextView campingName = null;
     private TextView campingAddress = null;
     private TextView campingTel = null;
@@ -61,6 +70,14 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle(getResources().getString(R.string.reseller));
         }
+
+        for (String imageUrl: camping.images) {
+            imageUrls.add(imageBaseAddress + imageUrl);
+        }
+
+        viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
+        ImagePagerAdapter pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
+        viewPagerCaravanimages.setAdapter(pageAdapter);
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapCampingDetails);
@@ -144,6 +161,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     }
 
 
+
     @Override
     public void onMapReady(GoogleMap map) {
 
@@ -162,6 +180,10 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 16));
         }
     }
+
+
+
+
 
 }
 

@@ -216,10 +216,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             if(!empty(item.image)){
 
-
-
-
-
                 DownloadImage task = new DownloadImage(new AsyncResponse() {
                     @Override
                     public void processFinish(Drawable output) {
