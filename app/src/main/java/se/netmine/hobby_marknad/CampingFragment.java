@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +44,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     public Camping camping = null;
     private String imageBaseAddress = "http://scr.basetool.se/upload/";
     private ArrayList<String> imageUrls = new ArrayList<>();
+    private int dotscount;
+    private ImageView[] dots;
+    private LinearLayout sliderDotspanel = null;
     private TextView campingName = null;
     private TextView campingAddress = null;
     private TextView campingTel = null;
@@ -78,6 +83,58 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
         ImagePagerAdapter pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
         viewPagerCaravanimages.setAdapter(pageAdapter);
+
+        sliderDotspanel = (LinearLayout) view.findViewById(R.id.sliderDots);
+
+        dotscount = pageAdapter.getCount();
+        dots = new ImageView[dotscount];
+
+        for(int i = 0; i < dotscount; i++){
+
+            dots[i] = new ImageView(mainActivity.getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.non_active_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            sliderDotspanel.addView(dots[i], params);
+
+        }
+
+        if (dotscount > 0)
+        {
+            dots[0].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.active_dot));
+        }
+        else
+        {
+            viewPagerCaravanimages.setVisibility(View.GONE);
+            sliderDotspanel.setVisibility(View.GONE);
+        }
+
+        viewPagerCaravanimages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                for(int i = 0; i< dotscount; i++){
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.non_active_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.active_dot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapCampingDetails);

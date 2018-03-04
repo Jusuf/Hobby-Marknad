@@ -23,11 +23,20 @@
             android:layout_height="180dp"></android.support.v4.view.ViewPager>
 
         <LinearLayout
+            android:id="@+id/sliderDots"
+            android:layout_below="@+id/viewPagerCampingImages"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"/>
+
+        <LinearLayout
             android:id="@+id/campingDetailsMapLayout"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:layout_below="@id/viewPagerCampingImages">
+            android:layout_below="@id/sliderDots">
 
             <fragment
                 android:id="@+id/mapCampingDetails"
