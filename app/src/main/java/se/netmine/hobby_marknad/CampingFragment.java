@@ -25,10 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by jusuf on 2017-06-13.
@@ -73,7 +70,6 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle(getResources().getString(R.string.reseller));
         }
 
         for (String imageUrl: camping.images) {

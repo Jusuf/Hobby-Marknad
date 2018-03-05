@@ -6,5 +6,6 @@ package se.netmine.hobby_marknad;
 
 public class CampingsResult {
     public boolean success;
-    public CampingMin[] campings;
+    public Camping[] campings;
+    public CampingFacilityOptions campingFacilityOptions;
 }

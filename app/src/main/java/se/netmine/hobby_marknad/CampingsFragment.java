@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,7 +34,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static se.netmine.hobby_marknad.R.id.fill_horizontal;
 import static se.netmine.hobby_marknad.R.id.map;
 
 /**
@@ -50,12 +50,22 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private LinearLayout layoutMap;
     EditText txtSearchCamping = null;
     ListView listViewCampings = null;
+    ExpandableHeightListView listViewGeneralFacilities = null;
+    ExpandableHeightListView listViewActivityFacilities = null;
+    ExpandableHeightListView listViewOtherFacilities = null;
     LinearLayout layoutCampingList = null;
-    public ArrayList<CampingMin> loadedCampings = new  ArrayList<CampingMin>();
-    ArrayAdapter<CampingMin> adapter;
+    public ArrayList<Camping> loadedCampings = new  ArrayList<>();
+    public ArrayList<Facility> loadedGeneralFacilities = new  ArrayList<>();
+    public ArrayList<Facility> loadedActivityFacilities = new  ArrayList<>();
+    public ArrayList<Facility> loadedOtherFacilities = new  ArrayList<>();
+    public ArrayList<String> filteredFacilities = new  ArrayList<>();
+    ArrayAdapter<Camping> adapter;
+    ArrayAdapter<Facility> generalFacilityAdapter;
+    ArrayAdapter<Facility> activityFacilityAdapter;
+    ArrayAdapter<Facility> otherFacilityAdapter;
     String language;
     String searchQuery;
-    private CampingMin markedCamping = null;
+    private Camping markedCamping = null;
 
     private Button btnMap = null;
     private Button btnList = null;
@@ -90,34 +100,49 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         loadCampings();
 
-
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
         adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
         listViewCampings.setAdapter(adapter);
-
-        //listViewCampings.setAdapter(new ArrayAdapter<CampingMin>(mainActivity.getContext(), R.layout.camping_item, new ArrayList<CampingMin>()));
-
-//
-
-
-
-//        new YourAsyncTask().execute();
+        listViewCampings.setVisibility(View.GONE);
 
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                CampingMin node = loadedCampings.get(pos);
-                MyHobbyMarket.getInstance().getCamping(node.id);
+                Camping node = loadedCampings.get(pos);
+                CampingFragment fragment = new CampingFragment();
+                fragment.camping = node;
+                mainActivity.onNavigateToFragment(fragment);
             }
         });
+
+        listViewGeneralFacilities = (ExpandableHeightListView) view.findViewById(R.id.lvGeneralFacilitiesItemList);
+        generalFacilityAdapter = new GeneralFacilityListAdapter(mainActivity.getContext(), loadedGeneralFacilities);
+        listViewGeneralFacilities.setAdapter(generalFacilityAdapter);
+        listViewGeneralFacilities.setExpanded(true);
+
+        listViewActivityFacilities = (ExpandableHeightListView) view.findViewById(R.id.lvActivityFacilitiesItemList);
+        activityFacilityAdapter = new ActivityFacilityListAdapter(mainActivity.getContext(), loadedActivityFacilities);
+        listViewActivityFacilities.setAdapter(activityFacilityAdapter);
+        listViewActivityFacilities.setExpanded(true);
+
+        listViewOtherFacilities = (ExpandableHeightListView) view.findViewById(R.id.lvOtherFacilitiesItemList);
+        otherFacilityAdapter = new OtherFacilityListAdapter(mainActivity.getContext(), loadedOtherFacilities);
+        listViewOtherFacilities.setAdapter(otherFacilityAdapter);
+        listViewOtherFacilities.setExpanded(true);
 
         layoutMap = (LinearLayout) view.findViewById(R.id.mapLayout);
         layoutCampingList = (LinearLayout) view.findViewById(R.id.campingListLayout);
 
-        layoutCampingList.setVisibility(View.GONE);
+
 
         btnMap = (Button) view.findViewById(R.id.btnCampingMap);
         btnList = (Button) view.findViewById(R.id.btnCampingList);
+
+
+        layoutCampingList.setVisibility(View.GONE);
+        layoutMap.setVisibility(View.GONE);
+        btnList.setVisibility(View.GONE);
+        btnMap.setVisibility(View.GONE);
 
         txtSearchCamping = (EditText) view.findViewById(R.id.txtSearchCamping);
         txtSearchCamping.addTextChangedListener(new TextWatcher() {
@@ -182,7 +207,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                MyHobbyMarket.getInstance().getCamping(markedCamping.id);
+                CampingFragment fragment = new CampingFragment();
+                fragment.camping = markedCamping;
+                mainActivity.onNavigateToFragment(fragment);
             }
         });
 
@@ -197,16 +224,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         MyHobbyMarket.getInstance().getCampingList(textToSearch, language);
     }
 
-    public class CampingListAdapter extends ArrayAdapter<CampingMin> {
+    public class CampingListAdapter extends ArrayAdapter<Camping> {
 
-        public CampingListAdapter(Context context, ArrayList<CampingMin> objects) {
+        public CampingListAdapter(Context context, ArrayList<Camping> objects) {
             super(context, 0, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            CampingMin item = getItem(position);
+            Camping item = getItem(position);
 
             convertView = inflater.inflate(R.layout.camping_item, null);
 
@@ -214,7 +241,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
 
-            if(!empty(item.image)){
+            if(item.images.size() > 0){
 
                 DownloadImage task = new DownloadImage(new AsyncResponse() {
                     @Override
@@ -226,17 +253,149 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                     }
                 });
 
-                task.execute(new String[] {imageBaseAddress + item.image});
-
-
-                //Drawable img = LoadImageFromWebOperations(imageBaseAddress + item.image);
-                //layoutCampingItem.setBackground(img);
-
+                task.execute(new String[] {imageBaseAddress + item.images.get(0)});
             }
-
 
             txtCampingItemName.setText(item.name);
             txtCampingItemCity.setText(item.city);
+
+            return convertView;
+        }
+
+    }
+
+    public class GeneralFacilityListAdapter extends ArrayAdapter<Facility> {
+
+        public GeneralFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Facility item = getItem(position);
+
+            convertView = inflater.inflate(R.layout.facility_item, null);
+
+            TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
+            CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
+            chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int pos = listViewGeneralFacilities.getPositionForView(buttonView);
+
+                    if(pos != ListView.INVALID_POSITION)
+                    {
+                        Facility facility = loadedGeneralFacilities.get(pos);
+                        facility.setSelected(isChecked);
+
+                        if(isChecked)
+                        {
+                            filteredFacilities.add(facility.getId());
+                        }
+                        else
+                        {
+                            filteredFacilities.remove(facility.getId());
+                        }
+
+                    }
+                }
+            });
+
+            txtFacilityName.setText(item.getName());
+            chkBox.setChecked(item.isSelected());
+
+            return convertView;
+        }
+
+    }
+
+    public class ActivityFacilityListAdapter extends ArrayAdapter<Facility> {
+
+        public ActivityFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Facility item = getItem(position);
+
+            convertView = inflater.inflate(R.layout.facility_item, null);
+
+            TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
+            CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
+            chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int pos = listViewActivityFacilities.getPositionForView(buttonView);
+
+                    if(pos != ListView.INVALID_POSITION)
+                    {
+                        Facility facility = loadedActivityFacilities.get(pos);
+                        facility.setSelected(isChecked);
+
+                        if(isChecked)
+                        {
+                            filteredFacilities.add(facility.getId());
+                        }
+                        else
+                        {
+                            filteredFacilities.remove(facility.getId());
+                        }
+
+                    }
+                }
+            });
+
+            txtFacilityName.setText(item.getName());
+            chkBox.setChecked(item.isSelected());
+
+            return convertView;
+        }
+
+    }
+
+    public class OtherFacilityListAdapter extends ArrayAdapter<Facility> {
+
+        public OtherFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Facility item = getItem(position);
+
+            convertView = inflater.inflate(R.layout.facility_item, null);
+
+            TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
+            CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
+            chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int pos = listViewOtherFacilities.getPositionForView(buttonView);
+
+                    if(pos != ListView.INVALID_POSITION)
+                    {
+                        Facility facility = loadedOtherFacilities.get(pos);
+                        facility.setSelected(isChecked);
+
+                        if(isChecked)
+                        {
+                            filteredFacilities.add(facility.getId());
+                        }
+                        else
+                        {
+                            filteredFacilities.remove(facility.getId());
+                        }
+
+                    }
+                }
+            });
+
+            txtFacilityName.setText(item.getName());
+            chkBox.setChecked(item.isSelected());
 
             return convertView;
         }
@@ -275,7 +434,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         if(loadedCampings != null)
         {
-            for (CampingMin camping : loadedCampings) {
+            for (Camping camping : loadedCampings) {
 
                 if(!empty( camping.lng ) || !empty( camping.lat ))
                 {
@@ -296,17 +455,28 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             LatLng avgPosition = new LatLng(avgLat, avgLng);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
         }
+
     }
 
     @Override
-    public void onCampingsUpdated(CampingMin[] campings)
+    public void onCampingsUpdated(Camping[] campings, CampingFacilityOptions loadedCampingFacilityOptions)
     {
         loadedCampings.clear();
 
         if (campings != null)
         {
-            for (CampingMin camping : campings) {
+            for (Camping camping : campings) {
                 loadedCampings.add(camping);
+            }
+
+            for (Facility facility : loadedCampingFacilityOptions.generalFacilities) {
+                loadedGeneralFacilities.add(facility);
+            }
+            for (Facility facility : loadedCampingFacilityOptions.activityFacilities) {
+                loadedActivityFacilities.add(facility);
+            }
+            for (Facility facility : loadedCampingFacilityOptions.otherFacilities) {
+                loadedOtherFacilities.add(facility);
             }
 
             if(mMap != null){
@@ -314,9 +484,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 mapFrag.getMapAsync(this);
             }
         }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
+        if (generalFacilityAdapter != null) {
+            generalFacilityAdapter.notifyDataSetChanged();
         }
+        if (activityFacilityAdapter != null) {
+            activityFacilityAdapter.notifyDataSetChanged();
+        }
+        if (otherFacilityAdapter != null) {
+            otherFacilityAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
@@ -324,7 +501,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         String name = marker.getTitle();
 
-        for (CampingMin camping : loadedCampings) {
+        for (Camping camping : loadedCampings) {
 
             if (camping.name.equalsIgnoreCase(name))
             {
@@ -345,43 +522,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
     }
-
-//    private class YourAsyncTask extends AsyncTask<Void, CampingMin, String> {
-//
-//        ArrayAdapter<CampingMin> adapter;
-//        @Override
-//        protected void onPreExecute() {
-//            // start loading animation maybe?
-////            adapter = (ArrayAdapter<CampingMin>) listViewCampings.getAdapter();
-////            adapter.clear(); // clear "old" entries (optional)
-//
-//        }
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//            // everything in here gets executed in a separate thread
-//
-//
-//
-//            for (CampingMin camping : loadedCampings)
-//            {
-//                publishProgress(camping);
-//            }
-//            return "All campings ware loaded successfuly";
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(CampingMin[] values) {
-//            adapter.add(values[0]);
-//        }
-//
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            // stop the loading animation or something
-//            Toast.makeText(mainActivity.getContext(), result, Toast.LENGTH_LONG).show();
-//        }
-//    }
 
     private class DownloadImage extends AsyncTask<String, Drawable, Drawable> {
 
@@ -411,6 +551,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     public interface AsyncResponse {
         void processFinish(Drawable output);
     }
+
 
 
 }

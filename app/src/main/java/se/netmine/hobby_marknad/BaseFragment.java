@@ -20,6 +20,6 @@ public class BaseFragment extends Fragment implements IFragment{
     public void onDealersUpdated(Dealer[] dealers) {}
 
     @Override
-    public void onCampingsUpdated(CampingMin[] campings) {}
+    public void onCampingsUpdated(Camping[] campings, CampingFacilityOptions campingFacilityOptions) {}
 
 }

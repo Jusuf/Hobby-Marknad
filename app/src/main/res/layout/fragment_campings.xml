@@ -135,4 +135,105 @@
             android:layout_marginTop="5dp"
             />
     </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/facilitiesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/btnLayout"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_service_list">
+
+                <TextView
+                    android:id="@+id/txtGeneralFacilitiesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/general_facilities"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+
+                <se.netmine.hobby_marknad.ExpandableHeightListView
+                    android:id="@+id/lvGeneralFacilitiesItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </se.netmine.hobby_marknad.ExpandableHeightListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_service_list">
+
+                <TextView
+                    android:id="@+id/txActivityFacilitiesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/activity_facilities"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+
+                <se.netmine.hobby_marknad.ExpandableHeightListView
+                    android:id="@+id/lvActivityFacilitiesItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </se.netmine.hobby_marknad.ExpandableHeightListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_service_list">
+
+                <TextView
+                    android:id="@+id/txtOtherFacilitiesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/other_facilities"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textSize="16sp" />
+
+                <se.netmine.hobby_marknad.ExpandableHeightListView
+                    android:id="@+id/lvOtherFacilitiesItemList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </se.netmine.hobby_marknad.ExpandableHeightListView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
 </RelativeLayout>

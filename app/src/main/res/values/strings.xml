@@ -117,4 +117,8 @@
 
     <!--Campings -->
     <string name="camping_show">Show</string>
+    <string name="general_facilities">Allmänna faciliteter</string>
+    <string name="activity_facilities">Aktivitetsfaciliteter</string>
+    <string name="other_facilities">Övriga faciliteter</string>
+
 </resources>

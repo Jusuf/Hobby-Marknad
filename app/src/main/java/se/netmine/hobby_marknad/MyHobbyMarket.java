@@ -44,8 +44,8 @@ public class MyHobbyMarket {
     private static final int API_CAMPING = 11;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.148/hobby/";
-//    public static String url = "http://192.168.0.6/hobby/";
+//    public static String url = "http://192.168.20.148/hobby/";
+    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 
@@ -53,7 +53,8 @@ public class MyHobbyMarket {
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
-    public CampingMin[] campings;
+    public Camping[] campings;
+    public CampingFacilityOptions campingFacilityOptions;
     public Camping camping;
     public Caravan caravan;
 
@@ -534,10 +535,12 @@ public class MyHobbyMarket {
         try {
             CampingsResult campingsResult = new Gson().fromJson(result, CampingsResult.class);
             campings = campingsResult.campings;
+            campingFacilityOptions = campingsResult.campingFacilityOptions;
+
 
             if(campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + campings.length);
-                mainActivity.onCampingsLoaded(campings);
+                mainActivity.onCampingsLoaded(campings, campingFacilityOptions);
             }
 
         } catch (Exception e) {
@@ -700,7 +703,6 @@ public class MyHobbyMarket {
             this.vin = vin;
             this.campingId = campingId;
         }
-
 
         @Override
         protected void onPreExecute() {
@@ -867,7 +869,7 @@ public class MyHobbyMarket {
                     case API_CAMPINGS:
                     {
                         if (isUserLoggedIn()){
-                            apiUrl = baseUrl + "campingListAuth";
+                            apiUrl = baseUrlAndroid + "campingListAuth";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
@@ -876,7 +878,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
                         }
                         else{
-                            apiUrl = baseUrl + "campingList";
+                            apiUrl = baseUrlAndroid + "campingList";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
