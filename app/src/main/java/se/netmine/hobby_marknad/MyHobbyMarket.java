@@ -44,8 +44,8 @@ public class MyHobbyMarket {
     private static final int API_CAMPING = 11;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.157/hobby/";
-    public static String url = "http://192.168.0.6/hobby/";
+    public static String url = "http://192.168.20.148/hobby/";
+//    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 

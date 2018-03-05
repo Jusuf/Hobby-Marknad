@@ -32,11 +32,32 @@
             android:paddingBottom="5dp"/>
 
         <LinearLayout
+            android:id="@+id/campingDetailsCampingNameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:layout_below="@id/sliderDots">
+
+            <TextView
+                android:id="@+id/txtCampingName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Camping name"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/campingDetailsMapLayout"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:layout_below="@id/sliderDots">
+            android:layout_below="@id/campingDetailsCampingNameLayout">
 
             <fragment
                 android:id="@+id/mapCampingDetails"
@@ -47,25 +68,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/campingDetailsCampingNameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="10"
-            android:layout_below="@id/campingDetailsMapLayout">
 
-            <TextView
-                android:id="@+id/txtCampingName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Dealer name"
-                android:textColor="@color/dealer_name_text"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/campingDetailsCampingInfoLayout"
@@ -76,7 +79,7 @@
             android:background="@drawable/faq_list_search_bg"
             android:paddingTop="15dp"
             android:paddingLeft="15dp"
-            android:layout_below="@id/campingDetailsCampingNameLayout">
+            android:layout_below="@id/campingDetailsMapLayout">
 
             <LinearLayout
                 android:layout_width="match_parent"
