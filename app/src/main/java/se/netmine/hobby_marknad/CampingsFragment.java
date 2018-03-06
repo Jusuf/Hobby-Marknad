@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,7 +55,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     ExpandableHeightListView listViewActivityFacilities = null;
     ExpandableHeightListView listViewOtherFacilities = null;
     LinearLayout layoutCampingList = null;
-    public ArrayList<Camping> loadedCampings = new  ArrayList<>();
+    ScrollView scrollViewFacilityOptions = null;
+    public ArrayList<Camping> loadedCampings = new ArrayList<>();
     public ArrayList<Facility> loadedGeneralFacilities = new  ArrayList<>();
     public ArrayList<Facility> loadedActivityFacilities = new  ArrayList<>();
     public ArrayList<Facility> loadedOtherFacilities = new  ArrayList<>();
@@ -100,10 +102,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         loadCampings();
 
+
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
         adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
         listViewCampings.setAdapter(adapter);
-        listViewCampings.setVisibility(View.GONE);
 
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,17 +134,19 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         layoutMap = (LinearLayout) view.findViewById(R.id.mapLayout);
         layoutCampingList = (LinearLayout) view.findViewById(R.id.campingListLayout);
-
-
+        layoutCampingList.setVisibility(View.GONE);
 
         btnMap = (Button) view.findViewById(R.id.btnCampingMap);
         btnList = (Button) view.findViewById(R.id.btnCampingList);
 
+        scrollViewFacilityOptions = (ScrollView) view.findViewById(R.id.scrollViewFacilityOptions);
 
-        layoutCampingList.setVisibility(View.GONE);
-        layoutMap.setVisibility(View.GONE);
-        btnList.setVisibility(View.GONE);
-        btnMap.setVisibility(View.GONE);
+//        layoutCampingList.setVisibility(View.GONE);
+//        layoutMap.setVisibility(View.GONE);
+//        btnList.setVisibility(View.GONE);
+//        btnMap.setVisibility(View.GONE);
+
+        scrollViewFacilityOptions.setVisibility(View.GONE);
 
         txtSearchCamping = (EditText) view.findViewById(R.id.txtSearchCamping);
         txtSearchCamping.addTextChangedListener(new TextWatcher() {
@@ -172,7 +176,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-
                 layoutMap.setVisibility(View.GONE);
                 layoutCampingList.setVisibility(View.VISIBLE);
                 btnList.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
@@ -459,7 +462,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onCampingsUpdated(Camping[] campings, CampingFacilityOptions loadedCampingFacilityOptions)
+    public void onCampingsUpdated(ArrayList<Camping> campings, CampingFacilityOptions loadedCampingFacilityOptions)
     {
         loadedCampings.clear();
 

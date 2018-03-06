@@ -1,5 +1,7 @@
 package se.netmine.hobby_marknad;
 
+import java.util.ArrayList;
+
 /**
  * Created by jusuf on 2017-07-10.
  */
@@ -11,5 +13,5 @@ public interface IFragment{
 
     void onDealersUpdated(Dealer[] dealers);
 
-    void onCampingsUpdated(Camping[] campings, CampingFacilityOptions campingFacilityOptions);
+    void onCampingsUpdated(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions);
 }

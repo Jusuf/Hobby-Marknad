@@ -5,8 +5,11 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.ImageView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,11 +44,10 @@ public class MyHobbyMarket {
     private static final int API_DEALERS = 8;
     private static final int API_SERVICE = 9;
     private static final int API_CAMPINGS = 10;
-    private static final int API_CAMPING = 11;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.148/hobby/";
-    public static String url = "http://192.168.0.6/hobby/";
+    public static String url = "http://192.168.20.149/hobby/";
+//    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 
@@ -53,10 +55,10 @@ public class MyHobbyMarket {
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
-    public Camping[] campings;
+    public ArrayList<Camping> loadedCampings;
     public CampingFacilityOptions campingFacilityOptions;
-    public Camping camping;
     public Caravan caravan;
+    public String campingJson;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
 
@@ -94,6 +96,18 @@ public class MyHobbyMarket {
     public String getLastName()
     {
         return this.currentUser.lastName;
+    }
+
+    public void loadCampingsFromFile(){
+        GetFile task = new GetFile(new AsyncFileResponse() {
+            @Override
+            public void processFinish(String output) {
+
+                campingJson = output;
+            }
+        });
+
+        task.execute(new String[] {"campingsJson"});
     }
 
     public void setDeviceToken(String deviceToken)
@@ -458,70 +472,36 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCamping(String campingId)
-    {
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CAMPING,
-                loadingMessage,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                campingId);
-        api.execute();
-    }
-
-    protected void getCampingDone(String result)
-    {
-        if(result == null || result.isEmpty())
-        {
-            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
-            return;
-        }
-
-        try {
-            CampingResult campingResult = new Gson().fromJson(result, CampingResult.class);
-            camping = campingResult.camping;
-
-            if(campingResult.success == true) {
-                System.out.println("MyHobby - return from camping");
-                mainActivity.onCampingLoaded(camping);
-            }
-
-        } catch (Exception e) {
-            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
-        }
-    }
-
     protected void getCampingList(String searchQuery, String deviceCulture)
     {
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                searchQuery,
-                deviceCulture,
-                null,
-                null,null);
-        api.execute();
+        if(campingJson != null)
+        {
+            CampingsResult campingsResult = new Gson().fromJson(campingJson, CampingsResult.class);
+            loadedCampings = campingsResult.campings;
+            campingFacilityOptions = campingsResult.campingFacilityOptions;
+            mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+        }
+        else
+        {
+            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+            MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    searchQuery,
+                    deviceCulture,
+                    null,
+                    null,null);
+            api.execute();
+        }
+
     }
 
     protected void getCampingListDone(String result, String searchQuery)
@@ -533,14 +513,22 @@ public class MyHobbyMarket {
         }
 
         try {
+
             CampingsResult campingsResult = new Gson().fromJson(result, CampingsResult.class);
-            campings = campingsResult.campings;
+            loadedCampings = campingsResult.campings;
             campingFacilityOptions = campingsResult.campingFacilityOptions;
 
 
             if(campingsResult.success == true) {
-                System.out.println("MyHobby - return from getDealer, count=" + campings.length);
-                mainActivity.onCampingsLoaded(campings, campingFacilityOptions);
+                System.out.println("MyHobby - return from getDealer, count=" + loadedCampings.size());
+                mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+                campingJson = result;
+
+                try {
+                    new ReadWriteJsonFileUtils(mainActivity.getContext()).createJsonFileData("campingsJson", result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } catch (Exception e) {
@@ -594,6 +582,35 @@ public class MyHobbyMarket {
         }
 
 
+    }
+
+    private class GetFile extends AsyncTask<String, String, String> {
+
+        public MyHobbyMarket.AsyncFileResponse delegate = null;
+
+        public GetFile(MyHobbyMarket.AsyncFileResponse asyncResponse) {
+            delegate = asyncResponse;//Assigning call back interfacethrough constructor
+        }
+
+        @Override
+        protected String doInBackground(String... fileName) {
+            String result = new ReadWriteJsonFileUtils(mainActivity.getContext()).readJsonFileData("campingsJson");
+            return result;
+        }
+
+        @Override
+        protected void onProgressUpdate(String[] result) {
+            delegate.processFinish(result[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            delegate.processFinish(result);
+        }
+    }
+
+    public interface AsyncFileResponse {
+        void processFinish(String output);
     }
 
     protected void connectToService(String vin)
@@ -889,27 +906,6 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_CAMPING:
-                    {
-                        if (isUserLoggedIn()){
-                            apiUrl = baseUrlAndroid + "campingAuth";
-
-                            builder = new Uri.Builder()
-                                    .appendQueryParameter("UserName", currentUser.email)
-                                    .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("campingId", campingId);
-                        }
-                        else{
-                            apiUrl = baseUrlAndroid + "camping";
-
-                            builder = new Uri.Builder()
-                                    .appendQueryParameter("UserName", currentUser.email)
-                                    .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("campingId", campingId);
-                        }
-
-                    }
-                    break;
                     case API_SERVICE:
                     {
                         if (isUserLoggedIn()){
@@ -1095,9 +1091,6 @@ public class MyHobbyMarket {
                 case API_CAMPINGS:
                 getCampingListDone(result, searchQuery);
                 break;
-                case API_CAMPING:
-                    getCampingDone(result);
-                    break;
                 case API_SERVICE:
                     connectToServiceDone(result);
                     break;

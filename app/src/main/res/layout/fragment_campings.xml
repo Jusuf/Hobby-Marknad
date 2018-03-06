@@ -36,11 +36,40 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/searchCampingLaytout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:background="@drawable/camping_list_search_bg"
+        android:layout_below="@id/btnLayout">
+
+        <EditText
+            android:id="@+id/txtSearchCamping"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="9"
+            android:drawableLeft="@drawable/search_icon"
+            android:hint="Sök"
+            android:textColorHint="@color/faq_text_dark_grey"
+            android:textColor="@color/faq_text_dark_grey"/>
+
+        <ImageView
+            android:id="@+id/imageSearchFilter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search_filter"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/mapLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_below="@id/btnLayout"
+        android:layout_below="@id/searchCampingLaytout"
         android:layout_margin="5dp">
 
         <fragment
@@ -53,80 +82,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutShowCamping"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/whiteTransparent"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:padding="15dp" >
-
-        <TextView
-            android:id="@+id/txtShowCampingName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dealer address:"
-            android:textColor="@color/dealer_dark_grey"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtShowCampingAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dealer address"
-            android:textColor="@color/dealer_dark_grey"
-            android:textSize="16sp"
-            android:paddingTop="5dp" />
-
-        <Button
-            android:id="@+id/btnCampingShowCamping"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/info_button"
-            android:text="@string/camping_show"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/campingListLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_below="@id/btnLayout"
+        android:layout_below="@+id/searchCampingLaytout"
         android:layout_margin="5dp">
-
-        <LinearLayout
-            android:id="@+id/searchCampingLaytout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:background="@drawable/camping_list_search_bg">
-
-            <EditText
-                android:id="@+id/txtSearchCamping"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="9"
-                android:drawableLeft="@drawable/search_icon"
-                android:hint="Sök"
-                android:textColorHint="@color/faq_text_dark_grey"
-                android:textColor="@color/faq_text_dark_grey"/>
-
-            <ImageView
-                android:id="@+id/imageSearchFilter"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_search_filter"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
 
         <ListView
             android:id="@+id/listViewCampings"
@@ -138,14 +99,15 @@
 
 
     <ScrollView
+        android:id="@+id/scrollViewFacilityOptions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mapLayout">
         <LinearLayout
             android:id="@+id/facilitiesLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_below="@id/btnLayout"
             android:layout_margin="5dp">
 
             <LinearLayout
@@ -236,4 +198,44 @@
 
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutShowCamping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteTransparent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <TextView
+            android:id="@+id/txtShowCampingName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dealer address:"
+            android:textColor="@color/dealer_dark_grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtShowCampingAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dealer address"
+            android:textColor="@color/dealer_dark_grey"
+            android:textSize="16sp"
+            android:paddingTop="5dp" />
+
+        <Button
+            android:id="@+id/btnCampingShowCamping"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/info_button"
+            android:text="@string/camping_show"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
 </RelativeLayout>

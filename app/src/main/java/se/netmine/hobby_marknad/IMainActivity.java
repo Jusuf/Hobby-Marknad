@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  * Created by jusuf on 2017-07-10.
@@ -31,7 +32,7 @@ public interface IMainActivity {
 
     void onDealersLoaded(Dealer[] dealers);
 
-    void onCampingsLoaded(Camping[] campings, CampingFacilityOptions campingFacilityOptions );
+    void onCampingsLoaded(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions );
 
     void showToast(String message);
 

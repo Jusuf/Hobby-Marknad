@@ -2,6 +2,8 @@ package se.netmine.hobby_marknad;
 
 import android.app.Fragment;
 
+import java.util.ArrayList;
+
 /**
  * Created by jusuf on 2017-08-14.
  */
@@ -20,6 +22,6 @@ public class BaseFragment extends Fragment implements IFragment{
     public void onDealersUpdated(Dealer[] dealers) {}
 
     @Override
-    public void onCampingsUpdated(Camping[] campings, CampingFacilityOptions campingFacilityOptions) {}
+    public void onCampingsUpdated(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions) {}
 
 }

@@ -38,6 +38,7 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.Stack;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         MyHobbyMarket.getInstance().mainActivity = this;
+
+        MyHobbyMarket.getInstance().loadCampingsFromFile();
 
         navigateToStartFragment();
     }
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCampingsLoaded(Camping[] campings, CampingFacilityOptions campingFacilityOptions)
+    public void onCampingsLoaded(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions)
     {
         // Notify the active fragment that a dealers has bean loaded
         ((IFragment)fragmentStack.peek()).onCampingsUpdated(campings, campingFacilityOptions);
