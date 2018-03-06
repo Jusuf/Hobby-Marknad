@@ -46,8 +46,8 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.149/hobby/";
-//    public static String url = "http://192.168.0.6/hobby/";
+//    public static String url = "http://192.168.20.149/hobby/";
+    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 
@@ -474,15 +474,15 @@ public class MyHobbyMarket {
 
     protected void getCampingList(String searchQuery, String deviceCulture)
     {
-        if(campingJson != null)
-        {
-            CampingsResult campingsResult = new Gson().fromJson(campingJson, CampingsResult.class);
-            loadedCampings = campingsResult.campings;
-            campingFacilityOptions = campingsResult.campingFacilityOptions;
-            mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
-        }
-        else
-        {
+//        if(campingJson != null)
+//        {
+//            CampingsResult campingsResult = new Gson().fromJson(campingJson, CampingsResult.class);
+//            loadedCampings = campingsResult.campings;
+//            campingFacilityOptions = campingsResult.campingFacilityOptions;
+//            mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+//        }
+//        else
+//        {
             String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
             MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
                     null,
@@ -500,7 +500,7 @@ public class MyHobbyMarket {
                     null,
                     null,null);
             api.execute();
-        }
+//        }
 
     }
 

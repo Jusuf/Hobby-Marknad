@@ -33,14 +33,6 @@ public class Facility {
         this.name = name;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public boolean isSelected() {
         return isSelected;
     }

@@ -35,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static se.netmine.hobby_marknad.R.id.facilitiesLayout;
 import static se.netmine.hobby_marknad.R.id.map;
 
 /**
@@ -54,13 +55,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     ExpandableHeightListView listViewGeneralFacilities = null;
     ExpandableHeightListView listViewActivityFacilities = null;
     ExpandableHeightListView listViewOtherFacilities = null;
+    LinearLayout linearLayoutCampingsWrapper = null;
     LinearLayout layoutCampingList = null;
     ScrollView scrollViewFacilityOptions = null;
+    ImageView imageSearchFilter = null;
     public ArrayList<Camping> loadedCampings = new ArrayList<>();
+    public ArrayList<Camping> filteredCampings = new ArrayList<>();
     public ArrayList<Facility> loadedGeneralFacilities = new  ArrayList<>();
     public ArrayList<Facility> loadedActivityFacilities = new  ArrayList<>();
     public ArrayList<Facility> loadedOtherFacilities = new  ArrayList<>();
-    public ArrayList<String> filteredFacilities = new  ArrayList<>();
+    public ArrayList<Facility> filteredFacilities = new  ArrayList<>();
     ArrayAdapter<Camping> adapter;
     ArrayAdapter<Facility> generalFacilityAdapter;
     ArrayAdapter<Facility> activityFacilityAdapter;
@@ -76,6 +80,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private TextView txtShowCampingName = null;
     private TextView txtShowCampingAddress = null;
     private Button btnShow = null;
+    private Button btnCampingShowCampingResults = null;
 
     public CampingsFragment(){
 
@@ -87,6 +92,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         this.inflater = inflater;
         view =  inflater.inflate(R.layout.fragment_campings, container, false);
+
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(map);
@@ -141,10 +147,24 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         scrollViewFacilityOptions = (ScrollView) view.findViewById(R.id.scrollViewFacilityOptions);
 
-//        layoutCampingList.setVisibility(View.GONE);
-//        layoutMap.setVisibility(View.GONE);
-//        btnList.setVisibility(View.GONE);
-//        btnMap.setVisibility(View.GONE);
+        linearLayoutCampingsWrapper = (LinearLayout) view.findViewById(R.id.linearLayoutCampingsWrapper);
+
+        imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
+        imageSearchFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(scrollViewFacilityOptions.getVisibility() == View.VISIBLE)
+                {
+                    scrollViewFacilityOptions.setVisibility(View.GONE);
+                    linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
+                }
+                else{
+                    scrollViewFacilityOptions.setVisibility(View.VISIBLE);
+                    linearLayoutCampingsWrapper.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         scrollViewFacilityOptions.setVisibility(View.GONE);
 
@@ -213,6 +233,17 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 CampingFragment fragment = new CampingFragment();
                 fragment.camping = markedCamping;
                 mainActivity.onNavigateToFragment(fragment);
+                layoutShowCamping.setVisibility(View.GONE);
+            }
+        });
+
+        btnCampingShowCampingResults = (Button) view.findViewById(R.id.btnCampingShowCampingResults);
+        btnCampingShowCampingResults.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                scrollViewFacilityOptions.setVisibility(View.GONE);
+                linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
             }
         });
 
@@ -294,12 +325,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                         if(isChecked)
                         {
-                            filteredFacilities.add(facility.getId());
+                            filteredFacilities.add(facility);
                         }
                         else
                         {
-                            filteredFacilities.remove(facility.getId());
+                            filteredFacilities.remove(facility);
                         }
+
+                        filterCampings();
 
                     }
                 }
@@ -340,12 +373,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                         if(isChecked)
                         {
-                            filteredFacilities.add(facility.getId());
+                            filteredFacilities.add(facility);
                         }
                         else
                         {
-                            filteredFacilities.remove(facility.getId());
+                            filteredFacilities.remove(facility);
                         }
+
+                        filterCampings();
 
                     }
                 }
@@ -386,12 +421,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                         if(isChecked)
                         {
-                            filteredFacilities.add(facility.getId());
+                            filteredFacilities.add(facility);
                         }
                         else
                         {
-                            filteredFacilities.remove(facility.getId());
+                            filteredFacilities.remove(facility);
                         }
+
+                        filterCampings();
 
                     }
                 }
@@ -425,8 +462,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng point) {
-                layoutShowCamping.setVisibility(View.GONE);
+                layoutShowCamping.setVisibility(View.VISIBLE);
             }
+
         });
 
         Double sumLat = 0.0;
@@ -553,6 +591,45 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     public interface AsyncResponse {
         void processFinish(Drawable output);
+    }
+
+    public void filterCampings(){
+
+        filteredCampings.clear();
+
+        for (Camping camping : loadedCampings)
+        {
+            boolean foundFacility = false;
+           for (Facility filteredFacilitie : filteredFacilities)
+           {
+               if(containsFacility(camping.facilities, filteredFacilitie))
+               {
+                   foundFacility = true;
+               }
+               else {
+                   foundFacility = false;
+                   break;
+               }
+           }
+
+           if(foundFacility || filteredFacilities.size() == 0)
+           {
+               filteredCampings.add(camping);
+           }
+        }
+
+        btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
+
+    }
+
+    public boolean containsFacility(ArrayList<Facility> campingFacilities, Facility filteredFacility)
+    {
+        for(Facility f : campingFacilities) {
+            if(f != null && f.id.equals(filteredFacility.id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
