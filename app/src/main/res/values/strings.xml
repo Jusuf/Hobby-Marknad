@@ -118,5 +118,10 @@
     <string name="activity_facilities">Aktivitetsfaciliteter</string>
     <string name="other_facilities">Övriga faciliteter</string>
     <string name="show_all_campings">Visa alla</string>
+    <string name="camping_opening_hours">Öppettider</string>
+    <string name="camping_opening_hours_from_label">Från:</string>
+    <string name="camping_opening_hours_to_label">Till:</string>
+    <string name="camping_choose_date">Välj datum...</string>
+    <string name="camping_clear_date">Rensa</string>
 
 </resources>

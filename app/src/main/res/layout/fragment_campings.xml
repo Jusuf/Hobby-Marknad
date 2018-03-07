@@ -125,6 +125,93 @@
             android:layout_margin="5dp">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_service_list">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txtOpeningHoursTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="5dp"
+
+                        android:text="@string/camping_opening_hours"
+                        android:textColor="@color/white"
+                        android:textAllCaps="true"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layoutFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_service_item">
+
+                    <TextView
+                        android:id="@+id/txtFromDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="@string/camping_opening_hours_from_label"
+                        android:textColor="@color/text_dark_grey"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFromDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="@string/camping_choose_date"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutToDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_service_item">
+
+                    <TextView
+                        android:id="@+id/txToDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="@string/camping_opening_hours_to_label"
+                        android:textColor="@color/text_dark_grey"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtToDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="@string/camping_choose_date"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/text_dark_grey"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

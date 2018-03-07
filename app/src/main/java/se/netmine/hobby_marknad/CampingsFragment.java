@@ -1,6 +1,8 @@
 package se.netmine.hobby_marknad;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +35,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static se.netmine.hobby_marknad.R.id.map;
@@ -81,6 +88,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private TextView txtShowCampingAddress = null;
     private Button btnShow = null;
     private Button btnCampingShowCampingResults = null;
+
+    private LinearLayout layoutFromDate = null;
+    private TextView txtFromDate = null;
+    private LinearLayout layoutToDate = null;
+    private TextView txtToDate = null;
+
+    private Calendar mCurrentDate;
+    private int year, month, day;
+    private Date choosenFromDate = null;
+    private Date choosenToDate = null;
 
     public CampingsFragment(){
 
@@ -243,8 +260,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         layoutShowCamping = (LinearLayout) view.findViewById(R.id.layoutShowCamping);
         layoutShowCamping.setVisibility(View.GONE);
 
-
-
         txtShowCampingName = (TextView) view.findViewById(R.id.txtShowCampingName);
         txtShowCampingAddress = (TextView) view.findViewById(R.id.txtShowCampingAddress);
 
@@ -269,6 +284,94 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 scrollViewFacilityOptions.setVisibility(View.GONE);
                 linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
                 layoutShowCampingResults.setVisibility(View.GONE);
+            }
+        });
+
+        mCurrentDate = Calendar.getInstance();
+
+        day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+        month = mCurrentDate.get(Calendar.MONTH);
+        year = mCurrentDate.get(Calendar.YEAR);
+
+
+        layoutFromDate = (LinearLayout) view.findViewById(R.id.layoutFromDate);
+        txtFromDate = (TextView) view.findViewById(R.id.txtFromDate);
+        layoutFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mainActivity.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+                        String date = formatter.format(newDate.getTime());
+                        txtFromDate.setText(date);
+                        try {
+                            choosenFromDate = formatter.parse(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        filterCampings();
+                    }
+                }, year, month, day);
+
+                datePickerDialog.setButton(android.content.DialogInterface.BUTTON_NEGATIVE,
+                        getString(R.string.camping_clear_date), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                choosenFromDate = null;
+                                txtFromDate.setText(getString(R.string.camping_choose_date));
+
+                                filterCampings();
+                            }
+                        });
+
+                datePickerDialog.show();
+            }
+        });
+
+        layoutToDate = (LinearLayout) view.findViewById(R.id.layoutToDate);
+        txtToDate = (TextView) view.findViewById(R.id.txtToDate);
+
+        layoutToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mainActivity.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+                        String date = formatter.format(newDate.getTime());
+                        try {
+                            choosenToDate = formatter.parse(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        txtToDate.setText(date);
+
+                        filterCampings();
+                    }
+                }, year, month, day);
+
+                datePickerDialog.setButton(android.content.DialogInterface.BUTTON_NEGATIVE,
+                        getString(R.string.camping_clear_date), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                choosenToDate = null;
+                                txtToDate.setText(getString(R.string.camping_choose_date));
+
+                                filterCampings();
+                            }
+                        });
+
+                datePickerDialog.show();
             }
         });
 
@@ -560,9 +663,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
 
         filteredCampings.addAll(loadedCampings);
-
-
-
     }
 
     @Override
@@ -625,22 +725,62 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         filteredCampings.clear();
 
+        if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
+        {
+            filteredCampings.clear();
+            filteredCampings.addAll(loadedCampings);
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         for (Camping camping : loadedCampings)
         {
-            boolean foundFacility = false;
+
+            boolean foundFacilityByDate = true;
+
+            try {
+                Date campingOpenFromDate = formatter.parse(camping.openFrom);
+                Date campingOpenToDate = formatter.parse(camping.openTo);
+
+                if(choosenFromDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && choosenToDate == null)
+                {
+                    foundFacilityByDate = true;
+                }
+
+                else if(choosenToDate != null && compareToDate(choosenToDate, campingOpenToDate) && choosenFromDate == null)
+                {
+                    foundFacilityByDate = true;
+                }
+
+                else if(choosenFromDate != null && choosenToDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && compareToDate(choosenToDate, campingOpenToDate))
+                {
+                    foundFacilityByDate = true;
+                }
+                else {
+                    foundFacilityByDate = false;
+                }
+
+
+            } catch (ParseException e) {
+                foundFacilityByDate = false;
+                e.printStackTrace();
+            }
+
+           boolean foundFacilityById = true;
+
            for (Facility filteredFacilitie : filteredFacilities)
            {
                if(containsFacility(camping.facilities, filteredFacilitie))
                {
-                   foundFacility = true;
+                   foundFacilityById = true;
                }
                else {
-                   foundFacility = false;
+                   foundFacilityById = false;
                    break;
                }
            }
 
-           if(foundFacility || filteredFacilities.size() == 0)
+           if(foundFacilityById && foundFacilityByDate)
            {
                filteredCampings.add(camping);
            }
@@ -665,6 +805,26 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean compareFromDate(Date choosenFromDate, Date campingOpenFromDate)  {
+
+            if(campingOpenFromDate.equals(choosenFromDate) || campingOpenFromDate.before(choosenFromDate))
+            {
+                return true;
+            }
+
+            return false;
+    }
+
+    public boolean compareToDate(Date choosenToDate, Date campingOpenToDate)  {
+
+        if(campingOpenToDate.equals(choosenToDate) || campingOpenToDate.after(choosenToDate))
+        {
+            return true;
+        }
+
         return false;
     }
 
