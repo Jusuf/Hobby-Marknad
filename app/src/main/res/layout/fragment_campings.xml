@@ -185,8 +185,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/bg_service_list">
+                android:background="@drawable/bg_service_list"
+                android:layout_marginBottom="110dp">
 
                 <TextView
                     android:id="@+id/txtOtherFacilitiesTitle"
@@ -205,11 +205,14 @@
                     android:id="@+id/lvOtherFacilitiesItemList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="150dp">
+                   >
                 </se.netmine.hobby_marknad.ExpandableHeightListView>
             </LinearLayout>
 
+
+
         </LinearLayout>
+
 
 
     </ScrollView>
@@ -261,7 +264,7 @@
         android:background="@color/whiteTransparent"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:padding="15dp" >
+        android:padding="15dp">
 
         <Button
             android:id="@+id/btnCampingShowCampingResults"

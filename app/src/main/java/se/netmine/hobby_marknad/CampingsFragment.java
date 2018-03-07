@@ -35,7 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static se.netmine.hobby_marknad.R.id.facilitiesLayout;
 import static se.netmine.hobby_marknad.R.id.map;
 
 /**
@@ -77,6 +76,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private Button btnList = null;
 
     private LinearLayout layoutShowCamping = null;
+    private LinearLayout layoutShowCampingResults = null;
     private TextView txtShowCampingName = null;
     private TextView txtShowCampingAddress = null;
     private Button btnShow = null;
@@ -110,7 +110,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
 
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
-        adapter = new CampingListAdapter(mainActivity.getContext(), loadedCampings);
+        adapter = new CampingListAdapter(mainActivity.getContext(), filteredCampings);
         listViewCampings.setAdapter(adapter);
 
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,18 +149,29 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         linearLayoutCampingsWrapper = (LinearLayout) view.findViewById(R.id.linearLayoutCampingsWrapper);
 
+        layoutShowCampingResults = (LinearLayout) view.findViewById(R.id.layoutShowCampingResults);
+        layoutShowCampingResults.setVisibility(View.GONE);
+
         imageSearchFilter = (ImageView) view.findViewById(R.id.imageSearchFilter);
+
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(scrollViewFacilityOptions.getVisibility() == View.VISIBLE)
                 {
                     scrollViewFacilityOptions.setVisibility(View.GONE);
+                    layoutShowCampingResults.setVisibility(View.GONE);
                     linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
+
+                    layoutShowCamping.setVisibility(View.GONE);
                 }
                 else{
                     scrollViewFacilityOptions.setVisibility(View.VISIBLE);
+                    layoutShowCampingResults.setVisibility(View.VISIBLE);
                     linearLayoutCampingsWrapper.setVisibility(View.GONE);
+
+                    layoutShowCamping.setVisibility(View.GONE);
+                    btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
                 }
 
             }
@@ -173,7 +184,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                layoutShowCamping.setVisibility(View.GONE);
             }
 
             @Override
@@ -192,6 +203,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             }
         });
 
+        txtSearchCamping.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                layoutShowCamping.setVisibility(View.GONE);
+            }
+        });
+
         btnList.setOnClickListener( new View.OnClickListener(){
 
             @Override
@@ -202,6 +220,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 btnList.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.white));
                 btnMap.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
                 btnMap.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+
+                layoutShowCamping.setVisibility(View.GONE);
             }
         });
 
@@ -216,11 +236,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 btnList.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
                 btnList.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
 
+                layoutShowCamping.setVisibility(View.GONE);
             }
         });
 
         layoutShowCamping = (LinearLayout) view.findViewById(R.id.layoutShowCamping);
         layoutShowCamping.setVisibility(View.GONE);
+
+
 
         txtShowCampingName = (TextView) view.findViewById(R.id.txtShowCampingName);
         txtShowCampingAddress = (TextView) view.findViewById(R.id.txtShowCampingAddress);
@@ -238,12 +261,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         });
 
         btnCampingShowCampingResults = (Button) view.findViewById(R.id.btnCampingShowCampingResults);
+        btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
         btnCampingShowCampingResults.setOnClickListener( new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 scrollViewFacilityOptions.setVisibility(View.GONE);
                 linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
+                layoutShowCampingResults.setVisibility(View.GONE);
             }
         });
 
@@ -462,9 +487,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng point) {
-                layoutShowCamping.setVisibility(View.VISIBLE);
+                layoutShowCamping.setVisibility(View.GONE);
             }
-
         });
 
         Double sumLat = 0.0;
@@ -473,9 +497,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         Double avgLat;
         Double avgLng;
 
-        if(loadedCampings != null)
+        if(filteredCampings != null)
         {
-            for (Camping camping : loadedCampings) {
+            for (Camping camping : filteredCampings) {
 
                 if(!empty( camping.lng ) || !empty( camping.lat ))
                 {
@@ -490,8 +514,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
 
             }
-            avgLat = sumLat / loadedCampings.size();
-            avgLng = sumLng / loadedCampings.size();
+            avgLat = sumLat / filteredCampings.size();
+            avgLng = sumLng / filteredCampings.size();
 
             LatLng avgPosition = new LatLng(avgLat, avgLng);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
@@ -534,6 +558,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         if (otherFacilityAdapter != null) {
             otherFacilityAdapter.notifyDataSetChanged();
         }
+
+        filteredCampings.addAll(loadedCampings);
+
+
 
     }
 
@@ -618,6 +646,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
            }
         }
 
+        adapter.notifyDataSetChanged();
+
+        if(mMap != null){
+            mMap.clear();
+            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
+            mapFrag.getMapAsync(this);
+        }
+
         btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
 
     }
@@ -631,8 +667,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
         return false;
     }
-
-
 
 }
 
