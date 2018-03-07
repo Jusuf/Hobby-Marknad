@@ -728,43 +728,49 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
         {
             filteredCampings.clear();
-            filteredCampings.addAll(loadedCampings);
+            //filteredCampings.addAll(loadedCampings);
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+        boolean foundFacilityByDate;
+
+        Date campingOpenFromDate = null;
+        Date campingOpenToDate = null;
+
         for (Camping camping : loadedCampings)
         {
 
-            boolean foundFacilityByDate = true;
-
             try {
-                Date campingOpenFromDate = formatter.parse(camping.openFrom);
-                Date campingOpenToDate = formatter.parse(camping.openTo);
-
-                if(choosenFromDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && choosenToDate == null)
-                {
-                    foundFacilityByDate = true;
-                }
-
-                else if(choosenToDate != null && compareToDate(choosenToDate, campingOpenToDate) && choosenFromDate == null)
-                {
-                    foundFacilityByDate = true;
-                }
-
-                else if(choosenFromDate != null && choosenToDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && compareToDate(choosenToDate, campingOpenToDate))
-                {
-                    foundFacilityByDate = true;
-                }
-                else {
-                    foundFacilityByDate = false;
-                }
-
+                campingOpenFromDate = formatter.parse(camping.openFrom);
+                campingOpenToDate = formatter.parse(camping.openTo);
 
             } catch (ParseException e) {
-                foundFacilityByDate = false;
                 e.printStackTrace();
             }
+
+            if(choosenFromDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && choosenToDate == null)
+            {
+                foundFacilityByDate = true;
+            }
+
+            else if(choosenToDate != null && compareToDate(choosenToDate, campingOpenToDate) && choosenFromDate == null)
+            {
+                foundFacilityByDate = true;
+            }
+
+            else if(choosenFromDate != null && choosenToDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && compareToDate(choosenToDate, campingOpenToDate))
+            {
+                foundFacilityByDate = true;
+            }
+            else if (choosenFromDate == null && choosenToDate == null) {
+                foundFacilityByDate = true;
+            }
+            else
+            {
+                foundFacilityByDate = true;
+            }
+
 
            boolean foundFacilityById = true;
 
@@ -814,18 +820,25 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             {
                 return true;
             }
+            else
+            {
+                return false;
+            }
 
-            return false;
+
     }
 
     public boolean compareToDate(Date choosenToDate, Date campingOpenToDate)  {
 
-        if(campingOpenToDate.equals(choosenToDate) || campingOpenToDate.after(choosenToDate))
-        {
-            return true;
-        }
+            if (campingOpenToDate.equals(choosenToDate) || campingOpenToDate.after(choosenToDate))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
-        return false;
     }
 
 }
