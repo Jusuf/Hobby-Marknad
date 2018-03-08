@@ -733,43 +733,61 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        boolean foundFacilityByDate;
+
 
         Date campingOpenFromDate = null;
         Date campingOpenToDate = null;
+        boolean invalidCampingFromDate = false;
+        boolean invalidCampingToDate = false;
 
         for (Camping camping : loadedCampings)
         {
+            boolean foundFacilityByDate = true;
 
             try {
                 campingOpenFromDate = formatter.parse(camping.openFrom);
-                campingOpenToDate = formatter.parse(camping.openTo);
-
+                invalidCampingFromDate = false;
             } catch (ParseException e) {
                 e.printStackTrace();
+                invalidCampingFromDate = true;
             }
 
-            if(choosenFromDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && choosenToDate == null)
-            {
-                foundFacilityByDate = true;
+            try {
+                campingOpenToDate = formatter.parse(camping.openTo);
+                invalidCampingToDate = false;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                invalidCampingToDate = true;
             }
 
-            else if(choosenToDate != null && compareToDate(choosenToDate, campingOpenToDate) && choosenFromDate == null)
+            if(choosenFromDate != null && invalidCampingFromDate == false  && choosenToDate == null)
             {
-                foundFacilityByDate = true;
+                foundFacilityByDate = compareFromDate(choosenFromDate, campingOpenFromDate);
             }
 
-            else if(choosenFromDate != null && choosenToDate != null && compareFromDate(choosenFromDate, campingOpenFromDate) && compareToDate(choosenToDate, campingOpenToDate))
+            if(choosenToDate != null && invalidCampingToDate == false && choosenFromDate == null)
             {
-                foundFacilityByDate = true;
+                foundFacilityByDate = compareToDate(choosenToDate, campingOpenToDate);
             }
-            else if (choosenFromDate == null && choosenToDate == null) {
-                foundFacilityByDate = true;
-            }
-            else
+
+            if(choosenFromDate != null && choosenToDate != null && invalidCampingFromDate == false && invalidCampingToDate == false )
             {
+                foundFacilityByDate = false;
+
+                boolean from = compareFromDate(choosenFromDate, campingOpenFromDate);
+                boolean to = compareToDate(choosenToDate, campingOpenToDate);
+                if(from == true && to == true)
+                {
+                    foundFacilityByDate = true;
+                }
+            }
+            if (choosenFromDate == null && choosenToDate == null) {
                 foundFacilityByDate = true;
             }
+//            else
+//            {
+//                foundFacilityByDate = true;
+//            }
 
 
            boolean foundFacilityById = true;
