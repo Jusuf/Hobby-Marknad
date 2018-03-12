@@ -35,6 +35,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
+    View view = null;
 
     ViewPager viewPagerCaravanimages = null;
     private GoogleMap mMap;
@@ -52,6 +53,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     private ImageView imageCampingHeart = null;
     private ImageView imageWorkshopHeart = null;
+    private ImagePagerAdapter pageAdapter = null;
 
     private Button btnCampingCall = null;
     private Button btnCampingSendEmail = null;
@@ -66,45 +68,16 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_camping, container, false);
+        view =  inflater.inflate(R.layout.fragment_camping, container, false);
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
         }
 
-
-
         viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
-        ImagePagerAdapter pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
+        pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
         viewPagerCaravanimages.setAdapter(pageAdapter);
 
-        sliderDotspanel = (LinearLayout) view.findViewById(R.id.sliderDots);
-
-        dotscount = pageAdapter.getCount();
-        dots = new ImageView[dotscount];
-
-        for(int i = 0; i < dotscount; i++){
-
-            dots[i] = new ImageView(mainActivity.getContext());
-            dots[i].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.non_active_dot));
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            params.setMargins(8, 0, 8, 0);
-
-            sliderDotspanel.addView(dots[i], params);
-
-        }
-
-        if (dotscount > 0)
-        {
-            dots[0].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.active_dot));
-        }
-        else
-        {
-            viewPagerCaravanimages.setVisibility(View.GONE);
-            sliderDotspanel.setVisibility(View.GONE);
-        }
 
         viewPagerCaravanimages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -160,11 +133,13 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 //            campingEmail.setText(camping.email);
 //            campingWebPage.setText(camping.webpage);
 
-            if(camping.images != null)
+            if(camping.images != null && camping.images.size() > 0)
             {
                 for (String imageUrl: camping.images) {
                     imageUrls.add(imageBaseAddress + imageUrl);
                 }
+                pageAdapter.notifyDataSetChanged();
+                createDotlayout();
             }
 
         }
@@ -238,6 +213,37 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 16));
         }
+    }
+
+    private void createDotlayout(){
+        sliderDotspanel = (LinearLayout) view.findViewById(R.id.sliderDots);
+
+        dotscount = pageAdapter.getCount();
+        dots = new ImageView[dotscount];
+
+        for(int i = 0; i < dotscount; i++){
+
+            dots[i] = new ImageView(mainActivity.getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.non_active_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            sliderDotspanel.addView(dots[i], params);
+
+        }
+
+        if (dotscount > 0)
+        {
+            dots[0].setImageDrawable(ContextCompat.getDrawable(mainActivity.getContext(), R.drawable.active_dot));
+        }
+        else
+        {
+            viewPagerCaravanimages.setVisibility(View.GONE);
+            sliderDotspanel.setVisibility(View.GONE);
+        }
+
     }
 
 

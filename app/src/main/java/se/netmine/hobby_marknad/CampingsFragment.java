@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static se.netmine.hobby_marknad.R.id.map;
@@ -638,6 +639,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         if (campings != null)
         {
             for (Camping camping : campings) {
+
+
                 loadedCampings.add(camping);
             }
 

@@ -51,7 +51,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         Picasso.with(context).load(arrayList.get(position))
 //                .placeholder(R.drawable.image_uploading)
 //                .error(R.drawable.image_not_found)
-.into(imageView);
+        .into(imageView);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         container.addView(itemView);

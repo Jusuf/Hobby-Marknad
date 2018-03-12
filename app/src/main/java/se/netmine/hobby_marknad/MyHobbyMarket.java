@@ -113,9 +113,6 @@ public class MyHobbyMarket {
 
 
 
-
-
-
     private class UpdateDb extends AsyncTask<Void, Void, Void> {
 
         private ArrayList<Camping> campings = new ArrayList<>();
@@ -152,7 +149,7 @@ public class MyHobbyMarket {
             try{
                 String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
                 String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
-                String facilityCategoryNameAsSQL = StringUtil.toSQLName("facilityCategoryName") + "=?";
+                String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
 
 
 
@@ -169,7 +166,7 @@ public class MyHobbyMarket {
                         else{
                             for (Camping camping: foundCampings) {
                                 Camping dbCamping = Camping.findById(Camping.class, camping.getId());
-                                dbCamping.save();
+//                                dbCamping.save();
                             }
                         }
 
@@ -191,12 +188,33 @@ public class MyHobbyMarket {
                                 for (Facility foundFacility : foundFacilities)
                                 {
                                     Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
-                                    dbFacility.save();
+//                                    dbFacility.save();
                                 }
                             }
                         }
 
                     }
+
+                    for (String i: c.images) {
+
+                            List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i );
+
+                            if (foundCampingImages.size() == 0)
+                            {
+                                CampingImage campingImage = new CampingImage();
+                                campingImage.fileName = i;
+                                campingImage.campingId = c.campingId;
+                                campingImage.save();
+                            }
+                            else{
+                                for (CampingImage foundCampingImage : foundCampingImages)
+                                {
+                                    CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
+//                                    dbCampingImage.save();
+                                }
+                            }
+                        }
+
                 }
 
                 if(this.campingFacilityOptions != null)
@@ -214,7 +232,7 @@ public class MyHobbyMarket {
                             else{
                                 for (FacilityOption foundFacilityOption: foundFacilityOptions) {
                                     FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
-                                    dbFacilityOption.save();
+//                                    dbFacilityOption.save();
                                 }
                             }
                         }
@@ -226,21 +244,15 @@ public class MyHobbyMarket {
                 List<Camping> dbCampings = Camping.listAll(Camping.class);
                 this.campingsFromDb.addAll(dbCampings);
 
+                for (Camping camping: this.campingsFromDb) {
+                    List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+                    for (CampingImage image: campingImages) {
+                        camping.images.add(image.fileName);
+                    }
+                }
+
                 List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
                 this.campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
-
-//                List<FacilityOption> generalFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryGeneral);
-//                List<FacilityOption> activityFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryActivity);
-//                List<FacilityOption> otherFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryOther);
-
-//                this.campingFacilityOptionsFromDb.generalFacilities.addAll(generalFacilityOptions);
-//                this.campingFacilityOptionsFromDb.activityFacilities.addAll(activityFacilityOptions);
-//                this.campingFacilityOptionsFromDb.otherFacilities.addAll(otherFacilityOptions);
-
-//                CampingsResult resultObject = new CampingsResult();
-//                resultObject.campings = allCampings;
-//
-//                ArrayList<CampingsResult> result = new ArrayList<>();
 
                 return null;
             }
@@ -259,6 +271,27 @@ public class MyHobbyMarket {
 
             onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
         }
+    }
+
+    private void LoadFromDb ( List<Camping> dbCampings, List<FacilityOption> dbFacilityOptions){
+
+        String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+
+        ArrayList<Camping> campingsFromDb = new ArrayList<>();
+        campingsFromDb.addAll(dbCampings);
+        ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
+        campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+
+        for (Camping camping: campingsFromDb) {
+               List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+               camping.images = new ArrayList<>();
+               for (CampingImage image: campingImages) {
+                    camping.images.add(image.fileName);
+
+               }
+        }
+
+        onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
     }
 
     public void setDeviceToken(String deviceToken)
@@ -628,15 +661,9 @@ public class MyHobbyMarket {
         List<Camping> campingsFromDb = Camping.listAll(Camping.class);
         List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
 
-        if(campingsFromDb.size() > 0)
+        if(campingsFromDb.size() > 0 && facilityOptionsFromDb.size() > 0)
         {
-            ArrayList<Camping> campingArrayList = new ArrayList<>();
-            ArrayList<FacilityOption> facilityOptionArrayList = new ArrayList<>();
-
-            campingArrayList.addAll(campingsFromDb);
-            facilityOptionArrayList.addAll(facilityOptionsFromDb);
-
-            mainActivity.onCampingsLoaded(campingArrayList, facilityOptionArrayList);
+            LoadFromDb(campingsFromDb, facilityOptionsFromDb);
         }
         else
         {
@@ -675,31 +702,12 @@ public class MyHobbyMarket {
             loadedCampings = campingsResult.campings;
             campingFacilityOptions = campingsResult.campingFacilityOptions;
 
-
             if(campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + loadedCampings.size());
 
                 UpdateDb task = new UpdateDb(loadedCampings, campingFacilityOptions);
 
                 task.execute();
-
-//                ArrayList<Camping> campingArrayList = new ArrayList<>();
-
-//                List<Camping> campingsFromDb = Camping.listAll(Camping.class);
-
-//                campingArrayList.addAll(campingsFromDb);
-
-//                mainActivity.onCampingsLoaded(campingArrayList, campingFacilityOptions);
-//                mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
-
-//                  UpdateDatabase(loadedCampings);
-//                campingJson = result;
-
-//                try {
-//                    new ReadWriteJsonFileUtils(mainActivity.getContext()).createJsonFileData("campingsJson", result);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
             }
 
         } catch (Exception e) {
