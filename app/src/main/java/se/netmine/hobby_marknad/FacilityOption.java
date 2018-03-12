@@ -6,25 +6,26 @@ import com.orm.SugarRecord;
  * Created by jusuf on 2017-10-03.
  */
 
-public class Facility extends SugarRecord<Facility>{
+public class FacilityOption extends SugarRecord<FacilityOption>{
     public String facilityId;
     public String name;
+    boolean isSelected = false;
+
     public String facilityCategoryId;
     public String facilityCategoryName;
 
-    public String campingId;
-    Camping camping;
 
-    public Facility() {}
+    public FacilityOption() {}
 
-    public Facility(String facilityId, String name, String facilityCategoryId, String campingId, String facilityCategoryName) {
+    public FacilityOption(String facilityId, String name, String facilityCategoryId, String facilityCategoryName) {
         super();
         this.facilityId = facilityId;
         this.name = name;
         this.facilityCategoryId = facilityCategoryId;
         this.facilityCategoryName = facilityCategoryName;
-
-        this.campingId = campingId;
     }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }

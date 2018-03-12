@@ -9,5 +9,5 @@ import java.util.ArrayList;
 public class CampingsResult {
     public boolean success;
     public ArrayList<Camping> campings;
-    public CampingFacilityOptions campingFacilityOptions;
+    public ArrayList<FacilityOption> campingFacilityOptions;
 }

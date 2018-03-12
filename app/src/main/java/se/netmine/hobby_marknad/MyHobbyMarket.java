@@ -14,6 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
+import com.orm.StringUtil;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -24,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -46,8 +51,8 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.145/hobby/";
-    public static String url = "http://192.168.0.6/hobby/";
+    public static String url = "http://192.168.20.169/hobby/";
+//    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
 
@@ -56,7 +61,7 @@ public class MyHobbyMarket {
     public Faq[] faqs;
     public Dealer[] dealers;
     public ArrayList<Camping> loadedCampings;
-    public CampingFacilityOptions campingFacilityOptions;
+    public ArrayList<FacilityOption> campingFacilityOptions;
     public Caravan caravan;
     public String campingJson;
 
@@ -98,16 +103,162 @@ public class MyHobbyMarket {
         return this.currentUser.lastName;
     }
 
-    public void loadCampingsFromFile(){
-        GetFile task = new GetFile(new AsyncFileResponse() {
-            @Override
-            public void processFinish(String output) {
+    private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb)
+    {
+        if(campingsFromDb.size() > 0)
+        {
+            mainActivity.onCampingsLoaded(campingsFromDb, campingFacilityOptionsFromDb);
+        }
+    }
 
-                campingJson = output;
+
+
+
+
+
+    private class UpdateDb extends AsyncTask<Void, Void, Void> {
+
+        private ArrayList<Camping> campings = new ArrayList<>();
+        private ArrayList<FacilityOption> campingFacilityOptions = new ArrayList<>();
+
+        private ArrayList<Camping> campingsFromDb = new ArrayList<>();
+        private ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
+
+        private UpdateDb(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions){
+            this.campings = campings;
+            this.campingFacilityOptions = campingFacilityOptions;
+        }
+
+        private ProgressDialog pDialog;
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.sync);
+
+        @Override
+        protected void onPreExecute() {
+            if(loadingMessage != null)
+            {
+                pDialog = new ProgressDialog(mainActivity.getContext());
+                pDialog.setMessage(loadingMessage);
+                pDialog.setCancelable(false);
+                pDialog.show();
             }
-        });
+        }
 
-        task.execute(new String[] {"campingsJson"});
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Camping.deleteAll(Camping.class);
+            Facility.deleteAll(Facility.class);
+            FacilityOption.deleteAll(FacilityOption.class);
+
+            try{
+                String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+                String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
+                String facilityCategoryNameAsSQL = StringUtil.toSQLName("facilityCategoryName") + "=?";
+
+
+
+                for (Camping c: this.campings) {
+
+                    if (c.campingId != null){
+
+                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL , c.campingId);
+
+                        if (foundCampings.size() == 0)
+                        {
+                            c.save();
+                        }
+                        else{
+                            for (Camping camping: foundCampings) {
+                                Camping dbCamping = Camping.findById(Camping.class, camping.getId());
+                                dbCamping.save();
+                            }
+                        }
+
+                    }
+
+                    for (Facility f: c.facilities) {
+
+                        if(f.facilityId != null){
+
+                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId );
+
+                            if (foundFacilities.size() == 0)
+                            {
+                                f.camping = c;
+                                f.campingId = c.campingId;
+                                f.save();
+                            }
+                            else{
+                                for (Facility foundFacility : foundFacilities)
+                                {
+                                    Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
+                                    dbFacility.save();
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                if(this.campingFacilityOptions != null)
+                {
+                    if(campingFacilityOptions.size() > 0)
+                    {
+
+                        for (FacilityOption f : campingFacilityOptions)
+                        {
+                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId );
+                            if(foundFacilityOptions.size() == 0)
+                            {
+                                f.save();
+                            }
+                            else{
+                                for (FacilityOption foundFacilityOption: foundFacilityOptions) {
+                                    FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
+                                    dbFacilityOption.save();
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+
+                List<Camping> dbCampings = Camping.listAll(Camping.class);
+                this.campingsFromDb.addAll(dbCampings);
+
+                List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
+                this.campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+
+//                List<FacilityOption> generalFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryGeneral);
+//                List<FacilityOption> activityFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryActivity);
+//                List<FacilityOption> otherFacilityOptions = FacilityOption.find(FacilityOption.class, facilityCategoryNameAsSQL, facilityCategoryOther);
+
+//                this.campingFacilityOptionsFromDb.generalFacilities.addAll(generalFacilityOptions);
+//                this.campingFacilityOptionsFromDb.activityFacilities.addAll(activityFacilityOptions);
+//                this.campingFacilityOptionsFromDb.otherFacilities.addAll(otherFacilityOptions);
+
+//                CampingsResult resultObject = new CampingsResult();
+//                resultObject.campings = allCampings;
+//
+//                ArrayList<CampingsResult> result = new ArrayList<>();
+
+                return null;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void voids) {
+            if (pDialog != null && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+
+            onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
+        }
     }
 
     public void setDeviceToken(String deviceToken)
@@ -474,12 +625,18 @@ public class MyHobbyMarket {
 
     protected void getCampingList(String searchQuery, String deviceCulture)
     {
-        if(campingJson != null)
+        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
+        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
+
+        if(campingsFromDb.size() > 0)
         {
-            CampingsResult campingsResult = new Gson().fromJson(campingJson, CampingsResult.class);
-            loadedCampings = campingsResult.campings;
-            campingFacilityOptions = campingsResult.campingFacilityOptions;
-            mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+            ArrayList<Camping> campingArrayList = new ArrayList<>();
+            ArrayList<FacilityOption> facilityOptionArrayList = new ArrayList<>();
+
+            campingArrayList.addAll(campingsFromDb);
+            facilityOptionArrayList.addAll(facilityOptionsFromDb);
+
+            mainActivity.onCampingsLoaded(campingArrayList, facilityOptionArrayList);
         }
         else
         {
@@ -521,14 +678,28 @@ public class MyHobbyMarket {
 
             if(campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + loadedCampings.size());
-                mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
-                campingJson = result;
 
-                try {
-                    new ReadWriteJsonFileUtils(mainActivity.getContext()).createJsonFileData("campingsJson", result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                UpdateDb task = new UpdateDb(loadedCampings, campingFacilityOptions);
+
+                task.execute();
+
+//                ArrayList<Camping> campingArrayList = new ArrayList<>();
+
+//                List<Camping> campingsFromDb = Camping.listAll(Camping.class);
+
+//                campingArrayList.addAll(campingsFromDb);
+
+//                mainActivity.onCampingsLoaded(campingArrayList, campingFacilityOptions);
+//                mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+
+//                  UpdateDatabase(loadedCampings);
+//                campingJson = result;
+
+//                try {
+//                    new ReadWriteJsonFileUtils(mainActivity.getContext()).createJsonFileData("campingsJson", result);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
 
         } catch (Exception e) {

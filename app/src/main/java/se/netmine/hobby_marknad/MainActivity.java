@@ -35,6 +35,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.orm.SugarDb;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 
         MyHobbyMarket.getInstance().mainActivity = this;
 
-        MyHobbyMarket.getInstance().loadCampingsFromFile();
+//        MyHobbyMarket.getInstance().loadCampingsFromFile();
 
         navigateToStartFragment();
     }
@@ -147,7 +149,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCampingsLoaded(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions)
+    public void onCampingsLoaded(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions)
     {
         // Notify the active fragment that a dealers has bean loaded
         ((IFragment)fragmentStack.peek()).onCampingsUpdated(campings, campingFacilityOptions);

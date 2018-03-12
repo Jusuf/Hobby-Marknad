@@ -124,4 +124,6 @@
     <string name="camping_choose_date">Välj datum...</string>
     <string name="camping_clear_date">Rensa</string>
 
+    <string name="sync">Synkroniserar med databasen...</string>
+
 </resources>

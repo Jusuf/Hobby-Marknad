@@ -72,9 +72,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             mainActivity = (IMainActivity) getActivity();
         }
 
-        for (String imageUrl: camping.images) {
-            imageUrls.add(imageBaseAddress + imageUrl);
-        }
+
 
         viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
         ImagePagerAdapter pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
@@ -161,6 +159,14 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 //            campingTel.setText(camping.phone);
 //            campingEmail.setText(camping.email);
 //            campingWebPage.setText(camping.webpage);
+
+            if(camping.images != null)
+            {
+                for (String imageUrl: camping.images) {
+                    imageUrls.add(imageBaseAddress + imageUrl);
+                }
+            }
+
         }
 
         btnCampingCall.setOnClickListener(new View.OnClickListener() {

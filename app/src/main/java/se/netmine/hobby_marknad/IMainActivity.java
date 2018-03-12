@@ -32,7 +32,7 @@ public interface IMainActivity {
 
     void onDealersLoaded(Dealer[] dealers);
 
-    void onCampingsLoaded(ArrayList<Camping> campings, CampingFacilityOptions campingFacilityOptions );
+    void onCampingsLoaded(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions );
 
     void showToast(String message);
 

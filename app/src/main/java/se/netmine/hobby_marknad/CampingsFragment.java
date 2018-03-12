@@ -67,14 +67,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     ImageView imageSearchFilter = null;
     public ArrayList<Camping> loadedCampings = new ArrayList<>();
     public ArrayList<Camping> filteredCampings = new ArrayList<>();
-    public ArrayList<Facility> loadedGeneralFacilities = new  ArrayList<>();
-    public ArrayList<Facility> loadedActivityFacilities = new  ArrayList<>();
-    public ArrayList<Facility> loadedOtherFacilities = new  ArrayList<>();
-    public ArrayList<Facility> filteredFacilities = new  ArrayList<>();
+    public ArrayList<FacilityOption> loadedGeneralFacilities = new  ArrayList<>();
+    public ArrayList<FacilityOption> loadedActivityFacilities = new  ArrayList<>();
+    public ArrayList<FacilityOption> loadedOtherFacilities = new  ArrayList<>();
+    public ArrayList<FacilityOption> filteredFacilities = new  ArrayList<>();
     ArrayAdapter<Camping> adapter;
-    ArrayAdapter<Facility> generalFacilityAdapter;
-    ArrayAdapter<Facility> activityFacilityAdapter;
-    ArrayAdapter<Facility> otherFacilityAdapter;
+    ArrayAdapter<FacilityOption> generalFacilityAdapter;
+    ArrayAdapter<FacilityOption> activityFacilityAdapter;
+    ArrayAdapter<FacilityOption> otherFacilityAdapter;
     String language;
     String searchQuery;
     private Camping markedCamping = null;
@@ -403,7 +403,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
 
-            if(item.images.size() > 0){
+            if(item.images != null && item.images.size() > 0){
 
                 DownloadImage task = new DownloadImage(new AsyncResponse() {
                     @Override
@@ -426,16 +426,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
-    public class GeneralFacilityListAdapter extends ArrayAdapter<Facility> {
+    public class GeneralFacilityListAdapter extends ArrayAdapter<FacilityOption> {
 
-        public GeneralFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+        public GeneralFacilityListAdapter(Context context, ArrayList<FacilityOption> objects) {
             super(context, 0, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Facility item = getItem(position);
+            FacilityOption item = getItem(position);
 
             convertView = inflater.inflate(R.layout.facility_item, null);
 
@@ -448,7 +448,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                     if(pos != ListView.INVALID_POSITION)
                     {
-                        Facility facility = loadedGeneralFacilities.get(pos);
+                        FacilityOption facility = loadedGeneralFacilities.get(pos);
                         facility.setSelected(isChecked);
 
                         if(isChecked)
@@ -466,24 +466,24 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
             });
 
-            txtFacilityName.setText(item.getName());
-            chkBox.setChecked(item.isSelected());
+            txtFacilityName.setText(item.name);
+            chkBox.setChecked(item.isSelected);
 
             return convertView;
         }
 
     }
 
-    public class ActivityFacilityListAdapter extends ArrayAdapter<Facility> {
+    public class ActivityFacilityListAdapter extends ArrayAdapter<FacilityOption> {
 
-        public ActivityFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+        public ActivityFacilityListAdapter(Context context, ArrayList<FacilityOption> objects) {
             super(context, 0, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Facility item = getItem(position);
+            FacilityOption item = getItem(position);
 
             convertView = inflater.inflate(R.layout.facility_item, null);
 
@@ -496,7 +496,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                     if(pos != ListView.INVALID_POSITION)
                     {
-                        Facility facility = loadedActivityFacilities.get(pos);
+                        FacilityOption facility = loadedActivityFacilities.get(pos);
                         facility.setSelected(isChecked);
 
                         if(isChecked)
@@ -514,24 +514,24 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
             });
 
-            txtFacilityName.setText(item.getName());
-            chkBox.setChecked(item.isSelected());
+            txtFacilityName.setText(item.name);
+            chkBox.setChecked(item.isSelected);
 
             return convertView;
         }
 
     }
 
-    public class OtherFacilityListAdapter extends ArrayAdapter<Facility> {
+    public class OtherFacilityListAdapter extends ArrayAdapter<FacilityOption> {
 
-        public OtherFacilityListAdapter(Context context, ArrayList<Facility> objects) {
+        public OtherFacilityListAdapter(Context context, ArrayList<FacilityOption> objects) {
             super(context, 0, objects);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Facility item = getItem(position);
+            FacilityOption item = getItem(position);
 
             convertView = inflater.inflate(R.layout.facility_item, null);
 
@@ -544,7 +544,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                     if(pos != ListView.INVALID_POSITION)
                     {
-                        Facility facility = loadedOtherFacilities.get(pos);
+                        FacilityOption facility = loadedOtherFacilities.get(pos);
                         facility.setSelected(isChecked);
 
                         if(isChecked)
@@ -562,8 +562,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
             });
 
-            txtFacilityName.setText(item.getName());
-            chkBox.setChecked(item.isSelected());
+            txtFacilityName.setText(item.name);
+            chkBox.setChecked(item.isSelected);
 
             return convertView;
         }
@@ -627,8 +627,12 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onCampingsUpdated(ArrayList<Camping> campings, CampingFacilityOptions loadedCampingFacilityOptions)
+    public void onCampingsUpdated(ArrayList<Camping> campings, ArrayList<FacilityOption> loadedCampingFacilityOptions)
     {
+        String facilityCategoryGeneral = "Allmänna faciliteter";
+        String facilityCategoryActivity = "Aktivitetsfaciliteter";
+        String facilityCategoryOther = "Övriga faciliteter";
+
         loadedCampings.clear();
 
         if (campings != null)
@@ -637,21 +641,32 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 loadedCampings.add(camping);
             }
 
-            for (Facility facility : loadedCampingFacilityOptions.generalFacilities) {
-                loadedGeneralFacilities.add(facility);
-            }
-            for (Facility facility : loadedCampingFacilityOptions.activityFacilities) {
-                loadedActivityFacilities.add(facility);
-            }
-            for (Facility facility : loadedCampingFacilityOptions.otherFacilities) {
-                loadedOtherFacilities.add(facility);
-            }
-
             if(mMap != null){
                 MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
                 mapFrag.getMapAsync(this);
             }
         }
+
+        if (loadedCampingFacilityOptions != null)
+        {
+
+            for (FacilityOption facilityOption : loadedCampingFacilityOptions) {
+                if(facilityOption.facilityCategoryName.equals(facilityCategoryGeneral))
+                {
+                    loadedGeneralFacilities.add(facilityOption);
+                }
+                if(facilityOption.facilityCategoryName.equals(facilityCategoryActivity))
+                {
+                    loadedActivityFacilities.add(facilityOption);
+                }
+                if(facilityOption.facilityCategoryName.equals(facilityCategoryOther))
+                {
+                    loadedOtherFacilities.add(facilityOption);
+                }
+            }
+
+        }
+
         if (generalFacilityAdapter != null) {
             generalFacilityAdapter.notifyDataSetChanged();
         }
@@ -792,7 +807,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
            boolean foundFacilityById = true;
 
-           for (Facility filteredFacilitie : filteredFacilities)
+           for (FacilityOption filteredFacilitie : filteredFacilities)
            {
                if(containsFacility(camping.facilities, filteredFacilitie))
                {
@@ -822,10 +837,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
-    public boolean containsFacility(ArrayList<Facility> campingFacilities, Facility filteredFacility)
+    public boolean containsFacility(ArrayList<Facility> campingFacilities, FacilityOption filteredFacility)
     {
         for(Facility f : campingFacilities) {
-            if(f != null && f.id.equals(filteredFacility.id)) {
+            if(f != null && f.facilityId.equals(filteredFacility.facilityId)) {
                 return true;
             }
         }
