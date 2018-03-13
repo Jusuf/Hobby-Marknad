@@ -43,7 +43,7 @@
                 android:id="@+id/txtCampingName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="5dp"
                 android:text="Camping name"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -53,11 +53,24 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/campingDetailsCampingStarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="10"
+            android:layout_below="@id/campingDetailsCampingNameLayout">
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/campingDetailsMapLayout"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:layout_below="@id/campingDetailsCampingNameLayout">
+            android:layout_below="@id/campingDetailsCampingStarLayout">
 
             <fragment
                 android:id="@+id/mapCampingDetails"

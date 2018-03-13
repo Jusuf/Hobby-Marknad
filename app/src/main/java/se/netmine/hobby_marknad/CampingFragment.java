@@ -46,6 +46,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private ImageView[] dots;
     private LinearLayout sliderDotspanel = null;
     private TextView campingName = null;
+    private LinearLayout campingDetailsCampingStarLayout = null;
     private TextView campingAddress = null;
     private TextView campingTel = null;
     private TextView campingEmail = null;
@@ -110,6 +111,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         mapFragment.getMapAsync(this);
 
         campingName = (TextView) view.findViewById(R.id.txtCampingName);
+        campingDetailsCampingStarLayout = (LinearLayout) view.findViewById(R.id.campingDetailsCampingStarLayout) ;
         campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
         campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
         campingEmail = (TextView) view.findViewById(R.id.txtCampingEmail);
@@ -140,6 +142,20 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
                 }
                 pageAdapter.notifyDataSetChanged();
                 createDotlayout();
+            }
+
+            if(!empty(camping.stars))
+            {
+                int numberOfStars = Integer.parseInt(camping.stars);
+                for (int i = 0; i < numberOfStars; i++) {
+                    ImageView imageview = new ImageView(mainActivity.getContext());
+                    LinearLayout.LayoutParams params = new LinearLayout
+                            .LayoutParams(160, 160);
+                    imageview.setLayoutParams(params);
+                    imageview.setImageResource(R.drawable.ic_white_star);
+                    imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+                    campingDetailsCampingStarLayout.addView(imageview);
+                }
             }
 
         }
@@ -244,6 +260,11 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             sliderDotspanel.setVisibility(View.GONE);
         }
 
+    }
+
+    public static boolean empty( final String s ) {
+        // Null-safe, short-circuit evaluation.
+        return s == null || s.trim().isEmpty();
     }
 
 
