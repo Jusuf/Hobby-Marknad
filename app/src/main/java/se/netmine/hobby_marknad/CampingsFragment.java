@@ -1,6 +1,7 @@
 package se.netmine.hobby_marknad;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.orm.StringUtil;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -97,8 +101,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     private Calendar mCurrentDate;
     private int year, month, day;
-    private Date choosenFromDate = null;
-    private Date choosenToDate = null;
+    private String choosenFromDate = null;
+    private String choosenToDate = null;
 
     public CampingsFragment(){
 
@@ -307,16 +311,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         Calendar newDate = Calendar.getInstance();
                         newDate.set(year, monthOfYear, dayOfMonth);
 
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         String date = formatter.format(newDate.getTime());
-                        txtFromDate.setText(date);
-                        try {
-                            choosenFromDate = formatter.parse(date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
 
-                        filterCampings();
+                        txtFromDate.setText(date);
+                        choosenFromDate = date;
+
+//                        filterCampings();
+
+                        FilterCampings filterCampings = new FilterCampings();
+                        filterCampings.execute();
                     }
                 }, year, month, day);
 
@@ -327,7 +331,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                                 choosenFromDate = null;
                                 txtFromDate.setText(getString(R.string.camping_choose_date));
 
-                                filterCampings();
+//                                filterCampings();
+
+                                FilterCampings filterCampings = new FilterCampings();
+                                filterCampings.execute();
                             }
                         });
 
@@ -348,16 +355,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         Calendar newDate = Calendar.getInstance();
                         newDate.set(year, monthOfYear, dayOfMonth);
 
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         String date = formatter.format(newDate.getTime());
-                        try {
-                            choosenToDate = formatter.parse(date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
+                        choosenToDate = date;
                         txtToDate.setText(date);
 
-                        filterCampings();
+//                        filterCampings();
+
+                        FilterCampings filterCampings = new FilterCampings();
+                        filterCampings.execute();
                     }
                 }, year, month, day);
 
@@ -368,7 +375,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                                 choosenToDate = null;
                                 txtToDate.setText(getString(R.string.camping_choose_date));
 
-                                filterCampings();
+//                                filterCampings();
+
+                                FilterCampings filterCampings = new FilterCampings();
+                                filterCampings.execute();
                             }
                         });
 
@@ -461,8 +471,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             filteredFacilities.remove(facility);
                         }
 
-                        filterCampings();
+//                        filterCampings();
 
+                        FilterCampings filterCampings = new FilterCampings();
+                        filterCampings.execute();
                     }
                 }
             });
@@ -509,8 +521,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             filteredFacilities.remove(facility);
                         }
 
-                        filterCampings();
-
+//                        filterCampings();
+                        FilterCampings filterCampings = new FilterCampings();
+                        filterCampings.execute();
                     }
                 }
             });
@@ -557,8 +570,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             filteredFacilities.remove(facility);
                         }
 
-                        filterCampings();
-
+                        // filterCampings();
+                        FilterCampings filterCampings = new FilterCampings();
+                        filterCampings.execute();
                     }
                 }
             });
@@ -739,106 +753,90 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         void processFinish(Drawable output);
     }
 
-    public void filterCampings(){
-
-        filteredCampings.clear();
-
-        if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
-        {
-            filteredCampings.clear();
-            //filteredCampings.addAll(loadedCampings);
-        }
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-
-
-        Date campingOpenFromDate = null;
-        Date campingOpenToDate = null;
-        boolean invalidCampingFromDate = false;
-        boolean invalidCampingToDate = false;
-
-        for (Camping camping : loadedCampings)
-        {
-            boolean foundFacilityByDate = true;
-
-            try {
-                campingOpenFromDate = formatter.parse(camping.openFrom);
-                invalidCampingFromDate = false;
-            } catch (ParseException e) {
-                e.printStackTrace();
-                invalidCampingFromDate = true;
-            }
-
-            try {
-                campingOpenToDate = formatter.parse(camping.openTo);
-                invalidCampingToDate = false;
-            } catch (ParseException e) {
-                e.printStackTrace();
-                invalidCampingToDate = true;
-            }
-
-            if(choosenFromDate != null && invalidCampingFromDate == false  && choosenToDate == null)
-            {
-                foundFacilityByDate = compareFromDate(choosenFromDate, campingOpenFromDate);
-            }
-
-            if(choosenToDate != null && invalidCampingToDate == false && choosenFromDate == null)
-            {
-                foundFacilityByDate = compareToDate(choosenToDate, campingOpenToDate);
-            }
-
-            if(choosenFromDate != null && choosenToDate != null && invalidCampingFromDate == false && invalidCampingToDate == false )
-            {
-                foundFacilityByDate = false;
-
-                boolean from = compareFromDate(choosenFromDate, campingOpenFromDate);
-                boolean to = compareToDate(choosenToDate, campingOpenToDate);
-                if(from == true && to == true)
-                {
-                    foundFacilityByDate = true;
-                }
-            }
-            if (choosenFromDate == null && choosenToDate == null) {
-                foundFacilityByDate = true;
-            }
-//            else
-//            {
-//                foundFacilityByDate = true;
+//    public void filterCampings (){
+//        String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+//        ArrayList<Camping> filteredCampingsByDate = new ArrayList<>();
+//
+//        filteredCampings.clear();
+//
+//        if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
+//        {
+//            filteredCampings.clear();
+//        }
+//
+//        if (choosenFromDate != null && choosenToDate == null)
+//        {
+//            List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ? or OPEN_FROM = ?", choosenFromDate.toString(), choosenFromDate.toString());
+//            filteredCampingsByDate.clear();
+//            filteredCampingsByDate.addAll(result);
+//        }
+//
+//        if (choosenFromDate == null && choosenToDate != null)
+//        {
+//            List<Camping> result = Camping.find(Camping.class, "OPEN_TO = ? or OPEN_TO >= ?", choosenToDate.toString(), choosenToDate.toString());
+//            filteredCampingsByDate.clear();
+//            filteredCampingsByDate.addAll(result);
+//        }
+//
+//        if (choosenFromDate != null && choosenToDate != null)
+//        {
+//            List<Camping> result = Camping.find(Camping.class, "OPEN_From <= ? or OPEN_TO = ? and OPEN_TO >= ? or OPEN_TO = ?", choosenToDate.toString(), choosenToDate.toString(), choosenToDate.toString(), choosenToDate.toString());
+//            filteredCampingsByDate.clear();
+//            filteredCampingsByDate.addAll(result);
+//        }
+//
+//        if (choosenFromDate == null && choosenToDate == null)
+//        {
+//            List<Camping> result = Camping.listAll(Camping.class);
+//            filteredCampingsByDate.clear();
+//            filteredCampingsByDate.addAll(result);
+//        }
+//
+//        for (Camping camping: filteredCampingsByDate) {
+//            List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+//            camping.images = new ArrayList<>();
+//            for (CampingImage image: campingImages) {
+//                camping.images.add(image.fileName);
 //            }
-
-
-           boolean foundFacilityById = true;
-
-           for (FacilityOption filteredFacilitie : filteredFacilities)
-           {
-               if(containsFacility(camping.facilities, filteredFacilitie))
-               {
-                   foundFacilityById = true;
-               }
-               else {
-                   foundFacilityById = false;
-                   break;
-               }
-           }
-
-           if(foundFacilityById && foundFacilityByDate)
-           {
-               filteredCampings.add(camping);
-           }
-        }
-
-        adapter.notifyDataSetChanged();
-
-        if(mMap != null){
-            mMap.clear();
-            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
-            mapFrag.getMapAsync(this);
-        }
-
-        btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
-
-    }
+//
+//            List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+//            camping.facilities = new ArrayList<>();
+//            camping.facilities.addAll(campingFacilities);
+//        }
+//
+//        for (Camping camping : filteredCampingsByDate)
+//        {
+//           boolean foundFacilityById = true;
+//
+//           for (FacilityOption filteredFacility : filteredFacilities)
+//           {
+//               if(containsFacility(camping.facilities, filteredFacility))
+//               {
+//                   foundFacilityById = true;
+//               }
+//               else {
+//                   foundFacilityById = false;
+//                   break;
+//               }
+//           }
+//
+//           if(foundFacilityById)
+//           {
+//               filteredCampings.add(camping);
+//           }
+//        }
+//
+//        adapter.notifyDataSetChanged();
+//
+//        if(mMap != null){
+//            mMap.clear();
+//            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
+//            mapFrag.getMapAsync(this);
+//        }
+//
+//        btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
+//
+//    }
 
     public boolean containsFacility(ArrayList<Facility> campingFacilities, FacilityOption filteredFacility)
     {
@@ -850,32 +848,125 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         return false;
     }
 
-    public boolean compareFromDate(Date choosenFromDate, Date campingOpenFromDate)  {
+    private class FilterCampings extends AsyncTask<Void, Void, Void> {
 
-            if(campingOpenFromDate.equals(choosenFromDate) || campingOpenFromDate.before(choosenFromDate))
+        private ProgressDialog pDialog;
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.sync);
+
+        @Override
+        protected void onPreExecute() {
+            if(loadingMessage != null)
             {
-                return true;
+                pDialog = new ProgressDialog(mainActivity.getContext());
+                pDialog.setMessage(loadingMessage);
+                pDialog.setCancelable(false);
+                pDialog.show();
             }
-            else
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+            ArrayList<Camping> filteredCampingsByDate = new ArrayList<>();
+
+            filteredCampings.clear();
+
+            if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
             {
-                return false;
+                filteredCampings.clear();
             }
+
+            if (choosenFromDate != null && choosenToDate == null)
+            {
+                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ?", choosenFromDate.toString());
+                filteredCampingsByDate.clear();
+                filteredCampingsByDate.addAll(result);
+            }
+
+            if (choosenFromDate == null && choosenToDate != null)
+            {
+                List<Camping> result = Camping.find(Camping.class, "OPEN_TO = ? or OPEN_TO >= ?", choosenToDate.toString(), choosenToDate.toString());
+                filteredCampingsByDate.clear();
+                filteredCampingsByDate.addAll(result);
+            }
+
+            if (choosenFromDate != null && choosenToDate != null)
+            {
+                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ? and OPEN_TO >= ?", choosenFromDate.toString(), choosenToDate.toString());
+                filteredCampingsByDate.clear();
+                filteredCampingsByDate.addAll(result);
+            }
+
+            if (choosenFromDate == null && choosenToDate == null)
+            {
+                List<Camping> result = Camping.listAll(Camping.class);
+                filteredCampingsByDate.clear();
+                filteredCampingsByDate.addAll(result);
+            }
+
+            for (Camping camping: filteredCampingsByDate) {
+                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+                camping.images = new ArrayList<>();
+                for (CampingImage image: campingImages) {
+                    camping.images.add(image.fileName);
+                }
+
+                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+                camping.facilities = new ArrayList<>();
+                camping.facilities.addAll(campingFacilities);
+            }
+
+            for (Camping camping : filteredCampingsByDate)
+            {
+                boolean foundFacilityById = true;
+
+                for (FacilityOption filteredFacility : filteredFacilities)
+                {
+                    if(containsFacility(camping.facilities, filteredFacility))
+                    {
+                        foundFacilityById = true;
+                    }
+                    else {
+                        foundFacilityById = false;
+                        break;
+                    }
+                }
+
+                if(foundFacilityById)
+                {
+                    filteredCampings.add(camping);
+                }
+            }
+
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(Void voids) {
+
+
+            adapter.notifyDataSetChanged();
+            updateMap();
+            btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
+
+            if (pDialog != null && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+        }
 
 
     }
 
-    public boolean compareToDate(Date choosenToDate, Date campingOpenToDate)  {
-
-            if (campingOpenToDate.equals(choosenToDate) || campingOpenToDate.after(choosenToDate))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+    private void updateMap(){
+        if(mMap != null){
+            mMap.clear();
+            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
+            mapFrag.getMapAsync(this);
+        }
     }
+
 
 }
 

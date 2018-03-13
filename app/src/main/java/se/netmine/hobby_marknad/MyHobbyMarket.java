@@ -51,7 +51,7 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.169/hobby/";
+    public static String url = "http://192.168.20.189/hobby/";
 //    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
@@ -145,13 +145,12 @@ public class MyHobbyMarket {
             Camping.deleteAll(Camping.class);
             Facility.deleteAll(Facility.class);
             FacilityOption.deleteAll(FacilityOption.class);
+            CampingImage.deleteAll(CampingImage.class);
 
             try{
                 String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
                 String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
                 String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
-
-
 
                 for (Camping c: this.campings) {
 
@@ -245,10 +244,17 @@ public class MyHobbyMarket {
                 this.campingsFromDb.addAll(dbCampings);
 
                 for (Camping camping: this.campingsFromDb) {
+
                     List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+                    camping.images = new ArrayList<>();
+
                     for (CampingImage image: campingImages) {
                         camping.images.add(image.fileName);
                     }
+
+                    List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+                    camping.facilities = new ArrayList<>();
+                    camping.facilities.addAll(campingFacilities);
                 }
 
                 List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
@@ -287,8 +293,11 @@ public class MyHobbyMarket {
                camping.images = new ArrayList<>();
                for (CampingImage image: campingImages) {
                     camping.images.add(image.fileName);
-
                }
+
+            List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+            camping.facilities = new ArrayList<>();
+            camping.facilities.addAll(campingFacilities);
         }
 
         onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
