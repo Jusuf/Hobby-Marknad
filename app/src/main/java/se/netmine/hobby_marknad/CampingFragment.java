@@ -79,6 +79,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
+            mainActivity.setTitle(camping.name);
         }
 
         viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
@@ -174,7 +175,14 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
                 linearLayoutCampingInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        CampingInfo campingInfo = new CampingInfo();
+                        campingInfo.campingName = camping.name;
+                        campingInfo.infoText = camping.descSV;
 
+                        CampingInfoFragment fragment = new CampingInfoFragment();
+                        fragment.campingInfo = campingInfo;
+
+                        mainActivity.onNavigateToFragment(fragment);
                     }
                 });
             }
