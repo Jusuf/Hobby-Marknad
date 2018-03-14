@@ -47,6 +47,12 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private LinearLayout sliderDotspanel = null;
     private TextView campingName = null;
     private LinearLayout campingDetailsCampingStarLayout = null;
+    private LinearLayout linearLayoutCampingInfo = null;
+    private TextView txtCampingReadInfo = null;
+
+
+
+
     private TextView campingAddress = null;
     private TextView campingTel = null;
     private TextView campingEmail = null;
@@ -112,25 +118,29 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         campingName = (TextView) view.findViewById(R.id.txtCampingName);
         campingDetailsCampingStarLayout = (LinearLayout) view.findViewById(R.id.campingDetailsCampingStarLayout) ;
-        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
-        campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
-        campingEmail = (TextView) view.findViewById(R.id.txtCampingEmail);
-        campingWebPage = (TextView) view.findViewById(R.id.txtCampingWebPage);
+        linearLayoutCampingInfo = (LinearLayout) view.findViewById(R.id.linearLayoutCampingInfo);
+        txtCampingReadInfo = (TextView) view.findViewById(R.id.txtCampingReadInfo);
 
-        imageCampingHeart = (ImageView) view.findViewById(R.id.imageCampingHeart);
-        imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
 
-        btnCampingCall = (Button) view.findViewById(R.id.btnCampingCall);
-        btnCampingSendEmail = (Button) view.findViewById(R.id.btnCampingSendEmail);
-        btnCampingVisitHompage = (Button) view.findViewById(R.id.btnCampingVisitHomepage);
-        btnCampingShowRoute = (Button) view.findViewById(R.id.btnCampingShowRoute);
+//        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
+//        campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
+//        campingEmail = (TextView) view.findViewById(R.id.txtCampingEmail);
+//        campingWebPage = (TextView) view.findViewById(R.id.txtCampingWebPage);
+
+//        imageCampingHeart = (ImageView) view.findViewById(R.id.imageCampingHeart);
+//        imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
+//
+//        btnCampingCall = (Button) view.findViewById(R.id.btnCampingCall);
+//        btnCampingSendEmail = (Button) view.findViewById(R.id.btnCampingSendEmail);
+//        btnCampingVisitHompage = (Button) view.findViewById(R.id.btnCampingVisitHomepage);
+//        btnCampingShowRoute = (Button) view.findViewById(R.id.btnCampingShowRoute);
 
 
         if (camping != null)
         {
             mainActivity.setTitle(camping.name);
             campingName.setText(camping.name);
-            campingAddress.setText(camping.street + ", " + camping.postalcode + " " + camping.city);
+//            campingAddress.setText(camping.street + ", " + camping.postalcode + " " + camping.city);
 //            campingTel.setText(camping.phone);
 //            campingEmail.setText(camping.email);
 //            campingWebPage.setText(camping.webpage);
@@ -158,32 +168,47 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
                 }
             }
 
+            if(!empty(camping.descSV))
+            {
+                linearLayoutCampingInfo.setVisibility(View.VISIBLE);
+                linearLayoutCampingInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+            else
+            {
+                linearLayoutCampingInfo.setVisibility(View.GONE);
+            }
+
         }
 
-        btnCampingCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse("tel:" + camping.phone));
-                startActivity(intent);
-            }
-        });
+//        btnCampingCall.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+////                intent.setData(Uri.parse("tel:" + camping.phone));
+//                startActivity(intent);
+//            }
+//        });
+//
+//        btnCampingSendEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_SEND);
+//                intent.setType("plain/text");
+////                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { camping.email });
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "");
+//                intent.putExtra(Intent.EXTRA_TEXT, "");
+//                startActivity(Intent.createChooser(intent, ""));
+//            }
+//        });
 
-        btnCampingSendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("plain/text");
-//                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { camping.email });
-                intent.putExtra(Intent.EXTRA_SUBJECT, "");
-                intent.putExtra(Intent.EXTRA_TEXT, "");
-                startActivity(Intent.createChooser(intent, ""));
-            }
-        });
-
-        btnCampingVisitHompage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        btnCampingVisitHompage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                String url = camping.webpage;
 
 //                Uri webpage = Uri.parse(url);
@@ -195,17 +220,17 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 //                Intent browserIntent = new Intent(Intent.ACTION_VIEW);
 //                browserIntent.setData(webpage);
 //                startActivity(browserIntent);
-            }
-        });
+//            }
+//        });
 
-        btnCampingShowRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + camping.lat  + ">,<" + camping.lng + ">?q=<" + camping.lat  + ">,<" + camping.lng + ">(" + camping.name + ")"));
-                intent.setPackage("com.google.android.apps.maps");
-                startActivity(intent);
-            }
-        });
+//        btnCampingShowRoute.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + camping.lat  + ">,<" + camping.lng + ">?q=<" + camping.lat  + ">,<" + camping.lng + ">(" + camping.name + ")"));
+//                intent.setPackage("com.google.android.apps.maps");
+//                startActivity(intent);
+//            }
+//        });
 
         return view;
     }

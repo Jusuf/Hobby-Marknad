@@ -123,6 +123,16 @@
     <string name="camping_opening_hours_to_label">Till:</string>
     <string name="camping_choose_date">Välj datum...</string>
     <string name="camping_clear_date">Rensa</string>
+    <string name="camping_read_about">Läs om campingen</string>
+
+    <string name="camping_general_facilities">Allmänna faciliteter</string>
+    <string name="camping_activity_facilities">Aktivitetsfaciliteter</string>
+    <string name="camping_other_facilities">Övriga faciliteter</string>
+    <string name="camping_of_housing">Boendeform</string>
+    <string name="camping_opening_hours_">Öppettider</string>
+    <string name="camping_contact_and_directions">Kontakt &amp; Vägbeskrivning</string>
+
+
 
     <string name="sync">Synkroniserar med databasen...</string>
 

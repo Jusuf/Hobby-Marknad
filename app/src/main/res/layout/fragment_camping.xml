@@ -61,6 +61,554 @@
             android:weightSum="10"
             android:layout_below="@id/campingDetailsCampingNameLayout">
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/campingDetailsCampingInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:background="@drawable/faq_list_search_bg"
+            android:layout_below="@id/campingDetailsCampingStarLayout"
+            android:layout_marginBottom="5dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingInfo"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp">
+
+                <ImageView
+                    android:id="@+id/imageViewCampingInfo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_read_info" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingReadInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_read_about"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/txtCampingNoneInfo"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="xxx"-->
+                            <!--android:textColor="@color/faq_text_dark_grey"-->
+                            <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingGeneralFacilities"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageViewGeneralFacilities"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_general_facilities" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingGeneralFacilities"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="General facilities..."
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtCampingGeneralFacilitiesCounter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Number..."
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingActivityFacilities"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageViewActivityFacilities"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_activity_facilities" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingActivityFacilities"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_activity_facilities"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtCampingActivityFacilitiesCounter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Number..."
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingOtherFacilities"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageViewOtherFacilities"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_other_facilities" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingOtherFacilities"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_other_facilities"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtCampingOtherFacilitiesCounter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Number..."
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingOfHousing"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageViewOfHousing"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_of_housing" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingOfHousing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_of_housing"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtCampingOfHousingCounter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Number..."
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingOpenHours"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageOpenHours"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_open_hours" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingOpenHours"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_opening_hours"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtCampingOpenHoursTimes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="time"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCampingContactAndDirections"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_service_item"
+                android:paddingRight="15dp">
+
+                <ImageView
+                    android:id="@+id/imageContactAndDirections"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_camping_contact_and_directions" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtCampingContactAndDirections"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/camping_contact_and_directions"
+                            android:textColor="@color/text_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/txtCampingNoneInfo"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="xxx"-->
+                    <!--android:textColor="@color/faq_text_dark_grey"-->
+                    <!--android:textSize="12sp" />-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingAddressTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer address:"-->
+                    <!--android:textColor="@color/dealer_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingAddress"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer address"-->
+                    <!--android:textColor="@color/dealer_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:paddingLeft="10dp"/>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingTelTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer tel:"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingTel"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer tel"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:paddingLeft="10dp"/>-->
+
+            <!--</LinearLayout>-->
+
+
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10"-->
+                <!--android:paddingTop="10dp">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingEmailTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer e-mail:"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingEmail"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer e-mail"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:paddingLeft="10dp"/>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10"-->
+                <!--android:paddingBottom="10dp">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingWebPageTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer webpage:"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingWebPage"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Dealer webpage"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:paddingLeft="10dp"/>-->
+
+            <!--</LinearLayout>-->
 
 
         </LinearLayout>
@@ -70,7 +618,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:layout_below="@id/campingDetailsCampingStarLayout">
+            android:layout_below="@id/campingDetailsCampingInfoLayout">
 
             <fragment
                 android:id="@+id/mapCampingDetails"
@@ -82,282 +630,159 @@
         </LinearLayout>
 
 
+        <!--<LinearLayout-->
+            <!--android:id="@+id/layoutCampingWorkshop"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:background="@drawable/camping_list_search_bg"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_below="@id/campingDetailsCampingInfoLayout">-->
 
-        <LinearLayout
-            android:id="@+id/campingDetailsCampingInfoLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="10"
-            android:background="@drawable/faq_list_search_bg"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"
-            android:layout_below="@id/campingDetailsMapLayout">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:background="@color/myhobby_blue"-->
+                <!--android:orientation="horizontal">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingServicesTitle"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:text="Services"-->
+                    <!--android:textAllCaps="true"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:layout_gravity="bottom"-->
+                    <!--android:paddingBottom="5dp"/>-->
 
-                <TextView
-                    android:id="@+id/txtCampingAddressTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer address:"
-                    android:textColor="@color/dealer_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <!--</LinearLayout>-->
 
-                <TextView
-                    android:id="@+id/txtCampingAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer address"
-                    android:textColor="@color/dealer_dark_grey"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10"-->
+                <!--android:paddingRight="15dp">-->
 
-            </LinearLayout>
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView3"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:srcCompat="@drawable/ic_my_reseller"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="0.6" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingServiceCamping"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Reseller"-->
+                    <!--android:textColor="@color/text_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--android:paddingBottom="15dp"-->
+                    <!--android:layout_weight="9"/>-->
 
-                <TextView
-                    android:id="@+id/txtCampingTelTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer tel:"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageCampingHeart"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:srcCompat="@drawable/ic_heart_empty"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:layout_weight="0.60" />-->
 
-                <TextView
-                    android:id="@+id/txtCampingTel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer tel"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
+            <!--</LinearLayout>-->
 
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="10"-->
+                <!--android:paddingRight="15dp">-->
 
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView4"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:srcCompat="@drawable/ic_my_workshop"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="0.60" />-->
 
+                <!--<TextView-->
+                    <!--android:id="@+id/txtCampingServiceWorkShop"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="9"-->
+                    <!--android:paddingBottom="15dp"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="15dp"-->
+                    <!--android:text="Workshop"-->
+                    <!--android:textColor="@color/dealer_dark_grey"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingTop="10dp">
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageWorkshopHeart"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--app:srcCompat="@drawable/ic_heart_empty"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:layout_weight="0.60" />-->
 
-                <TextView
-                    android:id="@+id/txtCampingEmailTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer e-mail:"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <!--</LinearLayout>-->
 
-                <TextView
-                    android:id="@+id/txtCampingEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer e-mail"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
+        <!--</LinearLayout>-->
 
-            </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/btnCampingCall"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/layoutCampingWorkshop"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/info_button"-->
+            <!--android:text="@string/reseller_call"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="#ffffff" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingBottom="10dp">
+        <!--<Button-->
+            <!--android:id="@+id/btnCampingSendEmail"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/btnCampingCall"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/info_button"-->
+            <!--android:text="@string/reseller_send_email"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="#ffffff" />-->
 
-                <TextView
-                    android:id="@+id/txtCampingWebPageTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer webpage:"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+        <!--<Button-->
+            <!--android:id="@+id/btnCampingVisitHomepage"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/btnCampingSendEmail"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/info_button"-->
+            <!--android:text="@string/reseller_visit_homepage"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="#ffffff" />-->
 
-                <TextView
-                    android:id="@+id/txtCampingWebPage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dealer webpage"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutCampingWorkshop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/camping_list_search_bg"
-            android:paddingTop="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/campingDetailsCampingInfoLayout">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/myhobby_blue"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtCampingServicesTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:text="Services"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="bottom"
-                    android:paddingBottom="5dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingRight="15dp">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_my_reseller"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.6" />
-
-                <TextView
-                    android:id="@+id/txtCampingServiceCamping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reseller"
-                    android:textColor="@color/text_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:layout_weight="9"/>
-
-                <ImageView
-                    android:id="@+id/imageCampingHeart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_heart_empty"
-                    android:layout_gravity="right"
-                    android:layout_weight="0.60" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                android:paddingRight="15dp">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_my_workshop"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.60" />
-
-                <TextView
-                    android:id="@+id/txtCampingServiceWorkShop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9"
-                    android:paddingBottom="15dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="15dp"
-                    android:text="Workshop"
-                    android:textColor="@color/dealer_dark_grey"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/imageWorkshopHeart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_heart_empty"
-                    android:layout_gravity="right"
-                    android:layout_weight="0.60" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnCampingCall"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layoutCampingWorkshop"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/info_button"
-            android:text="@string/reseller_call"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
-
-        <Button
-            android:id="@+id/btnCampingSendEmail"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnCampingCall"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/info_button"
-            android:text="@string/reseller_send_email"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
-
-        <Button
-            android:id="@+id/btnCampingVisitHomepage"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnCampingSendEmail"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/info_button"
-            android:text="@string/reseller_visit_homepage"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
-
-        <Button
-            android:id="@+id/btnCampingShowRoute"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnCampingVisitHomepage"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/info_button"
-            android:text="@string/reseller_show_route"
-            android:textAllCaps="false"
-            android:textColor="#ffffff" />
+        <!--<Button-->
+            <!--android:id="@+id/btnCampingShowRoute"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/btnCampingVisitHomepage"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/info_button"-->
+            <!--android:text="@string/reseller_show_route"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="#ffffff" />-->
     </RelativeLayout>
 
 </ScrollView>
