@@ -42,6 +42,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     public Camping camping = null;
     private String imageBaseAddress = "http://scr.basetool.se/upload/";
     private ArrayList<String> imageUrls = new ArrayList<>();
+    private ArrayList<Facility> generalFacilities = new ArrayList<>();
+    private ArrayList<Facility> activityFacilities = new ArrayList<>();
+    private ArrayList<Facility> otherFacilities = new ArrayList<>();
     private int dotscount;
     private ImageView[] dots;
     private LinearLayout sliderDotspanel = null;
@@ -49,6 +52,15 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private LinearLayout campingDetailsCampingStarLayout = null;
     private LinearLayout linearLayoutCampingInfo = null;
     private TextView txtCampingReadInfo = null;
+
+    LinearLayout linearLayoutCampingGeneralFacilities = null;
+    TextView txtCampingGeneralFacilitiesCounter = null;
+
+    LinearLayout linearLayoutCampingActivityFacilities = null;
+    TextView txtCampingActivityFacilitiesCounter = null;
+
+    LinearLayout linearLayoutCampingOtherFacilities = null;
+    TextView txtCampingOtherFacilitiesCounter = null;
 
 
 
@@ -122,6 +134,15 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         linearLayoutCampingInfo = (LinearLayout) view.findViewById(R.id.linearLayoutCampingInfo);
         txtCampingReadInfo = (TextView) view.findViewById(R.id.txtCampingReadInfo);
 
+        linearLayoutCampingGeneralFacilities = (LinearLayout) view.findViewById(R.id.linearLayoutCampingGeneralFacilities);
+        txtCampingGeneralFacilitiesCounter = (TextView) view.findViewById(R.id.txtCampingGeneralFacilitiesCounter);
+
+        linearLayoutCampingActivityFacilities = (LinearLayout) view.findViewById(R.id.linearLayoutCampingActivityFacilities);
+        txtCampingActivityFacilitiesCounter = (TextView) view.findViewById(R.id.txtCampingActivityFacilitiesCounter);
+
+        linearLayoutCampingOtherFacilities = (LinearLayout) view.findViewById(R.id.linearLayoutCampingOtherFacilities);
+        txtCampingOtherFacilitiesCounter = (TextView) view.findViewById(R.id.txtCampingOtherFacilitiesCounter);
+
 
 //        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
 //        campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
@@ -139,6 +160,11 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         if (camping != null)
         {
+            if(camping.facilities != null)
+            {
+                sortFacilities(camping.facilities);
+            }
+
             mainActivity.setTitle(camping.name);
             campingName.setText(camping.name);
 //            campingAddress.setText(camping.street + ", " + camping.postalcode + " " + camping.city);
@@ -189,6 +215,72 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             else
             {
                 linearLayoutCampingInfo.setVisibility(View.GONE);
+            }
+
+            if(generalFacilities.size() > 0)
+            {
+                txtCampingGeneralFacilitiesCounter.setText(generalFacilities.size() + " st");
+
+                linearLayoutCampingGeneralFacilities.setVisibility(View.VISIBLE);
+                linearLayoutCampingGeneralFacilities.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        FacilityListFragment fragment = new FacilityListFragment();
+                        fragment.facilities = generalFacilities;
+                        fragment.listName = getString(R.string.camping_general_facilities);
+
+                        mainActivity.onNavigateToFragment(fragment);
+                    }
+                });
+            }
+            else
+            {
+                linearLayoutCampingGeneralFacilities.setVisibility(View.GONE);
+            }
+
+            if(activityFacilities.size() > 0)
+            {
+                txtCampingActivityFacilitiesCounter.setText(activityFacilities.size() + " st");
+
+                linearLayoutCampingActivityFacilities.setVisibility(View.VISIBLE);
+                linearLayoutCampingActivityFacilities.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        FacilityListFragment fragment = new FacilityListFragment();
+                        fragment.facilities = activityFacilities;
+                        fragment.listName = getString(R.string.camping_activity_facilities);
+
+                        mainActivity.onNavigateToFragment(fragment);
+                    }
+                });
+            }
+            else
+            {
+                linearLayoutCampingActivityFacilities.setVisibility(View.GONE);
+            }
+
+            if(otherFacilities.size() > 0)
+            {
+                txtCampingOtherFacilitiesCounter.setText(otherFacilities.size() + " st");
+
+                linearLayoutCampingOtherFacilities.setVisibility(View.VISIBLE);
+                linearLayoutCampingOtherFacilities.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        FacilityListFragment fragment = new FacilityListFragment();
+                        fragment.facilities = otherFacilities;
+                        fragment.listName = getString(R.string.camping_other_facilities);
+
+                        mainActivity.onNavigateToFragment(fragment);
+                    }
+                });
+            }
+            else
+            {
+                linearLayoutCampingOtherFacilities.setVisibility(View.GONE);
             }
 
         }
@@ -300,8 +392,31 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         return s == null || s.trim().isEmpty();
     }
 
+    private void sortFacilities(ArrayList<Facility> facilities)
+    {
+        for (Facility facility: facilities) {
+            if(facility.facilityCategoryName.equals("Allmänna faciliteter"))
+            {
+                generalFacilities.add(facility);
+            }
+            if(facility.facilityCategoryName.equals("Aktivitetsfaciliteter"))
+            {
+                activityFacilities.add(facility);
+            }
+            if(facility.facilityCategoryName.equals("Övriga faciliteter"))
+            {
+                otherFacilities.add(facility);
+            }
+        }
+    }
 
-
+    @Override
+    public void onResume()
+    {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle(camping.name);
+    }
 
 
 }

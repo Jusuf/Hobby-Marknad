@@ -34,16 +34,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.orm.StringUtil;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -129,7 +125,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         language = Locale.getDefault().getCountry();
 
         loadCampings();
-
 
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
         adapter = new CampingListAdapter(mainActivity.getContext(), filteredCampings);
@@ -448,7 +443,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             FacilityOption item = getItem(position);
 
-            convertView = inflater.inflate(R.layout.facility_item, null);
+            convertView = inflater.inflate(R.layout.facility_select_item, null);
 
             TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
             CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
@@ -498,7 +493,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             FacilityOption item = getItem(position);
 
-            convertView = inflater.inflate(R.layout.facility_item, null);
+            convertView = inflater.inflate(R.layout.facility_select_item, null);
 
             TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
             CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
@@ -547,7 +542,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             FacilityOption item = getItem(position);
 
-            convertView = inflater.inflate(R.layout.facility_item, null);
+            convertView = inflater.inflate(R.layout.facility_select_item, null);
 
             TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
             CheckBox chkBox = (CheckBox) convertView.findViewById(R.id.checkboxFacility);
@@ -882,6 +877,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle(getString(R.string.nav_campings));
+    }
 
 }
 

@@ -159,7 +159,7 @@
                             android:id="@+id/txtCampingGeneralFacilities"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="General facilities..."
+                            android:text="@string/camping_general_facilities"
                             android:textColor="@color/text_dark_grey"
                             android:textSize="16sp"
                             android:textStyle="bold" />

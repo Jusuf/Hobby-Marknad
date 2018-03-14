@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingLeft="5dp">
+
+    <ListView
+        android:id="@+id/listViewFacilities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:background="@drawable/faq_list_search_bg"/>
+</LinearLayout>
