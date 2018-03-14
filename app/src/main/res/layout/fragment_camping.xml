@@ -614,11 +614,42 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/campingCampingDotSe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10"
+            android:padding="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/info_button"
+            android:layout_below="@id/campingDetailsCampingInfoLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Boka på"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Camping.se"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/campingDetailsMapLayout"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="horizontal"
-            android:layout_below="@id/campingDetailsCampingInfoLayout">
+            android:layout_below="@id/campingCampingDotSe">
 
             <fragment
                 android:id="@+id/mapCampingDetails"
