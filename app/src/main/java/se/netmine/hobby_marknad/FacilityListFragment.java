@@ -33,6 +33,8 @@ public class FacilityListFragment extends BaseFragment {
 
     ListView listViewFacilities = null;
     LayoutInflater inflater = null;
+    LinearLayout linearLayoutListImage = null;
+    ImageView imgFacilityListIcon = null;
     public ArrayList<Facility> facilities = new  ArrayList();
     ArrayAdapter<Facility> adapter;
 
@@ -51,6 +53,35 @@ public class FacilityListFragment extends BaseFragment {
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle(listName);
+        }
+
+        imgFacilityListIcon = (ImageView) view.findViewById(R.id.imgFacilityListIcon);
+        linearLayoutListImage = (LinearLayout) view.findViewById(R.id.linearLayoutListImage);
+
+        if(listName.equals("Allmänna faciliteter"))
+        {
+            imgFacilityListIcon.setImageResource(R.drawable.icon_camping_general);
+            imgFacilityListIcon.requestLayout();
+        }
+        if(listName.equals("Aktivitetsfaciliteter"))
+        {
+            imgFacilityListIcon.setImageResource(R.drawable.icon_camping_activity);
+            imgFacilityListIcon.requestLayout();
+        }
+        if(listName.equals("Övriga faciliteter"))
+        {
+            imgFacilityListIcon.setImageResource(R.drawable.icon_camping_other);
+            imgFacilityListIcon.requestLayout();
+        }
+        if(listName.equals("Boendeformer"))
+        {
+            imgFacilityListIcon.setImageResource(R.drawable.icon_camping_of_homeing);
+            imgFacilityListIcon.requestLayout();
+        }
+        if(listName.equals("Öppettider"))
+        {
+            imgFacilityListIcon.setImageResource(R.drawable.icon_camping_opened_hours);
+            imgFacilityListIcon.requestLayout();
         }
 
         adapter = new FacilityListAdapter(mainActivity.getContext(), facilities);
