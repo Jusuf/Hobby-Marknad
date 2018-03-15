@@ -54,6 +54,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private LinearLayout linearLayoutCampingInfo = null;
     private TextView txtCampingReadInfo = null;
 
+    private String openTimes = null;
+    private String fullServiceTimes = null;
+
     LinearLayout linearLayoutCampingGeneralFacilities = null;
     TextView txtCampingGeneralFacilitiesCounter = null;
 
@@ -65,6 +68,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     LinearLayout linearLayoutCampingOfHousing = null;
     TextView txtCampingOfHousingCounter = null;
+
+    LinearLayout linearLayoutCampingOpenHours = null;
+    TextView txtCampingOpenHoursTimes = null;
 
 
 
@@ -149,6 +155,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
         linearLayoutCampingOfHousing = (LinearLayout) view.findViewById(R.id.linearLayoutCampingOfHousing);
         txtCampingOfHousingCounter = (TextView) view.findViewById(R.id.txtCampingOfHousingCounter);
+
+        linearLayoutCampingOpenHours = (LinearLayout) view.findViewById(R.id.linearLayoutCampingOpenHours);
+        txtCampingOpenHoursTimes = (TextView) view.findViewById(R.id.txtCampingOpenHoursTimes);
 
 
 //        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
@@ -312,6 +321,43 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             {
                 linearLayoutCampingOfHousing.setVisibility(View.GONE);
             }
+
+            if(!empty(camping.fullServiceFrom) && !empty(camping.fullServiceTo))
+            {
+                fullServiceTimes = camping.fullServiceFrom + " - " + camping.fullServiceTo;
+            }
+
+            if(!empty(camping.openFrom) && !empty(camping.openTo))
+            {
+                openTimes = camping.openFrom + " - " + camping.openTo;
+
+                txtCampingOpenHoursTimes.setText(openTimes);
+                linearLayoutCampingOpenHours.setVisibility(View.VISIBLE);
+
+                if(!empty(openTimes) || !empty(fullServiceTimes))
+                {
+                    linearLayoutCampingOpenHours.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            OpenedTimesFragment fragment = new OpenedTimesFragment();
+                            fragment.listName =  getString(R.string.camping_opening_hours_title);
+                            fragment.openTimes = openTimes;
+                            fragment.fullServiceTimes = fullServiceTimes;
+
+                            mainActivity.onNavigateToFragment(fragment);
+                        }
+                    });
+                }
+
+            }
+            else
+                {
+                    linearLayoutCampingOpenHours.setVisibility(View.GONE);
+                }
+
+
+
 
         }
 
