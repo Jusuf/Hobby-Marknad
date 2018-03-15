@@ -146,13 +146,15 @@ public class MyHobbyMarket {
             Facility.deleteAll(Facility.class);
             FacilityOption.deleteAll(FacilityOption.class);
             CampingImage.deleteAll(CampingImage.class);
+            Accommodation.deleteAll(Accommodation.class);
 
             try{
                 String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
                 String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
+                String accommodationIdAsSQL = StringUtil.toSQLName("accommodationId") + "=?";
                 String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
 
-                for (Camping c: this.campings) {
+                for (Camping c: campings) {
 
                     if (c.campingId != null){
 
@@ -194,6 +196,30 @@ public class MyHobbyMarket {
 
                     }
 
+                    for (Accommodation a: c.accommodations) {
+
+                        if(a.accommodationId != null){
+
+                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId );
+
+                            if (foundAccommodations.size() == 0)
+                            {
+                                a.camping = c;
+
+                                a.campingId = c.campingId;
+                                a.save();
+                            }
+                            else{
+                                for (Accommodation foundAccommodation : foundAccommodations)
+                                {
+                                    Accommodation dbAccommodation = Accommodation.findById(Accommodation.class, foundAccommodation.getId());
+//                                    dbAccommodation.save();
+                                }
+                            }
+                        }
+
+                    }
+
                     for (String i: c.images) {
 
                             List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i );
@@ -216,7 +242,7 @@ public class MyHobbyMarket {
 
                 }
 
-                if(this.campingFacilityOptions != null)
+                if(campingFacilityOptions != null)
                 {
                     if(campingFacilityOptions.size() > 0)
                     {
@@ -241,7 +267,7 @@ public class MyHobbyMarket {
 
 
                 List<Camping> dbCampings = Camping.listAll(Camping.class);
-                this.campingsFromDb.addAll(dbCampings);
+                campingsFromDb.addAll(dbCampings);
 
                 for (Camping camping: this.campingsFromDb) {
 
@@ -255,10 +281,14 @@ public class MyHobbyMarket {
                     List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
                     camping.facilities = new ArrayList<>();
                     camping.facilities.addAll(campingFacilities);
+
+                    List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
+                    camping.accommodations = new ArrayList<>();
+                    camping.accommodations.addAll(campingAccommodations);
                 }
 
                 List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
-                this.campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+                campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
 
                 return null;
             }
@@ -279,14 +309,17 @@ public class MyHobbyMarket {
         }
     }
 
-    private void LoadFromDb ( List<Camping> dbCampings, List<FacilityOption> dbFacilityOptions){
+    private void LoadFromDb ( ){
+
+        List<Camping> campingsFromDbList = Camping.listAll(Camping.class);
+        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
 
         String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
 
         ArrayList<Camping> campingsFromDb = new ArrayList<>();
-        campingsFromDb.addAll(dbCampings);
+        campingsFromDb.addAll(campingsFromDbList);
         ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
-        campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+        campingFacilityOptionsFromDb.addAll(facilityOptionsFromDb);
 
         for (Camping camping: campingsFromDb) {
                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
@@ -298,6 +331,10 @@ public class MyHobbyMarket {
             List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
             camping.facilities = new ArrayList<>();
             camping.facilities.addAll(campingFacilities);
+
+            List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
+            camping.accommodations = new ArrayList<>();
+            camping.accommodations.addAll(campingAccommodations);
         }
 
         onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
@@ -667,14 +704,17 @@ public class MyHobbyMarket {
 
     protected void getCampingList(String searchQuery, String deviceCulture)
     {
-        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
-        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
+//        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
+//        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
+//        List<Facility> facilitiesFromDb = Facility.listAll(Facility.class);
+//        List<Accommodation> accommodationsFromDb = Accommodation.listAll(Accommodation.class);
 
-        if(campingsFromDb.size() > 0 && facilityOptionsFromDb.size() > 0)
-        {
-            LoadFromDb(campingsFromDb, facilityOptionsFromDb);
-        }
-        else
+        long foundCampings = Camping.count(Camping.class, null, null, null,null,null);
+        long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null,null,null);
+        long foundFacilities = Facility.count(Facility.class, null, null, null,null,null);
+        long foundAccommodations = Accommodation.count(Accommodation.class, null, null, null,null,null);
+
+        if(foundCampings == 0 || foundFacilityOptions == 0 || foundFacilities == 0 || foundAccommodations == 0 )
         {
             String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
             MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
@@ -693,6 +733,11 @@ public class MyHobbyMarket {
                     null,
                     null,null);
             api.execute();
+
+        }
+        else
+        {
+            LoadFromDb();
         }
 
     }

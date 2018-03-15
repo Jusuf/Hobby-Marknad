@@ -16,14 +16,16 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imgFacilityListIcon"
+            android:id="@+id/imgAccommodationListIcon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_camping_of_homeing"
+            android:layout_gravity="center"
             android:tint="@color/white"/>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listViewFacilities"
+        android:id="@+id/listViewAccommodations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"

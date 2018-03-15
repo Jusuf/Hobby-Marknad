@@ -45,6 +45,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
     private ArrayList<Facility> generalFacilities = new ArrayList<>();
     private ArrayList<Facility> activityFacilities = new ArrayList<>();
     private ArrayList<Facility> otherFacilities = new ArrayList<>();
+    private ArrayList<Accommodation> accommodations = new ArrayList<>();
     private int dotscount;
     private ImageView[] dots;
     private LinearLayout sliderDotspanel = null;
@@ -61,6 +62,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
 
     LinearLayout linearLayoutCampingOtherFacilities = null;
     TextView txtCampingOtherFacilitiesCounter = null;
+
+    LinearLayout linearLayoutCampingOfHousing = null;
+    TextView txtCampingOfHousingCounter = null;
 
 
 
@@ -143,6 +147,9 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
         linearLayoutCampingOtherFacilities = (LinearLayout) view.findViewById(R.id.linearLayoutCampingOtherFacilities);
         txtCampingOtherFacilitiesCounter = (TextView) view.findViewById(R.id.txtCampingOtherFacilitiesCounter);
 
+        linearLayoutCampingOfHousing = (LinearLayout) view.findViewById(R.id.linearLayoutCampingOfHousing);
+        txtCampingOfHousingCounter = (TextView) view.findViewById(R.id.txtCampingOfHousingCounter);
+
 
 //        campingAddress = (TextView) view.findViewById(R.id.txtCampingAddress);
 //        campingTel = (TextView) view.findViewById(R.id.txtCampingTel);
@@ -163,6 +170,7 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             if(camping.facilities != null)
             {
                 sortFacilities(camping.facilities);
+                sortAccommodations(camping.accommodations);
             }
 
             mainActivity.setTitle(camping.name);
@@ -281,6 +289,28 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             else
             {
                 linearLayoutCampingOtherFacilities.setVisibility(View.GONE);
+            }
+
+            if(accommodations.size() > 0)
+            {
+                txtCampingOfHousingCounter.setText(accommodations.size() + " st");
+
+                linearLayoutCampingOfHousing.setVisibility(View.VISIBLE);
+                linearLayoutCampingOfHousing.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AccommodationListFragment fragment = new AccommodationListFragment();
+                        fragment.accommodations = accommodations;
+                        fragment.listName = getString(R.string.camping_of_housing);
+
+                        mainActivity.onNavigateToFragment(fragment);
+                    }
+                });
+            }
+            else
+            {
+                linearLayoutCampingOfHousing.setVisibility(View.GONE);
             }
 
         }
@@ -407,6 +437,13 @@ public class CampingFragment extends BaseFragment implements OnMapReadyCallback 
             {
                 otherFacilities.add(facility);
             }
+        }
+    }
+
+    private void sortAccommodations(ArrayList<Accommodation> campingAccommodations)
+    {
+        for (Accommodation accommodation: campingAccommodations) {
+                accommodations.add(accommodation);
         }
     }
 
