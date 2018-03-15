@@ -31,16 +31,17 @@
     <string name="login_password">Password:</string>
 
     <string name="start_my_hobby_title">My Hobby</string>
-    <string name="start_my_hobby_control_caravan">Control a caravan with your phone</string>
-    <string name="start_service_book">Service book</string>
-    <string name="start_service_book_keep_control">Keep control</string>
-    <string name="start_resellers">Resellers</string>
-    <string name="start_catalog_and_magazines">Catalog &amp; Magazines</string>
-    <string name="start_faq">Faq</string>
-    <string name="start_faq_for_caravan_owners">For caravan owners</string>
-    <string name="start_settings_and_notifications">Settings &amp; Notifications</string>
-    <string name="start_camping">Camping</string>
-    <string name="start_camping_find_vacation_spot">Find vacation spot</string>
+    <string name="start_my_hobby_control_caravan">Styr husvahnen från mobilen</string>
+    <string name="start_service_book">Serviceboken</string>
+    <string name="start_service_book_keep_control">Behåll kontrollen</string>
+    <string name="start_resellers">Återförsäljare</string>
+    <string name="start_catalog_and_magazines">Katalog &amp; Magasin</string>
+    <string name="start_faq">Vanliga frågor</string>
+    <string name="start_faq_for_caravan_owners">För husvagnsägare</string>
+    <string name="start_my_page">Min sida</string>
+    <string name="start_settings_and_notifications">Inställningar &amp; Notiser</string>
+    <string name="start_camping">Campingar</string>
+    <string name="start_camping_find_vacation_spot">Hitta semesterplatsen</string>
 
 
     <string name="my_hobby_battery_loading">Battery Loading</string>
