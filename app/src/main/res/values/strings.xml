@@ -77,7 +77,7 @@
     <string name="reseller">Återförsäljare</string>
     <string name="reseller_call">Ring</string>
     <string name="reseller_send_email">Skicka e-post</string>
-    <string name="reseller_visit_homepage">Besök hemsidan</string>
+    <string name="reseller_visit_homepage">Besök webbplats</string>
     <string name="reseller_show_route">Visa vägbeskrivning</string>
     <string name="reseller_show">Visa</string>
 
@@ -134,6 +134,9 @@
     <string name="camping_read_about_camping">Läs om campingen</string>
     <string name="camping_opening_hours_title">Öppet</string>
     <string name="camping_full_service_opening_hours_title">Öppet fullservice</string>
+    <string name="contact_address">Adress:</string>
+    <string name="contact_phone">Telefon::</string>
+    <string name="contact_email">E-postadress:</string>
 
 
 
