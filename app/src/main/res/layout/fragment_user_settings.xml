@@ -1,0 +1,313 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="2.5dp"
+    tools:context="se.netmine.hobby_marknad.MainActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View android:id="@+id/strut"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true"/>
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/strut"
+                    android:layout_alignParentLeft="true"
+                    android:backgroundTint="@color/myhobby_blue"
+                    android:textColor="@color/white"
+                    android:text="@string/my_settings"/>
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/strut"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="@color/whiteTransparent"
+                    android:textColor="@color/myhobby_blue"
+                    android:text="@string/messages"/>
+            </RelativeLayout>
+        </FrameLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollViewUserSettings">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.66"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:weightSum="1">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/start_person" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/not_logged_in"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutDealerWorkshop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/faq_list_search_bg"
+                    android:paddingTop="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/dealerDetailsDealerInfoLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/myhobby_blue"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtDealerServicesTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:text="@string/my_dealer_workshop"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
+                            android:paddingBottom="5dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/ic_my_reseller"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.6" />
+
+                        <TextView
+                            android:id="@+id/txtDealerServiceReseller"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_dealer_not_chosen"
+                            android:textColor="@color/dealer_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:layout_weight="9"/>
+
+                        <ImageView
+                            android:id="@+id/imageDealerHeart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/ic_arrow_right_white"
+                            android:tint="@color/text_dark_grey"
+                            android:layout_gravity="right"
+                            android:layout_weight="0.60" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/ic_my_workshop"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.60" />
+
+                        <TextView
+                            android:id="@+id/txtDealerServiceWorkShop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:paddingBottom="15dp"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:text="@string/my_workshop_not_chosen"
+                            android:textColor="@color/dealer_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imageWorkshopHeart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/ic_arrow_right_white"
+                            android:tint="@color/text_dark_grey"
+                            android:layout_gravity="right"
+                            android:layout_weight="0.60" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutNotificationSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/faq_list_search_bg"
+                    android:paddingTop="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/dealerDetailsDealerInfoLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/myhobby_blue"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtNotificationSettingsTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:text="@string/settings_for_notifications"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_gravity="bottom"
+                            android:paddingBottom="5dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:paddingRight="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/news_and_offers"
+                            android:textColor="@color/dealer_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:layout_weight="9"/>
+
+                        <Switch
+                            android:id="@+id/switchNewsAndOffers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:layout_weight="1"
+                            android:thumbTint="@color/switch_color_state"
+                            android:trackTint="@color/switch_color_state" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10"
+                        android:paddingRight="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:paddingBottom="15dp"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:text="@string/service_reminder"
+                            android:textColor="@color/dealer_dark_grey"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/switchServiceReminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
+                            android:layout_weight="1"
+                            android:thumbTint="@color/switch_color_state"
+                            android:trackTint="@color/switch_color_state" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+
+    </LinearLayout>
+
+
+    </LinearLayout>

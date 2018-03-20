@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -99,6 +101,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private int year, month, day;
     private String choosenFromDate = null;
     private String choosenToDate = null;
+    MapFragment mapFragment = null;
+    Handler uiHandler = null;
+    Runnable runnable = null;
 
     public CampingsFragment(){
 
@@ -112,7 +117,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         view =  inflater.inflate(R.layout.fragment_campings, container, false);
 
 
-        final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
+        mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(map);
 
         mapFragment.getMapAsync(this);
@@ -121,6 +126,15 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle(getResources().getString(R.string.nav_campings));
         }
+
+        uiHandler = new Handler(Looper.getMainLooper());
+            runnable = new Runnable() {
+            @Override
+            public void run() {
+                refreshMarkers();
+            } // your code here }
+
+        };
 
         language = Locale.getDefault().getCountry();
 
@@ -594,45 +608,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap map) {
 
         mMap = map;
-        mMap.clear();
 
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
-            @Override
-            public void onMapClick(LatLng point) {
-                layoutShowCamping.setVisibility(View.GONE);
-            }
-        });
-
-        Double sumLat = 0.0;
-        Double sumLng = 0.0;
-
-        Double avgLat;
-        Double avgLng;
-
-        if(filteredCampings != null)
-        {
-            for (Camping camping : filteredCampings) {
-
-                if(!empty( camping.lng ) || !empty( camping.lat ))
-                {
-                    LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
-                    mMap.addMarker(new MarkerOptions()
-                            .title(camping.name)
-                            .snippet(camping.city)
-                            .position(marker));
-
-                    sumLat += Double.parseDouble(camping.lng);
-                    sumLng += Double.parseDouble(camping.lat);
-                }
-
-            }
-            avgLat = sumLat / filteredCampings.size();
-            avgLng = sumLng / filteredCampings.size();
-
-            LatLng avgPosition = new LatLng(avgLat, avgLng);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
-        }
+        refreshMarkers();
 
     }
 
@@ -648,15 +625,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         if (campings != null)
         {
             for (Camping camping : campings) {
-
-
                 loadedCampings.add(camping);
             }
 
-            if(mMap != null){
-                MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
-                mapFrag.getMapAsync(this);
-            }
         }
 
         if (loadedCampingFacilityOptions != null)
@@ -690,6 +661,16 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
 
         filteredCampings.addAll(loadedCampings);
+
+
+        if(mMap != null){
+
+            uiHandler.post(runnable);
+
+        }
+
+
+
     }
 
     @Override
@@ -848,6 +829,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
             }
 
+
+
             return null;
 
         }
@@ -857,7 +840,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
 
             adapter.notifyDataSetChanged();
-            updateMap();
             btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
 
             if (pDialog != null && pDialog.isShowing()) {
@@ -869,21 +851,67 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
-    private void updateMap(){
-        if(mMap != null){
-            mMap.clear();
-            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
-            mapFrag.getMapAsync(this);
-        }
-    }
-
     @Override
     public void onResume()
     {
         // After a pause
         super.onResume();
         mainActivity.setTitle(getString(R.string.nav_campings));
+
+        if(mMap != null){
+            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
+            mapFrag.getMapAsync(this);
+
+        }
+
+
+
     }
+
+    public void refreshMarkers(){
+        mMap.clear();
+
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng point) {
+                layoutShowCamping.setVisibility(View.GONE);
+            }
+        });
+
+        Double sumLat = 0.0;
+        Double sumLng = 0.0;
+
+        Double avgLat;
+        Double avgLng;
+
+        if(filteredCampings != null)
+        {
+            for (Camping camping : filteredCampings) {
+
+                if(!empty( camping.lng ) || !empty( camping.lat ))
+                {
+                    LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
+                    mMap.addMarker(new MarkerOptions()
+                            .title(camping.name)
+                            .snippet(camping.city)
+                            .position(marker));
+
+                    sumLat += Double.parseDouble(camping.lng);
+                    sumLng += Double.parseDouble(camping.lat);
+                }
+
+            }
+            avgLat = sumLat / filteredCampings.size();
+            avgLng = sumLng / filteredCampings.size();
+
+            LatLng avgPosition = new LatLng(avgLat, avgLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
+        }
+    }
+
+
+
 
 }
 

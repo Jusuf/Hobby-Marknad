@@ -51,7 +51,7 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.189/hobby/";
+    public static String url = "http://192.168.20.138/hobby/";
 //    public static String url = "http://192.168.0.6/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
@@ -110,8 +110,6 @@ public class MyHobbyMarket {
             mainActivity.onCampingsLoaded(campingsFromDb, campingFacilityOptionsFromDb);
         }
     }
-
-
 
     private class UpdateDb extends AsyncTask<Void, Void, Void> {
 
@@ -306,6 +304,47 @@ public class MyHobbyMarket {
 
 
             onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private class LoadCampingsFromDbAsync extends AsyncTask<Void, Void, Void> {
+
+        private ProgressDialog pDialog;
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.sync);
+
+        @Override
+        protected void onPreExecute() {
+            if(loadingMessage != null)
+            {
+                pDialog = new ProgressDialog(mainActivity.getContext());
+                pDialog.setMessage(loadingMessage);
+                pDialog.setCancelable(false);
+                pDialog.show();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            LoadFromDb();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voids) {
+            if (pDialog != null && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
         }
     }
 
@@ -737,7 +776,10 @@ public class MyHobbyMarket {
         }
         else
         {
-            LoadFromDb();
+//            LoadFromDb();
+
+            LoadCampingsFromDbAsync task = new LoadCampingsFromDbAsync();
+            task.execute();
         }
 
     }

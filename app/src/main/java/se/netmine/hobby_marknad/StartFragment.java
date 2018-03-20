@@ -28,6 +28,7 @@ public class StartFragment extends BaseFragment {
     private LinearLayout faqMenuButton;
     private LinearLayout campingsMenuButton;
     private LinearLayout resellersMenuButton;
+    private LinearLayout userSettingsMenuButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +108,18 @@ public class StartFragment extends BaseFragment {
                 mainActivity.onNavigateToFragment(fragment);
             }
         });
+
+        userSettingsMenuButton = (LinearLayout) view.findViewById(R.id.userSettingsMenuButton);
+
+        userSettingsMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserSettingsFragment fragment = new UserSettingsFragment();
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
+
 
         scrollViewStart = (ScrollView) view.findViewById(R.id.scrollViewStart);
         OverScrollDecoratorHelper.setUpOverScroll(scrollViewStart);
