@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +34,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -104,6 +108,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     MapFragment mapFragment = null;
     Handler uiHandler = null;
     Runnable runnable = null;
+    Marker oldMarker = null;
 
     public CampingsFragment(){
 
@@ -132,7 +137,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             @Override
             public void run() {
                 refreshMarkers();
-            } // your code here }
+            }
 
         };
 
@@ -673,10 +678,32 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
+
+
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public boolean onMarkerClick(Marker marker) {
+
+        int defaultWidth = 150;
+        int defaultHeight = 150;
+
+        BitmapDrawable bitmapDefault =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker);
+        Bitmap bDefault = bitmapDefault.getBitmap();
+        Bitmap defaultMarker = Bitmap.createScaledBitmap(bDefault, defaultWidth, defaultHeight, false);
+
+        if(oldMarker != null)
+        {
+            oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(defaultMarker));
+        }
+
+        int chosenWidth = 180;
+        int chosenHeight = 180;
+
+        BitmapDrawable bitmapChosen =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker_choosen);
+        Bitmap bChosen = bitmapChosen.getBitmap();
+        Bitmap choosenMarker = Bitmap.createScaledBitmap(bChosen, chosenWidth, chosenHeight, false);
 
         String name = marker.getTitle();
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(choosenMarker));
 
         for (Camping camping : loadedCampings) {
 
@@ -691,6 +718,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+
+        oldMarker = marker;
 
         return true;
     }
@@ -858,14 +887,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         super.onResume();
         mainActivity.setTitle(getString(R.string.nav_campings));
 
-        if(mMap != null){
-            MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
-            mapFrag.getMapAsync(this);
-
-        }
-
-
-
     }
 
     public void refreshMarkers(){
@@ -891,11 +912,18 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
                 if(!empty( camping.lng ) || !empty( camping.lat ))
                 {
+                    int height = 150;
+                    int width = 150;
+                    BitmapDrawable bitmapdraw =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker);
+                    Bitmap b = bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+
                     LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
                     mMap.addMarker(new MarkerOptions()
                             .title(camping.name)
                             .snippet(camping.city)
-                            .position(marker));
+                            .position(marker).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
 
                     sumLat += Double.parseDouble(camping.lng);
                     sumLng += Double.parseDouble(camping.lat);
@@ -906,12 +934,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             avgLng = sumLng / filteredCampings.size();
 
             LatLng avgPosition = new LatLng(avgLat, avgLng);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 7));
         }
     }
-
-
-
 
 }
 
