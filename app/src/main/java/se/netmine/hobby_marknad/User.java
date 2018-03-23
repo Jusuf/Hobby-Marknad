@@ -34,10 +34,10 @@ public class User {
         this.myHobbyKey = settings.getString("myHobbyKey", "");
         this.userId = settings.getString("userId", "");
         this.deviceToken = settings.getString("deviceToken", "");
-        this.dealerId = settings.getString("dealerId", "");
-        this.dealerName = settings.getString("dealerName", "");
-        this.workshopId = settings.getString("workshopId", "");
-        this.workshopName = settings.getString("workshopName", "");
+        this.dealerId = settings.getString("dealerId", null);
+        this.dealerName = settings.getString("dealerName", null);
+        this.workshopId = settings.getString("workshopId", null);
+        this.workshopName = settings.getString("workshopName", null);
         this.notifyNews = settings.getBoolean("notifyNews", false);
         this.notifyService = settings.getBoolean("notifyNews", false);
 

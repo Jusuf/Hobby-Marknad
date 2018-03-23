@@ -1,22 +1,17 @@
 package se.netmine.hobby_marknad;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.orm.StringUtil;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,13 +37,13 @@ public class MyHobbyMarket {
     private static final int  API_CONNECT = 1;
     private static final int API_LOGIN = 2;
     private static final int API_LOGOUT = 3;
-    private static final int API_TELL = 4;
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
     private static final int API_FAQS = 7;
     private static final int API_DEALERS = 8;
     private static final int API_SERVICE = 9;
     private static final int API_CAMPINGS = 10;
+    private static final int API_DEALER = 11;
 
 //    public static  String url = "https://admin.myhobby.nu/";
 //    public static String url = "http://192.168.20.151/hobby/";
@@ -60,6 +55,7 @@ public class MyHobbyMarket {
     public IMainActivity mainActivity;
     public Faq[] faqs;
     public Dealer[] dealers;
+    public Dealer dealer;
     public ArrayList<Camping> loadedCampings;
     public ArrayList<FacilityOption> campingFacilityOptions;
     public Caravan caravan;
@@ -100,6 +96,16 @@ public class MyHobbyMarket {
     public String getLastName()
     {
         return this.currentUser.lastName;
+    }
+
+    public String getDealerName()
+    {
+        return this.currentUser.dealerName;
+    }
+
+    public String getWorkshopName()
+    {
+        return this.currentUser.workshopName;
     }
 
     private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb)
@@ -717,7 +723,7 @@ public class MyHobbyMarket {
 
         try {
 
-            DealerResult dealerResult = new Gson().fromJson(result, DealerResult.class);
+            DealersResult dealerResult = new Gson().fromJson(result, DealersResult.class);
 
             dealers = dealerResult.dealers;
 
@@ -730,6 +736,54 @@ public class MyHobbyMarket {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
 
+
+    }
+
+    protected void getDealer(String id)
+    {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_DEALER, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+               null,
+                null,
+                null,
+                null,
+                null);
+        api.execute();
+
+    }
+
+    protected void getDealerDone(String result)
+    {
+        if(result == null || result.isEmpty())
+        {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            DealerResult dealerResult = new Gson().fromJson(result, DealerResult.class);
+
+            dealer = dealerResult.dealer;
+
+            if(dealerResult.success == true) {
+                System.out.println("MyHobby - return from getDealer, count=" + dealer.name);
+                mainActivity.onDealerLoaded(dealer);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
 
     }
 
@@ -947,7 +1001,7 @@ public class MyHobbyMarket {
         private String deviceCulture = null;
         private String faqTags = null;
         private String vin = null;
-        private String campingId = null;
+        private String dealerId = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -965,7 +1019,7 @@ public class MyHobbyMarket {
                           String deviceCulture,
                           String faqTags,
                           String vin,
-                          String campingId)
+                          String dealerId)
         {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
@@ -983,7 +1037,7 @@ public class MyHobbyMarket {
             this.deviceCulture = deviceCulture;
             this.faqTags = faqTags;
             this.vin = vin;
-            this.campingId = campingId;
+            this.dealerId = dealerId;
         }
 
         @Override
@@ -1067,17 +1121,6 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_TELL:
-                    {
-                        apiUrl = baseUrl + "tell";
-
-                        builder = new Uri.Builder()
-                                .appendQueryParameter("UserId", userId)
-                                .appendQueryParameter("Password", password)
-                                .appendQueryParameter("MyhobbyKey", myhobbyKey)
-                                .appendQueryParameter("Command", command);
-                    }
-                    break;
                     case API_SYNC:
                     {
                         apiUrl = baseUrlAndroid + "androidSync";
@@ -1143,6 +1186,16 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
                         }
 
+                    }
+                    break;
+                    case API_DEALER:
+                    {
+                            apiUrl = baseUrlAndroid + "dealer";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("DealerId", currentUser.dealerId);
                     }
                     break;
                     case API_CAMPINGS:
@@ -1329,18 +1382,12 @@ public class MyHobbyMarket {
                 case API_CHANGE_PASSWORD:
                     changePasswordDone(result, oldPassword, newPassword, newPasswordConfirm);
                     break;
-//                case API_CONNECT:
-//                    connectDone(result);
-//                    break;
                 case API_LOGIN:
                     loginDone(result, email, password);
                     break;
                 case API_LOGOUT:
                     logoutDone(result);
                     break;
-//                case API_TELL:
-//                    tellDone(result);
-//                    break;
                 case API_SYNC:
                     syncDone(result);
                     break;
@@ -1349,6 +1396,9 @@ public class MyHobbyMarket {
                     break;
                 case API_DEALERS:
                     getDealerListDone(result, searchQuery);
+                    break;
+                case API_DEALER:
+                    getDealerDone(result);
                     break;
                 case API_CAMPINGS:
                 getCampingListDone(result, searchQuery);

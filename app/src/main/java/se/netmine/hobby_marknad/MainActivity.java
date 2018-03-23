@@ -149,6 +149,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onDealerLoaded(Dealer dealer)
+    {
+        DealerFragment fragment = new DealerFragment();
+        fragment.dealer = dealer;
+        onNavigateToFragment(fragment);
+    }
+
+    @Override
     public void onCampingsLoaded(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions)
     {
         // Notify the active fragment that a dealers has bean loaded

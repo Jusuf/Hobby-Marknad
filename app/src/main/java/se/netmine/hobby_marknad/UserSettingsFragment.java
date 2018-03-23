@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -51,41 +50,26 @@ public class UserSettingsFragment extends BaseFragment {
         layoutChooseDealer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
-                    String tA = MyHobbyMarket.getInstance().currentUser.dealerId;
-                    String tB = MyHobbyMarket.getInstance().currentUser.dealerName;
-
                     if(MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null)
                     {
-                        // TODO
+                        MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.dealerId);
                     }
                     else
                     {
                         DealersFragment fragment = new DealersFragment();
                         mainActivity.onNavigateToFragment(fragment);
                     }
-                }
-
 
             }
         });
-
-
 
         layoutChooseWorkshop = (LinearLayout) view.findViewById(R.id.layoutChooseWorkshop);
         layoutChooseWorkshop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
-                    String tA = MyHobbyMarket.getInstance().currentUser.workshopId;
-                    String tB = MyHobbyMarket.getInstance().currentUser.workshopName;
-
-
                     if(MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null)
                     {
-                        // TODO
+                        MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.workshopId);
                     }
                     else
                     {
@@ -93,8 +77,6 @@ public class UserSettingsFragment extends BaseFragment {
                         mainActivity.onNavigateToFragment(fragment);
                     }
                 }
-
-            }
         });
 
         switchNewsAndOffers = (Switch) view.findViewById(R.id.switchNewsAndOffers);
@@ -113,7 +95,6 @@ public class UserSettingsFragment extends BaseFragment {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                     switchNewsAndOffers.setChecked(false);
                 }
-
 
             }
         });
@@ -140,7 +121,6 @@ public class UserSettingsFragment extends BaseFragment {
 
         txtDealerServiceDealerName = (TextView) view.findViewById(R.id.txtDealerServiceDealerName);
         txtDealerServiceWorkShopName = (TextView) view.findViewById(R.id.txtDealerServiceWorkShopName);
-        setDealerAndWorkshopText();
 
         return view;
     }
@@ -149,7 +129,8 @@ public class UserSettingsFragment extends BaseFragment {
     {
         if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null)
         {
-            txtDealerServiceDealerName.setText(MyHobbyMarket.getInstance().currentUser.dealerName);
+            String dealerName = MyHobbyMarket.getInstance().getDealerName();
+            txtDealerServiceDealerName.setText(dealerName);
         }
         else
         {
@@ -158,7 +139,8 @@ public class UserSettingsFragment extends BaseFragment {
 
         if (MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null)
         {
-            txtDealerServiceWorkShopName.setText(MyHobbyMarket.getInstance().currentUser.workshopName);
+            String workshopName = MyHobbyMarket.getInstance().getWorkshopName();
+            txtDealerServiceWorkShopName.setText(workshopName);
         }
         else
         {

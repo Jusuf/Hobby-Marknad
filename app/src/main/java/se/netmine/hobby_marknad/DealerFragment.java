@@ -46,7 +46,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     private Button btnDealerVisitHompage = null;
     private Button btnDealerShowRoute = null;
 
-    public DealerFragment(){
+    public DealerFragment() {
 
     }
 
@@ -54,7 +54,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_dealer, container, false);
+        View view = inflater.inflate(R.layout.fragment_dealer, container, false);
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
@@ -83,24 +83,18 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         imageDealerHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
-                    if(MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerId.equals(dealer.id) )
-                    {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
+                    if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerId.equals(dealer.id)) {
                         MyHobbyMarket.getInstance().currentUser.dealerId = null;
                         MyHobbyMarket.getInstance().currentUser.dealerName = null;
-                    }
-                    else
-                    {
+                    } else {
                         MyHobbyMarket.getInstance().currentUser.dealerId = dealer.id;
                         MyHobbyMarket.getInstance().currentUser.dealerName = dealer.name;
                     }
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
-                }
-                else
-                {
+                } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                 }
             }
@@ -109,31 +103,24 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         imageWorkshopHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
-                    if(MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopId.equals(dealer.id) )
-                    {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
+                    if (MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopId.equals(dealer.id)) {
                         MyHobbyMarket.getInstance().currentUser.workshopId = null;
                         MyHobbyMarket.getInstance().currentUser.workshopName = null;
-                    }
-                    else
-                    {
+                    } else {
                         MyHobbyMarket.getInstance().currentUser.workshopId = dealer.id;
                         MyHobbyMarket.getInstance().currentUser.workshopName = dealer.name;
                     }
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
-                }
-                else
-                {
+                } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                 }
             }
         });
 
-        if (dealer != null)
-        {
+        if (dealer != null) {
             mainActivity.setTitle(dealer.name);
             dealerName.setText(dealer.name);
             dealerAddress.setText(dealer.street + ", " + dealer.postalcode + " " + dealer.city);
@@ -158,7 +145,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { dealer.email });
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{dealer.email});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(Intent.createChooser(intent, ""));
@@ -185,7 +172,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         btnDealerShowRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + dealer.lat  + ">,<" + dealer.lng + ">?q=<" + dealer.lat  + ">,<" + dealer.lng + ">(" + dealer.name + ")"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + dealer.lat + ">,<" + dealer.lng + ">?q=<" + dealer.lat + ">,<" + dealer.lng + ">(" + dealer.name + ")"));
                 intent.setPackage("com.google.android.apps.maps");
                 startActivity(intent);
             }
@@ -200,46 +187,35 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         mMap = map;
         map.clear();
 
-        if(dealer != null)
-        {
+        if (dealer != null) {
             LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
 
             map.addMarker(new MarkerOptions()
-                     .title(dealer.name)
-                     .snippet(dealer.city)
-                     .position(marker));
+                    .title(dealer.name)
+                    .snippet(dealer.city)
+                    .position(marker));
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 16));
         }
     }
 
-    public  void setUserDealerAndWorkshopIcon()
-    {
-        if(MyHobbyMarket.getInstance().isUserLoggedIn())
-        {
-            User currentUser = MyHobbyMarket.getInstance().currentUser;
+    public void setUserDealerAndWorkshopIcon() {
+        User currentUser = MyHobbyMarket.getInstance().currentUser;
 
-            if(currentUser.dealerId != null && currentUser.dealerId.equals(dealer.id) )
-            {
-                Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
-                imageDealerHeart.setImageDrawable(d);
-            }
-            else
-            {
-                Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
-                imageDealerHeart.setImageDrawable(d);
-            }
+        if (currentUser.dealerId != null && currentUser.dealerId.equals(dealer.id)) {
+            Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+            imageDealerHeart.setImageDrawable(d);
+        } else {
+            Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
+            imageDealerHeart.setImageDrawable(d);
+        }
 
-            if(currentUser.workshopId != null && currentUser.workshopId.equals(dealer.id))
-            {
-                Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
-                imageWorkshopHeart.setImageDrawable(d);
-            }
-            else
-            {
-                Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
-                imageWorkshopHeart.setImageDrawable(d);
-            }
+        if (currentUser.workshopId != null && currentUser.workshopId.equals(dealer.id)) {
+            Drawable d = getResources().getDrawable(R.drawable.ic_heart_full, mainActivity.getContext().getTheme());
+            imageWorkshopHeart.setImageDrawable(d);
+        } else {
+            Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
+            imageWorkshopHeart.setImageDrawable(d);
         }
     }
 

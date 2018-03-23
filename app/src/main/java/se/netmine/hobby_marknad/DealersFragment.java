@@ -294,6 +294,15 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         return true;
     }
 
+    @Override
+    public void onResume()
+    {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle(getString(R.string.reseller));
+        layoutShowDealer.setVisibility(View.GONE);
+    }
+
 }
 
 
