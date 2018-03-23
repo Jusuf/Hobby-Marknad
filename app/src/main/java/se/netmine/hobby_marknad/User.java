@@ -19,11 +19,8 @@ public class User {
     public String dealerName;
     public String workshopId;
     public String workshopName;
-    public boolean notifyBattery;
-    public boolean notifyWater;
-    public boolean notifyTemp;
-    public boolean notifyPosition;
     public boolean notifyNews;
+    public boolean notifyService;
     public String deviceToken;
 
     public void init(SharedPreferences settings)
@@ -41,11 +38,8 @@ public class User {
         this.dealerName = settings.getString("dealerName", "");
         this.workshopId = settings.getString("workshopId", "");
         this.workshopName = settings.getString("workshopName", "");
-        this.notifyBattery = settings.getBoolean("notifyBattery", false);
-        this.notifyWater = settings.getBoolean("notifyWater", false);
-        this.notifyTemp = settings.getBoolean("notifyTemp", false);
-        this.notifyPosition = settings.getBoolean("notifyPosition", false);
         this.notifyNews = settings.getBoolean("notifyNews", false);
+        this.notifyService = settings.getBoolean("notifyNews", false);
 
     }
 
@@ -63,11 +57,8 @@ public class User {
         editor.putString("dealerName", this.dealerName);
         editor.putString("workshopId", this.dealerId);
         editor.putString("workshopName", this.workshopName);
-        editor.putBoolean("notifyBattery", notifyBattery);
-        editor.putBoolean("notifyWater", notifyWater);
-        editor.putBoolean("notifyTemp", notifyTemp);
-        editor.putBoolean("notifyPosition", notifyPosition);
         editor.putBoolean("notifyNews", notifyNews);
+        editor.putBoolean("notifyService", notifyService);
         editor.commit();
     }
 }

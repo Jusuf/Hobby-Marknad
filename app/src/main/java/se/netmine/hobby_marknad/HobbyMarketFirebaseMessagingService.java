@@ -30,18 +30,16 @@ public class HobbyMarketFirebaseMessagingService extends FirebaseMessagingServic
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> payload = remoteMessage.getData();
             String message = payload.get("message");
-            String machineId = payload.get("machineId");
-            sendNotification(message, machineId);
+            sendNotification(message);
 
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
         }
     }
 
-    private void sendNotification(String messageBody, String machineId) {
+    private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("MachineId", machineId);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

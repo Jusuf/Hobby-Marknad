@@ -2,11 +2,13 @@
 
     <string name="app_name">Hobby-Market</string>
 
-    <string name="app_error_internal">Internal error. Please try again</string>
-    <string name="app_error_invalid_credentials">User name or password are invalid</string>
-    <string name="app_error_no_response">No server response. Please try again</string>
+    <string name="app_error_internal">Internt fel. Var god prova igen.</string>
+    <string name="app_error_invalid_credentials">Användarnamn eller lösenord är ogilltigt.</string>
+    <string name="app_error_no_response">Ingen respons från servern. Var god prova igen.</string>
     <string name="app_send_command_messsage">Please wait</string>
-    <string name="app_error_title">An error occured</string>
+    <string name="app_error_title">Ett fel uppstod.</string>
+
+    <string name="app_loading_title">Laddar... Var god vänta.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -25,13 +27,13 @@
     <string name="menu_header_logged_out">Not signed in</string>
 
     <string name="login_create_account">No account yet? Click to create!</string>
-    <string name="login_email">E-mail:</string>
-    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_email">E-post:</string>
+    <string name="login_forgot_password">Glömt lösenord?</string>
     <string name="login_login">Logga in</string>
-    <string name="login_password">Password:</string>
+    <string name="login_password">Lösenord:</string>
 
     <string name="start_my_hobby_title">My Hobby</string>
-    <string name="start_my_hobby_control_caravan">Styr husvahnen från mobilen</string>
+    <string name="start_my_hobby_control_caravan">Styr husvagnen från mobilen</string>
     <string name="start_service_book">Serviceboken</string>
     <string name="start_service_book_keep_control">Behåll kontrollen</string>
     <string name="start_resellers">Återförsäljare</string>
@@ -70,7 +72,7 @@
     <string name="faq_tag_myhobby">My Hobby</string>
     <string name="faq_tag_submit">Bekräfta</string>
 
-    <string name="resellers_map">Map</string>
+    <string name="resellers_map">Karta</string>
     <string name="resellers_list">Lista</string>
 
     <string name="reseller">Återförsäljare</string>
@@ -81,7 +83,7 @@
     <string name="reseller_show_route">Visa vägbeskrivning</string>
     <string name="reseller_show">Visa</string>
 
-    <string name="must_be_logged_in">You must login to use this option!</string>
+    <string name="must_be_logged_in">Du måste logga in!</string>
 
     <!-- Service book -->
     <string name="test_demo">Testa demo</string>
@@ -139,7 +141,7 @@
     <string name="contact_email">E-postadress:</string>
 
     <string name="my_page">Min sida</string>
-    <string name="my_settings">Min inställningar</string>
+    <string name="my_settings">Mina inställningar</string>
     <string name="messages">Meddelanden</string>
     <string name="not_logged_in">Ej inloggad</string>
     <string name="my_dealer_workshop">Min återförsäljare/verkstad</string>

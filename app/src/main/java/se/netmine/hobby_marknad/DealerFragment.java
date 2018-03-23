@@ -85,18 +85,17 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if(MyHobbyMarket.getInstance().isUserLoggedIn())
                 {
-                    User currentUser = MyHobbyMarket.getInstance().currentUser;
-
-                    if(currentUser.dealerId != null && currentUser.dealerId.equals(dealer.id) )
+                    if(MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerId.equals(dealer.id) )
                     {
-                        currentUser.dealerId = null;
-
+                        MyHobbyMarket.getInstance().currentUser.dealerId = null;
+                        MyHobbyMarket.getInstance().currentUser.dealerName = null;
                     }
                     else
                     {
-                        currentUser.dealerId = dealer.id;
+                        MyHobbyMarket.getInstance().currentUser.dealerId = dealer.id;
+                        MyHobbyMarket.getInstance().currentUser.dealerName = dealer.name;
                     }
-                    currentUser.save();
+                    MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
                 }
@@ -112,18 +111,17 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if(MyHobbyMarket.getInstance().isUserLoggedIn())
                 {
-                    User currentUser = MyHobbyMarket.getInstance().currentUser;
-
-                    if(currentUser.workshopId != null && currentUser.workshopId.equals(dealer.id) )
+                    if(MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopId.equals(dealer.id) )
                     {
-                        currentUser.workshopId = null;
-
+                        MyHobbyMarket.getInstance().currentUser.workshopId = null;
+                        MyHobbyMarket.getInstance().currentUser.workshopName = null;
                     }
                     else
                     {
-                        currentUser.workshopId = dealer.id;
+                        MyHobbyMarket.getInstance().currentUser.workshopId = dealer.id;
+                        MyHobbyMarket.getInstance().currentUser.workshopName = dealer.name;
                     }
-                    currentUser.save();
+                    MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                     setUserDealerAndWorkshopIcon();
                 }

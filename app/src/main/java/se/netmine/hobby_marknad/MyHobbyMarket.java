@@ -51,10 +51,10 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
 
 //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.138/hobby/";
-//    public static String url = "http://192.168.0.6/hobby/";
+//    public static String url = "http://192.168.20.151/hobby/";
+    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
-    public static String baseUrlAndroid = url + "api/myHobbyAndroid/";
+    public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
     public User currentUser = null;
     public IMainActivity mainActivity;
@@ -63,7 +63,6 @@ public class MyHobbyMarket {
     public ArrayList<Camping> loadedCampings;
     public ArrayList<FacilityOption> campingFacilityOptions;
     public Caravan caravan;
-    public String campingJson;
 
     private static MyHobbyMarket ourInstance = new MyHobbyMarket();
 
@@ -307,20 +306,10 @@ public class MyHobbyMarket {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     private class LoadCampingsFromDbAsync extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.sync);
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
 
         @Override
         protected void onPreExecute() {
@@ -335,7 +324,7 @@ public class MyHobbyMarket {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            LoadFromDb();
+            LoadCampingsFromDb();
             return null;
         }
 
@@ -348,7 +337,7 @@ public class MyHobbyMarket {
         }
     }
 
-    private void LoadFromDb ( ){
+    private void LoadCampingsFromDb ( ){
 
         List<Camping> campingsFromDbList = Camping.listAll(Camping.class);
         List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
@@ -616,8 +605,11 @@ public class MyHobbyMarket {
                 this.currentUser.userId = null;
                 this.currentUser.firstName = null;
                 this.currentUser.lastName = null;
-                this.currentUser.save();
                 this.caravan = null;
+                this.currentUser.notifyNews = false;
+                this.currentUser.notifyService = false;
+                this.currentUser.save();
+
                 mainActivity.onLoggedOut();
             }
             else {
@@ -755,7 +747,7 @@ public class MyHobbyMarket {
 
         if(foundCampings == 0 || foundFacilityOptions == 0 || foundFacilities == 0 || foundAccommodations == 0 )
         {
-            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
             MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
                     null,
                     null,
@@ -776,8 +768,6 @@ public class MyHobbyMarket {
         }
         else
         {
-//            LoadFromDb();
-
             LoadCampingsFromDbAsync task = new LoadCampingsFromDbAsync();
             task.execute();
         }
@@ -1090,7 +1080,7 @@ public class MyHobbyMarket {
                     break;
                     case API_SYNC:
                     {
-                        apiUrl = baseUrl + "androidsync";
+                        apiUrl = baseUrlAndroid + "androidSync";
 
                         builder = new Uri.Builder()
                                 .appendQueryParameter("UserId", userId)
@@ -1099,11 +1089,8 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("FirstName", MyHobbyMarket.getInstance().currentUser.firstName)
                                 .appendQueryParameter("LastName", MyHobbyMarket.getInstance().currentUser.lastName)
                                 .appendQueryParameter("Email", MyHobbyMarket.getInstance().currentUser.email)
-                                .appendQueryParameter("SubPower", MyHobbyMarket.getInstance().currentUser.notifyBattery ? "true" : "false")
-                                .appendQueryParameter("SubTemp", MyHobbyMarket.getInstance().currentUser.notifyTemp ? "true" : "false")
-                                .appendQueryParameter("SubWater", MyHobbyMarket.getInstance().currentUser.notifyWater  ? "true" : "false")
-                                .appendQueryParameter("SubPosition", MyHobbyMarket.getInstance().currentUser.notifyPosition  ? "true" : "false")
                                 .appendQueryParameter("SubNews", MyHobbyMarket.getInstance().currentUser.notifyNews ? "true" : "false")
+                                .appendQueryParameter("SubService", MyHobbyMarket.getInstance().currentUser.notifyService ? "true" : "false")
                                 .appendQueryParameter("DealerId", MyHobbyMarket.getInstance().currentUser.dealerId)
                                 .appendQueryParameter("WorkshopId", MyHobbyMarket.getInstance().currentUser.workshopId)
                                 .appendQueryParameter("DeviceToken", MyHobbyMarket.getInstance().currentUser.deviceToken);
@@ -1113,7 +1100,7 @@ public class MyHobbyMarket {
                     case API_FAQS:
                     {
                         if (isUserLoggedIn()){
-                            apiUrl = baseUrl + "faqListAuth";
+                            apiUrl = baseUrlAndroid + "faqListAuth";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
@@ -1123,7 +1110,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Tags", faqTags);
                         }
                         else{
-                            apiUrl = baseUrl + "faqList";
+                            apiUrl = baseUrlAndroid + "faqList";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
@@ -1138,7 +1125,7 @@ public class MyHobbyMarket {
                     case API_DEALERS:
                     {
                         if (isUserLoggedIn()){
-                            apiUrl = baseUrl + "dealerListAuth";
+                            apiUrl = baseUrlAndroid + "dealerListAuth";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
@@ -1147,7 +1134,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
                         }
                         else{
-                            apiUrl = baseUrl + "dealerList";
+                            apiUrl = baseUrlAndroid + "dealerList";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)

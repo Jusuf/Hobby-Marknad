@@ -128,6 +128,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layoutChooseDealer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -143,7 +144,7 @@
                             android:layout_weight="0.6" />
 
                         <TextView
-                            android:id="@+id/txtDealerServiceReseller"
+                            android:id="@+id/txtDealerServiceDealerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/my_dealer_not_chosen"
@@ -167,6 +168,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layoutChooseWorkshop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -182,7 +184,7 @@
                             android:layout_weight="0.60" />
 
                         <TextView
-                            android:id="@+id/txtDealerServiceWorkShop"
+                            android:id="@+id/txtDealerServiceWorkShopName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="9"
