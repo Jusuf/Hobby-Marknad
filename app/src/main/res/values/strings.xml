@@ -26,7 +26,7 @@
     <string name="nav_logout">Logga ut</string>
     <string name="menu_header_logged_out">Not signed in</string>
 
-    <string name="login_create_account">No account yet? Click to create!</string>
+    <string name="login_create_account">Inget konto ännu? Klicka här för att skapa ett!</string>
     <string name="login_email">E-post:</string>
     <string name="login_forgot_password">Glömt lösenord?</string>
     <string name="login_login">Logga in</string>
@@ -57,15 +57,15 @@
     <!-- Position page -->
     <string name="position_title">Position &amp; Weather</string>
     <string name="register_activation_mail_sent">An activation mail is sent to activate your account</string>
-    <string name="register_email">E-mail:</string>
-    <string name="register_error_email_required">E-mail is a mandatory field!</string>
-    <string name="register_error_firstname_required">Sure name is a mandatory field!</string>
-    <string name="register_error_lastname_required">Last name is a mandatory field!</string>
-    <string name="register_error_password_required">Password is a mandatory field!</string>
-    <string name="register_firstname">Sure name:</string>
-    <string name="register_lastname">Last name:</string>
-    <string name="register_password">Password:</string>
-    <string name="register_register">Register</string>
+    <string name="register_email">E-post:</string>
+    <string name="register_error_email_required">E-post är obligatoriskt fält!</string>
+    <string name="register_error_firstname_required">Förnamn är obligatoriskt fält!</string>
+    <string name="register_error_lastname_required">Efternamn är obligatoriskt fält!</string>
+    <string name="register_error_password_required">Lösenord är obligatoriskt fält!</string>
+    <string name="register_sure_name">Förnamn</string>
+    <string name="register_last_name">Efternamn</string>
+    <string name="register_password">Lösenord</string>
+    <string name="register_register">Registrera</string>
 
     <string name="faq_tag_manage_caravan">Manage caravan</string>
     <string name="faq_tag_tips_for_camping_life">Tips for camping life</string>
@@ -154,5 +154,10 @@
     <string name="service_reminder">Servicepåminnelser</string>
 
     <string name="sync">Synkroniserar med databasen...</string>
+
+    <string name="hint_email">E-post</string>
+    <string name="hint_password">Lösenord</string>
+    <string name="hint_sure_name">Förnamn</string>
+    <string name="hint_last_name">Efternamn</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.orm.StringUtil;
 
@@ -33,8 +34,8 @@ import java.util.Locale;
 
 public class MyHobbyMarket {
 
-    private static final int  API_REGISTER = 0;
-    private static final int  API_CONNECT = 1;
+    private static final int API_REGISTER = 0;
+    private static final int API_CONNECT = 1;
     private static final int API_LOGIN = 2;
     private static final int API_LOGOUT = 3;
     private static final int API_SYNC = 5;
@@ -45,9 +46,9 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
     private static final int API_DEALER = 11;
 
-//    public static  String url = "https://admin.myhobby.nu/";
+    //    public static  String url = "https://admin.myhobby.nu/";
 //    public static String url = "http://192.168.20.151/hobby/";
-    public static String url = "http://192.168.0.11/hobby/";
+    public static String url = "http://192.168.0.14/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -70,48 +71,39 @@ public class MyHobbyMarket {
         currentUser = new User();
     }
 
-    public void init(SharedPreferences settings)
-    {
+    public void init(SharedPreferences settings) {
         this.currentUser.init(settings);
     }
 
-    public boolean isUserLoggedIn()
-    {
+    public boolean isUserLoggedIn() {
         return this.currentUser.userId != null &&
                 this.currentUser.password != null &&
                 this.currentUser.userId.isEmpty() == false &&
                 this.currentUser.password.isEmpty() == false;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return this.currentUser.email;
     }
 
-    public String getFirstName()
-    {
+    public String getFirstName() {
         return this.currentUser.firstName;
     }
 
-    public String getLastName()
-    {
+    public String getLastName() {
         return this.currentUser.lastName;
     }
 
-    public String getDealerName()
-    {
+    public String getDealerName() {
         return this.currentUser.dealerName;
     }
 
-    public String getWorkshopName()
-    {
+    public String getWorkshopName() {
         return this.currentUser.workshopName;
     }
 
-    private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb)
-    {
-        if(campingsFromDb.size() > 0)
-        {
+    private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb) {
+        if (campingsFromDb.size() > 0) {
             mainActivity.onCampingsLoaded(campingsFromDb, campingFacilityOptionsFromDb);
         }
     }
@@ -124,7 +116,7 @@ public class MyHobbyMarket {
         private ArrayList<Camping> campingsFromDb = new ArrayList<>();
         private ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
 
-        private UpdateDb(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions){
+        private UpdateDb(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions) {
             this.campings = campings;
             this.campingFacilityOptions = campingFacilityOptions;
         }
@@ -134,8 +126,7 @@ public class MyHobbyMarket {
 
         @Override
         protected void onPreExecute() {
-            if(loadingMessage != null)
-            {
+            if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
                 pDialog.setCancelable(false);
@@ -151,24 +142,22 @@ public class MyHobbyMarket {
             CampingImage.deleteAll(CampingImage.class);
             Accommodation.deleteAll(Accommodation.class);
 
-            try{
+            try {
                 String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
                 String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
                 String accommodationIdAsSQL = StringUtil.toSQLName("accommodationId") + "=?";
                 String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
 
-                for (Camping c: campings) {
+                for (Camping c : campings) {
 
-                    if (c.campingId != null){
+                    if (c.campingId != null) {
 
-                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL , c.campingId);
+                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL, c.campingId);
 
-                        if (foundCampings.size() == 0)
-                        {
+                        if (foundCampings.size() == 0) {
                             c.save();
-                        }
-                        else{
-                            for (Camping camping: foundCampings) {
+                        } else {
+                            for (Camping camping : foundCampings) {
                                 Camping dbCamping = Camping.findById(Camping.class, camping.getId());
 //                                dbCamping.save();
                             }
@@ -176,21 +165,18 @@ public class MyHobbyMarket {
 
                     }
 
-                    for (Facility f: c.facilities) {
+                    for (Facility f : c.facilities) {
 
-                        if(f.facilityId != null){
+                        if (f.facilityId != null) {
 
-                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId );
+                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId);
 
-                            if (foundFacilities.size() == 0)
-                            {
+                            if (foundFacilities.size() == 0) {
                                 f.camping = c;
                                 f.campingId = c.campingId;
                                 f.save();
-                            }
-                            else{
-                                for (Facility foundFacility : foundFacilities)
-                                {
+                            } else {
+                                for (Facility foundFacility : foundFacilities) {
                                     Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
 //                                    dbFacility.save();
                                 }
@@ -199,22 +185,19 @@ public class MyHobbyMarket {
 
                     }
 
-                    for (Accommodation a: c.accommodations) {
+                    for (Accommodation a : c.accommodations) {
 
-                        if(a.accommodationId != null){
+                        if (a.accommodationId != null) {
 
-                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId );
+                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId);
 
-                            if (foundAccommodations.size() == 0)
-                            {
+                            if (foundAccommodations.size() == 0) {
                                 a.camping = c;
 
                                 a.campingId = c.campingId;
                                 a.save();
-                            }
-                            else{
-                                for (Accommodation foundAccommodation : foundAccommodations)
-                                {
+                            } else {
+                                for (Accommodation foundAccommodation : foundAccommodations) {
                                     Accommodation dbAccommodation = Accommodation.findById(Accommodation.class, foundAccommodation.getId());
 //                                    dbAccommodation.save();
                                 }
@@ -223,42 +206,34 @@ public class MyHobbyMarket {
 
                     }
 
-                    for (String i: c.images) {
+                    for (String i : c.images) {
 
-                            List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i );
+                        List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i);
 
-                            if (foundCampingImages.size() == 0)
-                            {
-                                CampingImage campingImage = new CampingImage();
-                                campingImage.fileName = i;
-                                campingImage.campingId = c.campingId;
-                                campingImage.save();
-                            }
-                            else{
-                                for (CampingImage foundCampingImage : foundCampingImages)
-                                {
-                                    CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
+                        if (foundCampingImages.size() == 0) {
+                            CampingImage campingImage = new CampingImage();
+                            campingImage.fileName = i;
+                            campingImage.campingId = c.campingId;
+                            campingImage.save();
+                        } else {
+                            for (CampingImage foundCampingImage : foundCampingImages) {
+                                CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
 //                                    dbCampingImage.save();
-                                }
                             }
                         }
+                    }
 
                 }
 
-                if(campingFacilityOptions != null)
-                {
-                    if(campingFacilityOptions.size() > 0)
-                    {
+                if (campingFacilityOptions != null) {
+                    if (campingFacilityOptions.size() > 0) {
 
-                        for (FacilityOption f : campingFacilityOptions)
-                        {
-                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId );
-                            if(foundFacilityOptions.size() == 0)
-                            {
+                        for (FacilityOption f : campingFacilityOptions) {
+                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId);
+                            if (foundFacilityOptions.size() == 0) {
                                 f.save();
-                            }
-                            else{
-                                for (FacilityOption foundFacilityOption: foundFacilityOptions) {
+                            } else {
+                                for (FacilityOption foundFacilityOption : foundFacilityOptions) {
                                     FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
 //                                    dbFacilityOption.save();
                                 }
@@ -272,12 +247,12 @@ public class MyHobbyMarket {
                 List<Camping> dbCampings = Camping.listAll(Camping.class);
                 campingsFromDb.addAll(dbCampings);
 
-                for (Camping camping: this.campingsFromDb) {
+                for (Camping camping : this.campingsFromDb) {
 
                     List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
                     camping.images = new ArrayList<>();
 
-                    for (CampingImage image: campingImages) {
+                    for (CampingImage image : campingImages) {
                         camping.images.add(image.fileName);
                     }
 
@@ -294,8 +269,7 @@ public class MyHobbyMarket {
                 campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
 
                 return null;
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -319,8 +293,7 @@ public class MyHobbyMarket {
 
         @Override
         protected void onPreExecute() {
-            if(loadingMessage != null)
-            {
+            if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
                 pDialog.setCancelable(false);
@@ -343,7 +316,7 @@ public class MyHobbyMarket {
         }
     }
 
-    private void LoadCampingsFromDb ( ){
+    private void LoadCampingsFromDb() {
 
         List<Camping> campingsFromDbList = Camping.listAll(Camping.class);
         List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
@@ -355,12 +328,12 @@ public class MyHobbyMarket {
         ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
         campingFacilityOptionsFromDb.addAll(facilityOptionsFromDb);
 
-        for (Camping camping: campingsFromDb) {
-               List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
-               camping.images = new ArrayList<>();
-               for (CampingImage image: campingImages) {
-                    camping.images.add(image.fileName);
-               }
+        for (Camping camping : campingsFromDb) {
+            List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+            camping.images = new ArrayList<>();
+            for (CampingImage image : campingImages) {
+                camping.images.add(image.fileName);
+            }
 
             List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
             camping.facilities = new ArrayList<>();
@@ -374,14 +347,12 @@ public class MyHobbyMarket {
         onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
     }
 
-    public void setDeviceToken(String deviceToken)
-    {
+    public void setDeviceToken(String deviceToken) {
         this.currentUser.deviceToken = deviceToken;
         this.currentUser.save();
     }
 
-    private void showErrorDialog(String message)
-    {
+    private void showErrorDialog(String message) {
         String title = mainActivity.getContext().getResources().getString(R.string.app_error_title);
 
         new AlertDialog.Builder(mainActivity.getContext())
@@ -396,8 +367,7 @@ public class MyHobbyMarket {
                 .show();
     }
 
-    protected void register(String email, String password, String firstName, String lastName)
-    {
+    protected void register(String email, String password, String firstName, String lastName) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_REGISTER, loadingMessage,
                 null,
@@ -418,10 +388,8 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void registerDone(String result, String email, String password, String firstName, String lastName)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void registerDone(String result, String email, String password, String firstName, String lastName) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -431,16 +399,13 @@ public class MyHobbyMarket {
 
             boolean success = true;
 
-            if(jObject.has("success"))
-            {
+            if (jObject.has("success")) {
                 success = jObject.getBoolean("success");
             }
 
-            if(success == true)
-            {
+            if (success == true) {
                 mainActivity.onRegistered();
-            }
-            else {
+            } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
             }
@@ -449,8 +414,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void login(String email, String password)
-    {
+    protected void login(String email, String password) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_LOGIN, loadingMessage,
                 null,
@@ -471,10 +435,8 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void loginDone(String result, String email, String password)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void loginDone(String result, String email, String password) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -484,13 +446,11 @@ public class MyHobbyMarket {
 
             boolean success = true;
 
-            if(jObject.has("success"))
-            {
+            if (jObject.has("success")) {
                 success = jObject.getBoolean("success");
             }
 
-            if(success == true)
-            {
+            if (success == true) {
                 String userId = jObject.getString("userId");
 
                 currentUser.email = email;
@@ -499,8 +459,7 @@ public class MyHobbyMarket {
 
                 currentUser.save();
                 mainActivity.onLoggedIn();
-            }
-            else {
+            } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
             }
@@ -511,8 +470,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm)
-    {
+    protected void changePassword(String oldPassword, String newPassword, String newPasswordConfirm) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_CHANGE_PASSWORD,
                 loadingMessage,
@@ -534,12 +492,9 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void changePasswordDone(String result, String oldPassword, String newPassword, String newPasswordConfirm)
-    {
-        try
-        {
-            if(result == null || result.isEmpty())
-            {
+    protected void changePasswordDone(String result, String oldPassword, String newPassword, String newPasswordConfirm) {
+        try {
+            if (result == null || result.isEmpty()) {
                 result = "{\"success\": \"true\"}";
             }
 
@@ -548,18 +503,15 @@ public class MyHobbyMarket {
 
             boolean success = true;
 
-            if(jObject.has("success"))
-            {
+            if (jObject.has("success")) {
                 success = jObject.getBoolean("success");
             }
 
-            if(success == true)
-            {
+            if (success == true) {
                 currentUser.password = newPassword;
                 currentUser.save();
                 mainActivity.onNavigateBack();
-            }
-            else {
+            } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
             }
@@ -570,8 +522,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void logout()
-    {
+    protected void logout() {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage,
                 currentUser.userId,
@@ -590,12 +541,9 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void logoutDone(String result)
-    {
-        try
-        {
-            if(result == null || result.isEmpty())
-            {
+    protected void logoutDone(String result) {
+        try {
+            if (result == null || result.isEmpty()) {
                 showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
                 return;
             }
@@ -604,8 +552,7 @@ public class MyHobbyMarket {
 
             boolean success = jObject.getBoolean("success");
 
-            if(success == true)
-            {
+            if (success == true) {
                 this.currentUser.password = null;
                 this.currentUser.myHobbyKey = null;
                 this.currentUser.userId = null;
@@ -617,8 +564,7 @@ public class MyHobbyMarket {
                 this.currentUser.save();
 
                 mainActivity.onLoggedOut();
-            }
-            else {
+            } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
             }
@@ -630,13 +576,11 @@ public class MyHobbyMarket {
 
     }
 
-    protected void sync(boolean showDialog)
-    {
+    protected void sync(boolean showDialog) {
 
-        String loadingMessage =  mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
 
-        if(showDialog == false)
-        {
+        if (showDialog == false) {
             loadingMessage = null;
         }
 
@@ -659,10 +603,8 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void syncDone(String result)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void syncDone(String result) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -672,16 +614,13 @@ public class MyHobbyMarket {
 
             boolean success = true;
 
-            if(jObject.has("success"))
-            {
+            if (jObject.has("success")) {
                 success = jObject.getBoolean("success");
             }
 
-            if(success == true)
-            {
+            if (success == true) {
                 //mainActivity.onUserDetailsChanged();
-            }
-            else {
+            } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
             }
@@ -690,8 +629,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void getDealerList(String searchQuery, String deviceCulture)
-    {
+    protected void getDealerList(String searchQuery, String deviceCulture) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,
                 null,
@@ -713,10 +651,8 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getDealerListDone(String result, String searchQuery)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void getDealerListDone(String result, String searchQuery) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -727,7 +663,7 @@ public class MyHobbyMarket {
 
             dealers = dealerResult.dealers;
 
-            if(dealerResult.success == true) {
+            if (dealerResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + dealers.length);
                 mainActivity.onDealersLoaded(dealers);
             }
@@ -739,8 +675,7 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getDealer(String id)
-    {
+    protected void getDealer(String id) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_DEALER, loadingMessage,
                 null,
@@ -753,7 +688,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
-               null,
+                null,
                 null,
                 null,
                 null,
@@ -762,10 +697,8 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getDealerDone(String result)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void getDealerDone(String result) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -776,7 +709,7 @@ public class MyHobbyMarket {
 
             dealer = dealerResult.dealer;
 
-            if(dealerResult.success == true) {
+            if (dealerResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + dealer.name);
                 mainActivity.onDealerLoaded(dealer);
             }
@@ -787,20 +720,18 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCampingList(String searchQuery, String deviceCulture)
-    {
+    protected void getCampingList(String searchQuery, String deviceCulture) {
 //        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
 //        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
 //        List<Facility> facilitiesFromDb = Facility.listAll(Facility.class);
 //        List<Accommodation> accommodationsFromDb = Accommodation.listAll(Accommodation.class);
 
-        long foundCampings = Camping.count(Camping.class, null, null, null,null,null);
-        long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null,null,null);
-        long foundFacilities = Facility.count(Facility.class, null, null, null,null,null);
-        long foundAccommodations = Accommodation.count(Accommodation.class, null, null, null,null,null);
+        long foundCampings = Camping.count(Camping.class, null, null, null, null, null);
+        long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null, null, null);
+        long foundFacilities = Facility.count(Facility.class, null, null, null, null, null);
+        long foundAccommodations = Accommodation.count(Accommodation.class, null, null, null, null, null);
 
-        if(foundCampings == 0 || foundFacilityOptions == 0 || foundFacilities == 0 || foundAccommodations == 0 )
-        {
+        if (foundCampings == 0 || foundFacilityOptions == 0 || foundFacilities == 0 || foundAccommodations == 0) {
             String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
             MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
                     null,
@@ -816,22 +747,18 @@ public class MyHobbyMarket {
                     searchQuery,
                     deviceCulture,
                     null,
-                    null,null);
+                    null, null);
             api.execute();
 
-        }
-        else
-        {
+        } else {
             LoadCampingsFromDbAsync task = new LoadCampingsFromDbAsync();
             task.execute();
         }
 
     }
 
-    protected void getCampingListDone(String result, String searchQuery)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void getCampingListDone(String result, String searchQuery) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -842,7 +769,7 @@ public class MyHobbyMarket {
             loadedCampings = campingsResult.campings;
             campingFacilityOptions = campingsResult.campingFacilityOptions;
 
-            if(campingsResult.success == true) {
+            if (campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + loadedCampings.size());
 
                 UpdateDb task = new UpdateDb(loadedCampings, campingFacilityOptions);
@@ -855,8 +782,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void getFaqList(String searchQuery, String deviceCulture, String tags)
-    {
+    protected void getFaqList(String searchQuery, String deviceCulture, String tags) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,
                 null,
@@ -877,10 +803,8 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void getFaqListDone(String result, String searchQuery)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void getFaqListDone(String result, String searchQuery) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -891,7 +815,7 @@ public class MyHobbyMarket {
 
             faqs = faqResult.faqs;
 
-            if(faqResult.success == true) {
+            if (faqResult.success == true) {
                 System.out.println("MyHobby - return from getFaq, count=" + faqs.length);
                 mainActivity.onFaqsLoaded(faqs);
             }
@@ -932,8 +856,7 @@ public class MyHobbyMarket {
         void processFinish(String output);
     }
 
-    protected void connectToService(String vin)
-    {
+    protected void connectToService(String vin) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_SERVICE, loadingMessage,
                 null,
@@ -954,10 +877,8 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void connectToServiceDone(String result)
-    {
-        if(result == null || result.isEmpty())
-        {
+    protected void connectToServiceDone(String result) {
+        if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
         }
@@ -965,15 +886,13 @@ public class MyHobbyMarket {
         try {
             ServiceResult serviceResult = new Gson().fromJson(result, ServiceResult.class);
 
-            if(serviceResult.success == true) {
+            if (serviceResult.success == true) {
                 caravan = serviceResult.caravan;
                 System.out.println("MyHobby - return from connectToService, count=" + caravan.serviceEntries.size());
                 ServiceBookConnectedFragment fragment = new ServiceBookConnectedFragment();
                 fragment.caravan = caravan;
                 mainActivity.onNavigateToFragment(fragment);
-            }
-            else
-            {
+            } else {
                 this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.caravan_not_found));
             }
 
@@ -1019,8 +938,7 @@ public class MyHobbyMarket {
                           String deviceCulture,
                           String faqTags,
                           String vin,
-                          String dealerId)
-        {
+                          String dealerId) {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
             this.userId = userId;
@@ -1042,8 +960,7 @@ public class MyHobbyMarket {
 
         @Override
         protected void onPreExecute() {
-            if(loadingMessage != null)
-            {
+            if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
                 pDialog.setCancelable(false);
@@ -1059,12 +976,9 @@ public class MyHobbyMarket {
             InputStream in = null;
             Uri.Builder builder = null;
 
-            try
-            {
-                switch (apiMethod)
-                {
-                    case API_REGISTER:
-                    {
+            try {
+                switch (apiMethod) {
+                    case API_REGISTER: {
                         apiUrl = baseUrl + "createAccount";
 
                         builder = new Uri.Builder()
@@ -1076,8 +990,7 @@ public class MyHobbyMarket {
                     }
                     break;
 
-                    case API_CHANGE_PASSWORD:
-                    {
+                    case API_CHANGE_PASSWORD: {
                         apiUrl = baseUrl + "changePasswordApp";
 
                         builder = new Uri.Builder()
@@ -1090,8 +1003,7 @@ public class MyHobbyMarket {
                     }
                     break;
 
-                    case API_CONNECT:
-                    {
+                    case API_CONNECT: {
                         apiUrl = baseUrl + "connectmyhobby";
 
                         builder = new Uri.Builder()
@@ -1101,8 +1013,7 @@ public class MyHobbyMarket {
                     }
                     break;
 
-                    case API_LOGIN:
-                    {
+                    case API_LOGIN: {
                         apiUrl = baseUrl + "loginapi";
 
                         builder = new Uri.Builder()
@@ -1111,8 +1022,7 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_LOGOUT:
-                    {
+                    case API_LOGOUT: {
                         apiUrl = baseUrl + "logoutapi";
 
                         builder = new Uri.Builder()
@@ -1121,8 +1031,7 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_SYNC:
-                    {
+                    case API_SYNC: {
                         apiUrl = baseUrlAndroid + "androidSync";
 
                         builder = new Uri.Builder()
@@ -1140,9 +1049,8 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_FAQS:
-                    {
-                        if (isUserLoggedIn()){
+                    case API_FAQS: {
+                        if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "faqListAuth";
 
                             builder = new Uri.Builder()
@@ -1151,8 +1059,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture)
                                     .appendQueryParameter("Tags", faqTags);
-                        }
-                        else{
+                        } else {
                             apiUrl = baseUrlAndroid + "faqList";
 
                             builder = new Uri.Builder()
@@ -1165,9 +1072,8 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_DEALERS:
-                    {
-                        if (isUserLoggedIn()){
+                    case API_DEALERS: {
+                        if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "dealerListAuth";
 
                             builder = new Uri.Builder()
@@ -1175,8 +1081,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
-                        }
-                        else{
+                        } else {
                             apiUrl = baseUrlAndroid + "dealerList";
 
                             builder = new Uri.Builder()
@@ -1188,19 +1093,17 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_DEALER:
-                    {
-                            apiUrl = baseUrlAndroid + "dealer";
+                    case API_DEALER: {
+                        apiUrl = baseUrlAndroid + "dealer";
 
-                            builder = new Uri.Builder()
-                                    .appendQueryParameter("UserName", currentUser.email)
-                                    .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("DealerId", currentUser.dealerId);
+                        builder = new Uri.Builder()
+                                .appendQueryParameter("UserName", currentUser.email)
+                                .appendQueryParameter("Password", currentUser.password)
+                                .appendQueryParameter("DealerId", currentUser.dealerId);
                     }
                     break;
-                    case API_CAMPINGS:
-                    {
-                        if (isUserLoggedIn()){
+                    case API_CAMPINGS: {
+                        if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "campingListAuth";
 
                             builder = new Uri.Builder()
@@ -1208,8 +1111,7 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
-                        }
-                        else{
+                        } else {
                             apiUrl = baseUrlAndroid + "campingList";
 
                             builder = new Uri.Builder()
@@ -1221,9 +1123,8 @@ public class MyHobbyMarket {
 
                     }
                     break;
-                    case API_SERVICE:
-                    {
-                        if (isUserLoggedIn()){
+                    case API_SERVICE: {
+                        if (isUserLoggedIn()) {
                             apiUrl = baseUrl + "syncServices";
 
                             builder = new Uri.Builder()
@@ -1270,9 +1171,8 @@ public class MyHobbyMarket {
                 int HttpResult = urlConnection.getResponseCode();
                 StringBuilder sb = new StringBuilder();
 
-                if(HttpResult == HttpURLConnection.HTTP_OK)
-                {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"utf-8"));
+                if (HttpResult == HttpURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "utf-8"));
                     String line = null;
 
                     while ((line = br.readLine()) != null) {
@@ -1282,14 +1182,11 @@ public class MyHobbyMarket {
 
                     result = sb.toString();
 
-                }
-                else
-                {
+                } else {
                     String errorMessage = mainActivity.getContext().getResources().getString(R.string.app_error_internal);
                     boolean logout = false;
 
-                    if(HttpResult == HttpURLConnection.HTTP_UNAUTHORIZED)
-                    {
+                    if (HttpResult == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         errorMessage = mainActivity.getContext().getResources().getString(R.string.app_error_invalid_credentials);
 
                         // Wrong credentials when asumed to be correct. Logout the user and remove any credentials
@@ -1301,12 +1198,10 @@ public class MyHobbyMarket {
                         currentUser.save();
                         logout = true;
 
-                    }
-                    else if(HttpResult == HttpURLConnection.HTTP_INTERNAL_ERROR)
-                    {
+                    } else if (HttpResult == HttpURLConnection.HTTP_INTERNAL_ERROR) {
                         // Get the message from server
                         String json = "";
-                        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(),"utf-8"));
+                        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(), "utf-8"));
                         String line = null;
 
                         while ((line = br.readLine()) != null) {
@@ -1320,31 +1215,25 @@ public class MyHobbyMarket {
 
                         boolean success = true;
 
-                        if(jObject.has("message"))
-                        {
+                        if (jObject.has("message")) {
                             JSONArray array = jObject.getJSONArray("message");
                             errorMessage = array.getString(0);
                         }
                     }
 
-                    if(logout == true && apiMethod != API_LOGIN) {
+                    if (logout == true && apiMethod != API_LOGIN) {
                         result = "{\"success\": \"false\", \"logout\": \"true\", \"message\": \"" + errorMessage + "\"}";
-                    }
-                    else {
+                    } else {
                         result = "{\"success\": \"false\", \"message\": \"" + errorMessage + "\"}";
                     }
                 }
 
-            }
-            catch(SocketTimeoutException ex)
-            {
+            } catch (SocketTimeoutException ex) {
                 String errorMessage = mainActivity.getContext().getResources().getString(R.string.app_error_no_response);
-                result =  "{\"success\": \"false\", \"message\": \"" + errorMessage + "\"}";
-            }
-            catch (Exception e )
-            {
+                result = "{\"success\": \"false\", \"message\": \"" + errorMessage + "\"}";
+            } catch (Exception e) {
                 String errorMessage = mainActivity.getContext().getResources().getString(R.string.app_error_internal);
-                result =  "{\"success\": \"false\", \"message\": \"" + errorMessage + "\"}";
+                result = "{\"success\": \"false\", \"message\": \"" + errorMessage + "\"}";
             }
 
             return result;
@@ -1360,13 +1249,11 @@ public class MyHobbyMarket {
 
                 boolean logout = false;
 
-                if(jObject.has("logout"))
-                {
+                if (jObject.has("logout")) {
                     logout = jObject.getBoolean("logout");
                 }
 
-                if(logout == true)
-                {
+                if (logout == true) {
                     mainActivity.onLoggedOut();
                 }
 
@@ -1374,8 +1261,7 @@ public class MyHobbyMarket {
 
             }
 
-            switch (apiMethod)
-            {
+            switch (apiMethod) {
                 case API_REGISTER:
                     registerDone(result, email, password, firstName, lastName);
                     break;
@@ -1401,8 +1287,8 @@ public class MyHobbyMarket {
                     getDealerDone(result);
                     break;
                 case API_CAMPINGS:
-                getCampingListDone(result, searchQuery);
-                break;
+                    getCampingListDone(result, searchQuery);
+                    break;
                 case API_SERVICE:
                     connectToServiceDone(result);
                     break;
