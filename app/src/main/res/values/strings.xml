@@ -2,10 +2,14 @@
 
     <string name="app_name">Hobby-Market</string>
 
+    <string name="label_address">Adress:</string>
+    <string name="label_phone">Tel:</string>
+    <string name="label_email">E-postadress:</string>
+
     <string name="app_error_internal">Internt fel. Var god prova igen.</string>
     <string name="app_error_invalid_credentials">Användarnamn eller lösenord är ogilltigt.</string>
     <string name="app_error_no_response">Ingen respons från servern. Var god prova igen.</string>
-    <string name="app_send_command_messsage">Please wait</string>
+    <string name="app_send_command_messsage">Var god vänta...</string>
     <string name="app_error_title">Ett fel uppstod.</string>
 
     <string name="app_loading_title">Laddar... Var god vänta.</string>
@@ -67,13 +71,15 @@
     <string name="register_password">Lösenord</string>
     <string name="register_register">Registrera</string>
 
-    <string name="faq_tag_manage_caravan">Manage caravan</string>
-    <string name="faq_tag_tips_for_camping_life">Tips for camping life</string>
+    <string name="faq_tag_manage_caravan">Sköta husvagnen</string>
+    <string name="faq_tag_tips_for_camping_life">Tips för campinglivet</string>
     <string name="faq_tag_myhobby">My Hobby</string>
     <string name="faq_tag_submit">Bekräfta</string>
 
     <string name="resellers_map">Karta</string>
     <string name="resellers_list">Lista</string>
+
+
 
     <string name="reseller">Återförsäljare</string>
     <string name="workshop">Verkstad</string>

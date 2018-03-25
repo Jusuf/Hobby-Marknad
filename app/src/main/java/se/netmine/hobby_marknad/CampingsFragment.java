@@ -331,8 +331,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         txtFromDate.setText(date);
                         choosenFromDate = date;
 
-//                        filterCampings();
-
                         FilterCampings filterCampings = new FilterCampings();
                         filterCampings.execute();
                     }
@@ -344,8 +342,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             public void onClick(DialogInterface dialog, int which) {
                                 choosenFromDate = null;
                                 txtFromDate.setText(getString(R.string.camping_choose_date));
-
-//                                filterCampings();
 
                                 FilterCampings filterCampings = new FilterCampings();
                                 filterCampings.execute();
@@ -375,8 +371,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         choosenToDate = date;
                         txtToDate.setText(date);
 
-//                        filterCampings();
-
                         FilterCampings filterCampings = new FilterCampings();
                         filterCampings.execute();
                     }
@@ -388,8 +382,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                             public void onClick(DialogInterface dialog, int which) {
                                 choosenToDate = null;
                                 txtToDate.setText(getString(R.string.camping_choose_date));
-
-//                                filterCampings();
 
                                 FilterCampings filterCampings = new FilterCampings();
                                 filterCampings.execute();

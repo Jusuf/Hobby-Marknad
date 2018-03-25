@@ -48,7 +48,7 @@ public class MyHobbyMarket {
 
     //    public static  String url = "https://admin.myhobby.nu/";
 //    public static String url = "http://192.168.20.151/hobby/";
-    public static String url = "http://192.168.0.14/hobby/";
+    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 

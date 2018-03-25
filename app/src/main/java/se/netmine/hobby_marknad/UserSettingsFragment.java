@@ -1,11 +1,14 @@
 package se.netmine.hobby_marknad;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -18,7 +21,12 @@ public class UserSettingsFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
 
+    Button btnMySettings = null;
+    Button btnMyMessages = null;
     TextView textUserName = null;
+
+    ScrollView scrollViewUserSettings = null;
+    ScrollView scrollViewMyMessages = null;
 
     LinearLayout layoutChooseDealer = null;
     TextView txtDealerServiceDealerName = null;
@@ -39,6 +47,40 @@ public class UserSettingsFragment extends BaseFragment {
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle(getString(R.string.my_page));
         }
+
+        scrollViewUserSettings = (ScrollView) view.findViewById(R.id.scrollViewUserSettings);
+        scrollViewMyMessages = (ScrollView) view.findViewById(R.id.scrollViewMyMessages);
+
+        btnMySettings = (Button) view.findViewById(R.id.btnMySettings);
+
+        btnMySettings.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                scrollViewMyMessages.setVisibility(View.GONE);
+                scrollViewUserSettings.setVisibility(View.VISIBLE);
+                btnMySettings.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+                btnMySettings.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.white));
+                btnMyMessages.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
+                btnMyMessages.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+            }
+        });
+
+        btnMyMessages = (Button) view.findViewById(R.id.btnMyMessages);
+
+        btnMyMessages.setOnClickListener( new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                scrollViewMyMessages.setVisibility(View.VISIBLE);
+                scrollViewUserSettings.setVisibility(View.GONE);
+                btnMyMessages.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+                btnMyMessages.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.white));
+                btnMySettings.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
+                btnMySettings.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+
+            }
+        });
 
         textUserName = (TextView) view.findViewById(R.id.textUserName);
         if(MyHobbyMarket.getInstance().isUserLoggedIn())

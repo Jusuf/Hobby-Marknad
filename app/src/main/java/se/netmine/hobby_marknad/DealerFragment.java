@@ -36,7 +36,6 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     private TextView dealerAddress = null;
     private TextView dealerTel = null;
     private TextView dealerEmail = null;
-    private TextView dealerWebPage = null;
 
     private ImageView imageDealerHeart = null;
     private ImageView imageWorkshopHeart = null;
@@ -70,7 +69,6 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         dealerAddress = (TextView) view.findViewById(R.id.txtDealerAddress);
         dealerTel = (TextView) view.findViewById(R.id.txtDealerTel);
         dealerEmail = (TextView) view.findViewById(R.id.txtDealerEmail);
-        dealerWebPage = (TextView) view.findViewById(R.id.txtDealerWebPage);
 
         imageDealerHeart = (ImageView) view.findViewById(R.id.imageDealerHeart);
         imageWorkshopHeart = (ImageView) view.findViewById(R.id.imageWorkshopHeart);
@@ -126,7 +124,6 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             dealerAddress.setText(dealer.street + ", " + dealer.postalcode + " " + dealer.city);
             dealerTel.setText(dealer.phone);
             dealerEmail.setText(dealer.email);
-            dealerWebPage.setText(dealer.webpage);
 
             setUserDealerAndWorkshopIcon();
         }

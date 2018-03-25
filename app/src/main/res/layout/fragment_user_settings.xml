@@ -28,6 +28,7 @@
                     android:layout_height="0dp"
                     android:layout_centerHorizontal="true"/>
                 <Button
+                    android:id="@+id/btnMySettings"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/strut"
@@ -36,6 +37,7 @@
                     android:textColor="@color/white"
                     android:text="@string/my_settings"/>
                 <Button
+                    android:id="@+id/btnMyMessages"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/strut"
@@ -53,6 +55,7 @@
             android:id="@+id/scrollViewUserSettings">
 
             <LinearLayout
+                android:id="@+id/layoutMySettings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.66"
@@ -303,6 +306,20 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollViewMyMessages">
+
+
+            <ExpandableListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ExpandableListView>
 
         </ScrollView>
 
