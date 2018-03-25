@@ -135,6 +135,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onMessagesLoaded(UserMessage[] messages)
+    {
+        // Notify the active fragment that a faqs has bean loaded
+        ((IFragment)fragmentStack.peek()).onMessagesUpdated(messages);
+    }
+
+    @Override
     public void onFaqsLoaded(Faq[] faqs)
     {
         // Notify the active fragment that a faqs has bean loaded

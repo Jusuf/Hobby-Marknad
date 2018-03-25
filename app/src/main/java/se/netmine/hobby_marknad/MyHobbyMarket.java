@@ -38,6 +38,7 @@ public class MyHobbyMarket {
     private static final int API_CONNECT = 1;
     private static final int API_LOGIN = 2;
     private static final int API_LOGOUT = 3;
+    private static final int API_MESSAGES = 4;
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
     private static final int API_FAQS = 7;
@@ -54,6 +55,7 @@ public class MyHobbyMarket {
 
     public User currentUser = null;
     public IMainActivity mainActivity;
+    public UserMessage[] messages;
     public Faq[] faqs;
     public Dealer[] dealers;
     public Dealer dealer;
@@ -827,6 +829,51 @@ public class MyHobbyMarket {
 
     }
 
+    protected void getMessageList() {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_MESSAGES, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        api.execute();
+    }
+
+    protected void getMessageListDone(String result) {
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            MessageResult messageResult = new Gson().fromJson(result, MessageResult.class);
+
+            messages = messageResult.messages;
+
+            if (messageResult.success == true) {
+                System.out.println("MyHobby - return from getMesssageList, count=" + messages.length);
+                mainActivity.onMessagesLoaded(messages);
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+
+    }
+
     private class GetFile extends AsyncTask<String, String, String> {
 
         public MyHobbyMarket.AsyncFileResponse delegate = null;
@@ -1049,6 +1096,17 @@ public class MyHobbyMarket {
 
                     }
                     break;
+                    case API_MESSAGES: {
+                        if (isUserLoggedIn()) {
+                            apiUrl = baseUrlAndroid + "messageListAuth";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("userId", currentUser.userId);
+                        }
+                    }
+                    break;
                     case API_FAQS: {
                         if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "faqListAuth";
@@ -1132,18 +1190,9 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("Vin", vin);
                         }
-//                        else{
-//                            apiUrl = "api/sync/" + "syncServices";
-//
-//                            builder = new Uri.Builder()
-//                                    .appendQueryParameter("UserName", currentUser.email)
-//                                    .appendQueryParameter("Password", currentUser.password)
-//                                    .appendQueryParameter("SearchQuery", searchQuery)
-//                                    .appendQueryParameter("DeviceCulture", deviceCulture);
-//                        }
-
                     }
                     break;
+
                 }
 
 
@@ -1276,6 +1325,9 @@ public class MyHobbyMarket {
                     break;
                 case API_SYNC:
                     syncDone(result);
+                    break;
+                case API_MESSAGES:
+                    getMessageListDone(result);
                     break;
                 case API_FAQS:
                     getFaqListDone(result, searchQuery);

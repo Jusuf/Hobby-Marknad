@@ -1,16 +1,23 @@
 package se.netmine.hobby_marknad;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +27,7 @@ import android.widget.TextView;
 public class UserSettingsFragment extends BaseFragment {
 
     private IMainActivity mainActivity;
+    LayoutInflater inflater = null;
 
     Button btnMySettings = null;
     Button btnMyMessages = null;
@@ -37,11 +45,16 @@ public class UserSettingsFragment extends BaseFragment {
     Switch switchNewsAndOffers = null;
     Switch switchServiceReminder = null;
 
+    ArrayList<UserMessage> loadedMessages = new ArrayList<>();
+    ExpandableHeightListView lvMessages = null;
+    ArrayAdapter<UserMessage> messageAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_user_settings, container, false);
+        this.inflater = inflater;
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
@@ -72,12 +85,24 @@ public class UserSettingsFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                scrollViewMyMessages.setVisibility(View.VISIBLE);
-                scrollViewUserSettings.setVisibility(View.GONE);
-                btnMyMessages.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
-                btnMyMessages.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.white));
-                btnMySettings.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
-                btnMySettings.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+
+                if(MyHobbyMarket.getInstance().isUserLoggedIn())
+                {
+                    scrollViewMyMessages.setVisibility(View.VISIBLE);
+                    scrollViewUserSettings.setVisibility(View.GONE);
+                    btnMyMessages.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+                    btnMyMessages.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.white));
+                    btnMySettings.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.whiteTransparent));
+                    btnMySettings.setTextColor(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
+
+
+                    MyHobbyMarket.getInstance().getMessageList();
+                }
+                else
+                {
+                    mainActivity.showToast(getString(R.string.must_be_logged_in));
+                }
+
 
             }
         });
@@ -164,8 +189,16 @@ public class UserSettingsFragment extends BaseFragment {
         txtDealerServiceDealerName = (TextView) view.findViewById(R.id.txtDealerServiceDealerName);
         txtDealerServiceWorkShopName = (TextView) view.findViewById(R.id.txtDealerServiceWorkShopName);
 
+
+        lvMessages = (ExpandableHeightListView) view.findViewById(R.id.lvMessages);
+        messageAdapter = new MessageListAdapter(mainActivity.getContext(), loadedMessages);
+        lvMessages.setAdapter(messageAdapter);
+        lvMessages.setExpanded(true);
+
         return view;
     }
+
+
 
     public void setDealerAndWorkshopText()
     {
@@ -188,6 +221,44 @@ public class UserSettingsFragment extends BaseFragment {
         {
             txtDealerServiceWorkShopName.setText(getString(R.string.my_workshop_not_chosen));
         }
+    }
+
+    public class MessageListAdapter extends ArrayAdapter<UserMessage> {
+
+        public MessageListAdapter(Context context, ArrayList<UserMessage> objects) {
+            super(context, 0, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            UserMessage item = getItem(position);
+
+            convertView = inflater.inflate(R.layout.message_item, null);
+
+            TextView txtMessageTitle = (TextView) convertView.findViewById(R.id.txtMessageTitle);
+
+            txtMessageTitle.setText(item.title);
+
+            return convertView;
+        }
+
+    }
+
+    @Override
+    public void onMessagesUpdated(UserMessage[] messages)
+    {
+        loadedMessages.clear();
+
+        if (messages != null)
+        {
+            for (UserMessage message : messages) {
+                loadedMessages.add(message);
+            }
+
+            messageAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override

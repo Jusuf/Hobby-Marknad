@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public interface IFragment{
     void setTitle();
 
+    void onMessagesUpdated(UserMessage[] messages);
+
     void onFaqsUpdated(Faq[] faqs);
 
     void onDealersUpdated(Dealer[] dealers);

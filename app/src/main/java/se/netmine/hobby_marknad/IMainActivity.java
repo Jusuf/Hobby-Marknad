@@ -28,6 +28,8 @@ public interface IMainActivity {
 
     void onNavigateBack();
 
+    void onMessagesLoaded(UserMessage[] messages);
+
     void onFaqsLoaded(Faq[] faqs);
 
     void onDealersLoaded(Dealer[] dealers);
