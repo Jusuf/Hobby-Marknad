@@ -13,7 +13,6 @@ public class User {
     public String lastName;
     public String password;
     public String email;
-    public String myHobbyKey;
     public String userId;
     public String dealerId;
     public String dealerName;
@@ -31,7 +30,6 @@ public class User {
         this.lastName = settings.getString("lastName", "");
         this.password = settings.getString("password", null);
         this.email = settings.getString("email", null);
-        this.myHobbyKey = settings.getString("myHobbyKey", "");
         this.userId = settings.getString("userId", "");
         this.deviceToken = settings.getString("deviceToken", "");
         this.dealerId = settings.getString("dealerId", null);
@@ -50,7 +48,6 @@ public class User {
         editor.putString("lastName", this.lastName);
         editor.putString("password", this.password);
         editor.putString("email", this.email);
-        editor.putString("myHobbyKey", this.myHobbyKey);
         editor.putString("userId", this.userId);
         editor.putString("deviceToken", this.deviceToken);
         editor.putString("dealerId", this.dealerId);

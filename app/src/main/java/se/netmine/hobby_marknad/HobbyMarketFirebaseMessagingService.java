@@ -46,7 +46,7 @@ public class HobbyMarketFirebaseMessagingService extends FirebaseMessagingServic
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_myhobby_logo)
-                .setContentTitle("Hobby Market")
+                .setContentTitle("Hobby")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

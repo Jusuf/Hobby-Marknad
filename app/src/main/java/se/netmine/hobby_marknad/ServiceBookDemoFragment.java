@@ -122,7 +122,12 @@ public class ServiceBookDemoFragment extends BaseFragment {
             } else {
                 imageViewServiceIcon.setImageResource(R.drawable.ic_service_item_warranty);
             }
-            txtServiceItemDoneDate.setText(item.serviceDate);
+
+            if(item.serviceDate != null)
+            {
+                txtServiceItemDoneDate.setText(item.serviceDate);
+            }
+
 
             String typeText;
             if(item.type.equals("10"))

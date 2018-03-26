@@ -1,7 +1,6 @@
 package se.netmine.hobby_marknad;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -66,7 +63,7 @@ public class UserSettingsFragment extends BaseFragment {
 
         btnMySettings = (Button) view.findViewById(R.id.btnMySettings);
 
-        btnMySettings.setOnClickListener( new View.OnClickListener(){
+        btnMySettings.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -81,13 +78,12 @@ public class UserSettingsFragment extends BaseFragment {
 
         btnMyMessages = (Button) view.findViewById(R.id.btnMyMessages);
 
-        btnMyMessages.setOnClickListener( new View.OnClickListener(){
+        btnMyMessages.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
                     scrollViewMyMessages.setVisibility(View.VISIBLE);
                     scrollViewUserSettings.setVisibility(View.GONE);
                     btnMyMessages.setBackgroundTintList(ContextCompat.getColorStateList(mainActivity.getContext(), R.color.myhobby_blue));
@@ -97,19 +93,15 @@ public class UserSettingsFragment extends BaseFragment {
 
 
                     MyHobbyMarket.getInstance().getMessageList();
-                }
-                else
-                {
+                } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                 }
-
 
             }
         });
 
         textUserName = (TextView) view.findViewById(R.id.textUserName);
-        if(MyHobbyMarket.getInstance().isUserLoggedIn())
-        {
+        if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
             textUserName.setText(MyHobbyMarket.getInstance().currentUser.email);
         }
 
@@ -117,15 +109,12 @@ public class UserSettingsFragment extends BaseFragment {
         layoutChooseDealer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null)
-                    {
-                        MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.dealerId);
-                    }
-                    else
-                    {
-                        DealersFragment fragment = new DealersFragment();
-                        mainActivity.onNavigateToFragment(fragment);
-                    }
+                if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null) {
+                    MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.dealerId);
+                } else {
+                    DealersFragment fragment = new DealersFragment();
+                    mainActivity.onNavigateToFragment(fragment);
+                }
 
             }
         });
@@ -134,16 +123,13 @@ public class UserSettingsFragment extends BaseFragment {
         layoutChooseWorkshop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null)
-                    {
-                        MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.workshopId);
-                    }
-                    else
-                    {
-                        DealersFragment fragment = new DealersFragment();
-                        mainActivity.onNavigateToFragment(fragment);
-                    }
+                if (MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null) {
+                    MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.workshopId);
+                } else {
+                    DealersFragment fragment = new DealersFragment();
+                    mainActivity.onNavigateToFragment(fragment);
                 }
+            }
         });
 
         switchNewsAndOffers = (Switch) view.findViewById(R.id.switchNewsAndOffers);
@@ -151,14 +137,11 @@ public class UserSettingsFragment extends BaseFragment {
         switchNewsAndOffers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
-                MyHobbyMarket.getInstance().currentUser.notifyNews = isChecked;
-                MyHobbyMarket.getInstance().currentUser.save();
-                MyHobbyMarket.getInstance().sync(true);
-                }
-                else
-                {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
+                    MyHobbyMarket.getInstance().currentUser.notifyNews = isChecked;
+                    MyHobbyMarket.getInstance().currentUser.save();
+                    MyHobbyMarket.getInstance().sync(true);
+                } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                     switchNewsAndOffers.setChecked(false);
                 }
@@ -171,14 +154,11 @@ public class UserSettingsFragment extends BaseFragment {
         switchServiceReminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(MyHobbyMarket.getInstance().isUserLoggedIn())
-                {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
                     MyHobbyMarket.getInstance().currentUser.notifyService = isChecked;
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
-                }
-                else
-                {
+                } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                     switchServiceReminder.setChecked(false);
                 }
@@ -199,26 +179,18 @@ public class UserSettingsFragment extends BaseFragment {
     }
 
 
-
-    public void setDealerAndWorkshopText()
-    {
-        if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null)
-        {
+    public void setDealerAndWorkshopText() {
+        if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null) {
             String dealerName = MyHobbyMarket.getInstance().getDealerName();
             txtDealerServiceDealerName.setText(dealerName);
-        }
-        else
-        {
+        } else {
             txtDealerServiceDealerName.setText(getString(R.string.my_dealer_not_chosen));
         }
 
-        if (MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null)
-        {
+        if (MyHobbyMarket.getInstance().currentUser.workshopId != null && MyHobbyMarket.getInstance().currentUser.workshopName != null) {
             String workshopName = MyHobbyMarket.getInstance().getWorkshopName();
             txtDealerServiceWorkShopName.setText(workshopName);
-        }
-        else
-        {
+        } else {
             txtDealerServiceWorkShopName.setText(getString(R.string.my_workshop_not_chosen));
         }
     }
@@ -246,12 +218,10 @@ public class UserSettingsFragment extends BaseFragment {
     }
 
     @Override
-    public void onMessagesUpdated(UserMessage[] messages)
-    {
+    public void onMessagesUpdated(UserMessage[] messages) {
         loadedMessages.clear();
 
-        if (messages != null)
-        {
+        if (messages != null) {
             for (UserMessage message : messages) {
                 loadedMessages.add(message);
             }
@@ -262,14 +232,14 @@ public class UserSettingsFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         // After a pause
         super.onResume();
         mainActivity.setTitle(getString(R.string.my_page));
         setDealerAndWorkshopText();
     }
 
-    public UserSettingsFragment(){}
+    public UserSettingsFragment() {
+    }
 
 }

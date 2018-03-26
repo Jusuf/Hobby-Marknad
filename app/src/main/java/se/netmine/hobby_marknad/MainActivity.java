@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     private TextView txtUserName = null;
     private NavigationView navigationView = null;
-    public static final String PREFS_NAME = "MyHobbyPrefsFile";
+    public static final String PREFS_NAME = "MyHobbyMarketPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MyHobbyMarket.getInstance().init(settings);
+
+//        getSharedPreferences(PREFS_NAME, 0).edit().clear().commit();
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

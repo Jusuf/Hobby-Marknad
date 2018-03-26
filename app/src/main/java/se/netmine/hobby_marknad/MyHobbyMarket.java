@@ -48,8 +48,8 @@ public class MyHobbyMarket {
     private static final int API_DEALER = 11;
 
     //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.151/hobby/";
-    public static String url = "http://192.168.0.11/hobby/";
+    public static String url = "http://192.168.20.187/hobby/";
+//    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -375,8 +375,6 @@ public class MyHobbyMarket {
                 null,
                 email,
                 password,
-                null,
-                null,
                 firstName,
                 lastName,
                 null,
@@ -422,8 +420,6 @@ public class MyHobbyMarket {
                 null,
                 email,
                 password,
-                null,
-                null,
                 null,
                 null,
                 null,
@@ -481,8 +477,6 @@ public class MyHobbyMarket {
                 currentUser.password,
                 null,
                 null,
-                null,
-                null,
                 oldPassword,
                 newPassword,
                 newPasswordConfirm,
@@ -528,9 +522,8 @@ public class MyHobbyMarket {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage,
                 currentUser.userId,
-                null, currentUser.password,
-                null,
-                null,
+                currentUser.email,
+                currentUser.password,
                 null, null,
                 null,
                 null,
@@ -556,7 +549,6 @@ public class MyHobbyMarket {
 
             if (success == true) {
                 this.currentUser.password = null;
-                this.currentUser.myHobbyKey = null;
                 this.currentUser.userId = null;
                 this.currentUser.firstName = null;
                 this.currentUser.lastName = null;
@@ -590,8 +582,6 @@ public class MyHobbyMarket {
                 currentUser.userId,
                 null,
                 currentUser.password,
-                currentUser.myHobbyKey,
-                null,
                 null,
                 null,
                 null,
@@ -642,8 +632,6 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
-                null,
-                null,
                 searchQuery,
                 deviceCulture,
                 null,
@@ -680,8 +668,6 @@ public class MyHobbyMarket {
     protected void getDealer(String id) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_DEALER, loadingMessage,
-                null,
-                null,
                 null,
                 null,
                 null,
@@ -744,8 +730,6 @@ public class MyHobbyMarket {
                     null,
                     null,
                     null,
-                    null,
-                    null,
                     searchQuery,
                     deviceCulture,
                     null,
@@ -787,8 +771,6 @@ public class MyHobbyMarket {
     protected void getFaqList(String searchQuery, String deviceCulture, String tags) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_FAQS, loadingMessage,
-                null,
-                null,
                 null,
                 null,
                 null,
@@ -844,8 +826,6 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
-                null,
-                null,
                 null);
         api.execute();
     }
@@ -874,31 +854,6 @@ public class MyHobbyMarket {
 
     }
 
-    private class GetFile extends AsyncTask<String, String, String> {
-
-        public MyHobbyMarket.AsyncFileResponse delegate = null;
-
-        public GetFile(MyHobbyMarket.AsyncFileResponse asyncResponse) {
-            delegate = asyncResponse;//Assigning call back interfacethrough constructor
-        }
-
-        @Override
-        protected String doInBackground(String... fileName) {
-            String result = new ReadWriteJsonFileUtils(mainActivity.getContext()).readJsonFileData("campingsJson");
-            return result;
-        }
-
-        @Override
-        protected void onProgressUpdate(String[] result) {
-            delegate.processFinish(result[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            delegate.processFinish(result);
-        }
-    }
-
     public interface AsyncFileResponse {
         void processFinish(String output);
     }
@@ -906,8 +861,6 @@ public class MyHobbyMarket {
     protected void connectToService(String vin) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_SERVICE, loadingMessage,
-                null,
-                null,
                 null,
                 null,
                 null,
@@ -956,8 +909,6 @@ public class MyHobbyMarket {
         private String userId = null;
         private String email = null;
         private String password = null;
-        private String myhobbyKey = null;
-        private String command = null;
         private String firstName = null;
         private String lastName = null;
         private String oldPassword = null;
@@ -974,8 +925,6 @@ public class MyHobbyMarket {
                           String userId,
                           String email,
                           String password,
-                          String myhobbyKey,
-                          String command,
                           String firstName,
                           String lastName,
                           String oldPassword,
@@ -991,8 +940,6 @@ public class MyHobbyMarket {
             this.userId = userId;
             this.email = email;
             this.password = password;
-            this.myhobbyKey = myhobbyKey;
-            this.command = command;
             this.firstName = firstName;
             this.lastName = lastName;
             this.oldPassword = oldPassword;
@@ -1049,17 +996,6 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("ConfirmPassword", newPasswordConfirm);
                     }
                     break;
-
-                    case API_CONNECT: {
-                        apiUrl = baseUrl + "connectmyhobby";
-
-                        builder = new Uri.Builder()
-                                .appendQueryParameter("UserId", userId)
-                                .appendQueryParameter("Password", password)
-                                .appendQueryParameter("MyhobbyKey", myhobbyKey);
-                    }
-                    break;
-
                     case API_LOGIN: {
                         apiUrl = baseUrl + "loginapi";
 
@@ -1084,7 +1020,6 @@ public class MyHobbyMarket {
                         builder = new Uri.Builder()
                                 .appendQueryParameter("UserId", userId)
                                 .appendQueryParameter("Password", password)
-                                .appendQueryParameter("MyhobbyKey", myhobbyKey)
                                 .appendQueryParameter("FirstName", MyHobbyMarket.getInstance().currentUser.firstName)
                                 .appendQueryParameter("LastName", MyHobbyMarket.getInstance().currentUser.lastName)
                                 .appendQueryParameter("Email", MyHobbyMarket.getInstance().currentUser.email)
@@ -1241,7 +1176,6 @@ public class MyHobbyMarket {
                         // Wrong credentials when asumed to be correct. Logout the user and remove any credentials
                         currentUser.password = null;
                         currentUser.userId = null;
-                        currentUser.myHobbyKey = null;
                         currentUser.firstName = null;
                         currentUser.lastName = null;
                         currentUser.save();
