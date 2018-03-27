@@ -218,6 +218,7 @@
                     android:background="@drawable/faq_list_search_bg"
                     android:paddingTop="5dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_below="@id/dealerDetailsDealerInfoLayout">
 
                     <LinearLayout
@@ -302,6 +303,28 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16dp"
+                    android:background="@drawable/info_button"
+                    android:text="@string/login_login"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16dp"
+                    android:background="@drawable/info_button"
+                    android:text="@string/nav_logout"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
 
             </LinearLayout>
 

@@ -47,6 +47,9 @@ public class UserSettingsFragment extends BaseFragment {
     ExpandableHeightListView lvMessages = null;
     ArrayAdapter<UserMessage> messageAdapter;
 
+    Button btnLogin = null;
+    Button btnLogout = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -185,6 +188,34 @@ public class UserSettingsFragment extends BaseFragment {
                 mainActivity.onNavigateToFragment(fragment);
             }
         });
+
+        btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        btnLogout = (Button) view.findViewById(R.id.btnLogout);
+        if(MyHobbyMarket.getInstance().isUserLoggedIn())
+        {
+            btnLogin.setVisibility(View.GONE);
+            btnLogout.setVisibility(View.VISIBLE);
+
+            btnLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyHobbyMarket.getInstance().logout();
+                }
+            });
+        }
+        else
+        {
+            btnLogin.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.GONE);
+
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginFragment fragment = new LoginFragment();
+                    mainActivity.onNavigateToFragment(fragment);
+                }
+            });
+        }
 
         return view;
     }

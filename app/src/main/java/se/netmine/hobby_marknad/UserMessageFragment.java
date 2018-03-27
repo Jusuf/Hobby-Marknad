@@ -43,7 +43,10 @@ public class UserMessageFragment extends BaseFragment{
             txtMessageTitle.setText(message.title);
             txtMessageBody.setText(message.body);
 
-            MyHobbyMarket.getInstance().setMessageAsRead(message.id);
+            if(!message.isRead)
+            {
+                MyHobbyMarket.getInstance().setMessageAsRead(message.id);
+            }
         }
 
         btnGoToDealer = (Button) view.findViewById(R.id.btnGoToDealer);
@@ -63,9 +66,6 @@ public class UserMessageFragment extends BaseFragment{
         {
             btnGoToDealer.setVisibility(View.GONE);
         }
-
-
-
 
         return view;
     }
