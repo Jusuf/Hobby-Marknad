@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity
 
         MyHobbyMarket.getInstance().mainActivity = this;
 
+        MyHobbyMarket.getInstance().setDeviceToken("");
+
 //        MyHobbyMarket.getInstance().loadCampingsFromFile();
 
         navigateToStartFragment();

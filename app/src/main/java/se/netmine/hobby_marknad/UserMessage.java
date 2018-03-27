@@ -7,6 +7,8 @@ package se.netmine.hobby_marknad;
 public class UserMessage {
     public String id;
     public String title;
+    public String body;
+    public Dealer sender;
     public int type;
     public boolean isRead;
 }

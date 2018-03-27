@@ -10,6 +10,8 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  */
 
 public class HobbyMarketFirebaseService extends FirebaseInstanceIdService {
+
+
     private static final String TAG = "HMFirebaseIIDService";
 
     /**

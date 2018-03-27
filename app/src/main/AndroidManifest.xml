@@ -40,17 +40,19 @@
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="se.netmine.hobby_marknad" />
 
+        <service android:name=".HobbyMarketFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+            </intent-filter>
+        </service>
+
         <service android:name=".HobbyMarketFirebaseService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
             </intent-filter>
         </service>
 
-        <service android:name=".HobbyMarketFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
-            </intent-filter>
-        </service>
+
     </application>
 
 </manifest>

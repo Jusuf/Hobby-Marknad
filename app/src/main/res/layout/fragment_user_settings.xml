@@ -310,12 +310,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollViewMyMessages">
+            android:id="@+id/scrollViewMyMessages"
+            android:background="@drawable/bg_message_list">
 
             <se.netmine.hobby_marknad.ExpandableHeightListView
                 android:id="@+id/lvMessages"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp">
 
             </se.netmine.hobby_marknad.ExpandableHeightListView>
 

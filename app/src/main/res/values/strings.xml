@@ -166,4 +166,6 @@
     <string name="hint_sure_name">Förnamn</string>
     <string name="hint_last_name">Efternamn</string>
 
+    <string name="go_to_reseller">Gå till återförsäljare</string>
+
 </resources>

@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_service_item"
     android:paddingRight="15dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="10dp"
-    android:layout_height="wrap_content">
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/imageViewServiceIcon"
         android:layout_width="60dp"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_service_item_seal_test" />
+        app:srcCompat="@drawable/ic_notification_news" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -29,7 +29,6 @@
                 android:id="@+id/txtMessageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
                 android:text="XXXX-XX-XX"
                 android:textColor="@color/text_dark_grey"
                 android:textSize="16sp"
@@ -43,32 +42,21 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtServiceItemType"
+                android:id="@+id/txtMessageSender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="xxx"
                 android:textColor="@color/faq_text_dark_grey"
                 android:textSize="12sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="-"
-                android:textColor="@color/faq_text_dark_grey"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtServiceItemStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="xxx"
-                android:textColor="@color/faq_text_dark_grey"
-                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_arrow_right_white"
+        android:tint="@color/myhobby_blue"
+        android:gravity="right" />
 </LinearLayout>

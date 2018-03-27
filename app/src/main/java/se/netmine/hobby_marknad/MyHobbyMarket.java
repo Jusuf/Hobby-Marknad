@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.orm.StringUtil;
 
@@ -46,9 +47,10 @@ public class MyHobbyMarket {
     private static final int API_SERVICE = 9;
     private static final int API_CAMPINGS = 10;
     private static final int API_DEALER = 11;
+    private static final int API_SET_MESSAGE_AS_READ = 12;
 
     //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.187/hobby/";
+    public static String url = "http://192.168.20.125/hobby/";
 //    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
@@ -350,6 +352,11 @@ public class MyHobbyMarket {
     }
 
     public void setDeviceToken(String deviceToken) {
+        if(deviceToken.equals(""))
+        {
+            deviceToken = FirebaseInstanceId.getInstance().getToken();
+        }
+        FirebaseInstanceId.getInstance().getToken();
         this.currentUser.deviceToken = deviceToken;
         this.currentUser.save();
     }
@@ -377,6 +384,7 @@ public class MyHobbyMarket {
                 password,
                 firstName,
                 lastName,
+                null,
                 null,
                 null,
                 null,
@@ -420,6 +428,7 @@ public class MyHobbyMarket {
                 null,
                 email,
                 password,
+                null,
                 null,
                 null,
                 null,
@@ -484,6 +493,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
+                null,
                 null);
         api.execute();
     }
@@ -525,6 +535,7 @@ public class MyHobbyMarket {
                 currentUser.email,
                 currentUser.password,
                 null, null,
+                null,
                 null,
                 null,
                 null,
@@ -591,6 +602,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
+                null,
                 null);
         api.execute();
     }
@@ -636,6 +648,7 @@ public class MyHobbyMarket {
                 deviceCulture,
                 null,
                 null,
+                null,
                 null);
         api.execute();
 
@@ -668,6 +681,7 @@ public class MyHobbyMarket {
     protected void getDealer(String id) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_DEALER, loadingMessage,
+                null,
                 null,
                 null,
                 null,
@@ -733,7 +747,9 @@ public class MyHobbyMarket {
                     searchQuery,
                     deviceCulture,
                     null,
-                    null, null);
+                    null,
+                    null,
+                    null);
             api.execute();
 
         } else {
@@ -783,6 +799,7 @@ public class MyHobbyMarket {
                 deviceCulture,
                 tags,
                 null,
+                null,
                 null);
         api.execute();
     }
@@ -826,6 +843,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
+                null,
                 null);
         api.execute();
     }
@@ -850,12 +868,47 @@ public class MyHobbyMarket {
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
+    }
 
+    protected void setMessageAsRead (String messageId) {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_SET_MESSAGE_AS_READ, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                messageId);
+        api.execute();
 
     }
 
-    public interface AsyncFileResponse {
-        void processFinish(String output);
+    protected void setMessageAsReadDone(String result) {
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            MessageResult messageResult = new Gson().fromJson(result, MessageResult.class);
+
+            if (messageResult.success == true) {
+                System.out.println("MyHobby - return from setMessageAsReadDone, count=" + messageResult.success );
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
     }
 
     protected void connectToService(String vin) {
@@ -873,6 +926,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 vin,
+                null,
                 null);
         api.execute();
     }
@@ -919,6 +973,7 @@ public class MyHobbyMarket {
         private String faqTags = null;
         private String vin = null;
         private String dealerId = null;
+        private String messageId = null;
 
         public MyHobbyApi(int apiMethod,
                           String loadingMessage,
@@ -934,7 +989,8 @@ public class MyHobbyMarket {
                           String deviceCulture,
                           String faqTags,
                           String vin,
-                          String dealerId) {
+                          String dealerId,
+                          String messageId) {
             this.apiMethod = apiMethod;
             this.loadingMessage = loadingMessage;
             this.userId = userId;
@@ -950,6 +1006,7 @@ public class MyHobbyMarket {
             this.faqTags = faqTags;
             this.vin = vin;
             this.dealerId = dealerId;
+            this.messageId = messageId;
         }
 
         @Override
@@ -1028,7 +1085,6 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("DealerId", MyHobbyMarket.getInstance().currentUser.dealerId)
                                 .appendQueryParameter("WorkshopId", MyHobbyMarket.getInstance().currentUser.workshopId)
                                 .appendQueryParameter("DeviceToken", MyHobbyMarket.getInstance().currentUser.deviceToken);
-
                     }
                     break;
                     case API_MESSAGES: {
@@ -1092,7 +1148,7 @@ public class MyHobbyMarket {
                         builder = new Uri.Builder()
                                 .appendQueryParameter("UserName", currentUser.email)
                                 .appendQueryParameter("Password", currentUser.password)
-                                .appendQueryParameter("DealerId", currentUser.dealerId);
+                                .appendQueryParameter("DealerId", dealerId);
                     }
                     break;
                     case API_CAMPINGS: {
@@ -1125,6 +1181,15 @@ public class MyHobbyMarket {
                                     .appendQueryParameter("Password", currentUser.password)
                                     .appendQueryParameter("Vin", vin);
                         }
+                    }
+                    break;
+                    case API_SET_MESSAGE_AS_READ: {
+                        apiUrl = baseUrlAndroid + "markMessageAsRead";
+
+                        builder = new Uri.Builder()
+                                .appendQueryParameter("UserName", currentUser.email)
+                                .appendQueryParameter("Password", currentUser.password)
+                                .appendQueryParameter("messageId", messageId);
                     }
                     break;
 
@@ -1277,6 +1342,9 @@ public class MyHobbyMarket {
                     break;
                 case API_SERVICE:
                     connectToServiceDone(result);
+                    break;
+                case API_SET_MESSAGE_AS_READ:
+                    setMessageAsReadDone(result);
                     break;
             }
         }

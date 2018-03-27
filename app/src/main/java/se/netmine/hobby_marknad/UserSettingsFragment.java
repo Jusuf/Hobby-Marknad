@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -175,6 +176,16 @@ public class UserSettingsFragment extends BaseFragment {
         lvMessages.setAdapter(messageAdapter);
         lvMessages.setExpanded(true);
 
+        lvMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserMessage node = loadedMessages.get(position);
+                UserMessageFragment fragment = new UserMessageFragment();
+                fragment.message = node;
+                mainActivity.onNavigateToFragment(fragment);
+            }
+        });
+
         return view;
     }
 
@@ -208,9 +219,16 @@ public class UserSettingsFragment extends BaseFragment {
 
             convertView = inflater.inflate(R.layout.message_item, null);
 
+            if(!item.isRead)
+            {
+                convertView.setBackgroundResource(R.drawable.bg_message_new);
+            }
+
             TextView txtMessageTitle = (TextView) convertView.findViewById(R.id.txtMessageTitle);
+            TextView txtMessageSender = (TextView) convertView.findViewById(R.id.txtMessageSender);
 
             txtMessageTitle.setText(item.title);
+            txtMessageSender.setText(item.sender.name);
 
             return convertView;
         }
@@ -237,6 +255,11 @@ public class UserSettingsFragment extends BaseFragment {
         super.onResume();
         mainActivity.setTitle(getString(R.string.my_page));
         setDealerAndWorkshopText();
+
+        if(scrollViewMyMessages.getVisibility() == View.VISIBLE)
+        {
+            MyHobbyMarket.getInstance().getMessageList();
+        }
     }
 
     public UserSettingsFragment() {
