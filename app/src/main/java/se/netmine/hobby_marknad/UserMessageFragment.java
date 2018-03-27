@@ -19,6 +19,7 @@ public class UserMessageFragment extends BaseFragment{
     private TextView txtMessageTitle = null;
     private TextView txtMessageBody = null;
     private Button btnGoToDealer = null;
+    private Button btnRemoveMessage = null;
 
     public UserMessageFragment(){
 
@@ -38,6 +39,8 @@ public class UserMessageFragment extends BaseFragment{
         txtMessageTitle = (TextView) view.findViewById(R.id.txtMessageTitle);
         txtMessageBody = (TextView) view.findViewById(R.id.txtMessageBody);
 
+        btnRemoveMessage  = (Button) view.findViewById(R.id.btnRemoveMessage);
+
         if (message != null)
         {
             txtMessageTitle.setText(message.title);
@@ -47,7 +50,18 @@ public class UserMessageFragment extends BaseFragment{
             {
                 MyHobbyMarket.getInstance().setMessageAsRead(message.id);
             }
+
+            btnRemoveMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   MyHobbyMarket.getInstance().removeMessage(message.id);
+                   mainActivity.onNavigateBack();
+                }
+            });
         }
+
+
+
 
         btnGoToDealer = (Button) view.findViewById(R.id.btnGoToDealer);
 

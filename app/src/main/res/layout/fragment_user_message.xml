@@ -48,6 +48,17 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnRemoveMessage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:background="@drawable/warning_button"
+        android:text="@string/remove"
+        android:textAllCaps="false"
+        android:textColor="#ffffff" />
+
+    <Button
         android:id="@+id/btnGoToDealer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -57,5 +68,7 @@
         android:text="@string/go_to_reseller"
         android:textAllCaps="false"
         android:textColor="#ffffff" />
+
+
 
 </LinearLayout>

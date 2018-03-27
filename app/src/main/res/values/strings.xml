@@ -5,6 +5,7 @@
     <string name="label_address">Adress:</string>
     <string name="label_phone">Tel:</string>
     <string name="label_email">E-postadress:</string>
+    <string name="remove">Ta bort</string>
 
     <string name="app_error_internal">Internt fel. Var god prova igen.</string>
     <string name="app_error_invalid_credentials">Användarnamn eller lösenord är ogilltigt.</string>
@@ -165,6 +166,10 @@
     <string name="hint_password">Lösenord</string>
     <string name="hint_sure_name">Förnamn</string>
     <string name="hint_last_name">Efternamn</string>
+
+    <string name="no_messages">Du har inga meddelanden</string>
+
+
 
     <string name="go_to_reseller">Gå till återförsäljare</string>
 

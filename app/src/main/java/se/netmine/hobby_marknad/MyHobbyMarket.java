@@ -48,6 +48,7 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
     private static final int API_DEALER = 11;
     private static final int API_SET_MESSAGE_AS_READ = 12;
+    private static final int API_REMOVE_MESSAGE = 1;
 
     //    public static  String url = "https://admin.myhobby.nu/";
     public static String url = "http://192.168.20.125/hobby/";
@@ -678,7 +679,7 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getDealer(String id) {
+    protected void getDealer(String dealerId) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_DEALER, loadingMessage,
                 null,
@@ -693,7 +694,7 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
-                null,
+                dealerId,
                 null);
         api.execute();
 
@@ -903,6 +904,47 @@ public class MyHobbyMarket {
 
             if (messageResult.success == true) {
                 System.out.println("MyHobby - return from setMessageAsReadDone, count=" + messageResult.success );
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+    }
+
+    protected void removeMessage (String messageId) {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_REMOVE_MESSAGE, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                messageId);
+        api.execute();
+
+    }
+
+    protected void removeMessageDone(String result) {
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            MessageResult messageResult = new Gson().fromJson(result, MessageResult.class);
+
+            if (messageResult.success == true) {
+                System.out.println("MyHobby - return from removeMessage, result success =" + messageResult.success );
             }
 
         } catch (Exception e) {
@@ -1192,6 +1234,15 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("messageId", messageId);
                     }
                     break;
+                    case API_REMOVE_MESSAGE: {
+                        apiUrl = baseUrlAndroid + "removeMessage";
+
+                        builder = new Uri.Builder()
+                                .appendQueryParameter("UserName", currentUser.email)
+                                .appendQueryParameter("Password", currentUser.password)
+                                .appendQueryParameter("messageId", messageId);
+                    }
+                    break;
 
                 }
 
@@ -1345,6 +1396,9 @@ public class MyHobbyMarket {
                     break;
                 case API_SET_MESSAGE_AS_READ:
                     setMessageAsReadDone(result);
+                    break;
+                case API_REMOVE_MESSAGE:
+                    removeMessageDone(result);
                     break;
             }
         }

@@ -333,16 +333,45 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollViewMyMessages"
-            android:background="@drawable/bg_message_list">
+            android:id="@+id/scrollViewMyMessages">
 
-            <se.netmine.hobby_marknad.ExpandableHeightListView
-                android:id="@+id/lvMessages"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp">
+                android:orientation="vertical">
 
-            </se.netmine.hobby_marknad.ExpandableHeightListView>
+                <TextView
+                    android:id="@+id/txtNoMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/whiteTransparent"
+                    android:padding="15dp"
+                    android:text="@string/no_messages"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_dark_grey"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_message_list">
+
+                    <se.netmine.hobby_marknad.ExpandableHeightListView
+                        android:id="@+id/lvMessages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp">
+
+                    </se.netmine.hobby_marknad.ExpandableHeightListView>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
 
         </ScrollView>
 

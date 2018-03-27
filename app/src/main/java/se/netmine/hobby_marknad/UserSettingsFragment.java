@@ -47,6 +47,8 @@ public class UserSettingsFragment extends BaseFragment {
     ExpandableHeightListView lvMessages = null;
     ArrayAdapter<UserMessage> messageAdapter;
 
+    TextView txtNoMessages = null;
+
     Button btnLogin = null;
     Button btnLogout = null;
 
@@ -114,6 +116,7 @@ public class UserSettingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null) {
+                    String dealerIdtest = MyHobbyMarket.getInstance().currentUser.dealerId;
                     MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.dealerId);
                 } else {
                     DealersFragment fragment = new DealersFragment();
@@ -173,6 +176,8 @@ public class UserSettingsFragment extends BaseFragment {
         txtDealerServiceDealerName = (TextView) view.findViewById(R.id.txtDealerServiceDealerName);
         txtDealerServiceWorkShopName = (TextView) view.findViewById(R.id.txtDealerServiceWorkShopName);
 
+
+        txtNoMessages = (TextView) view.findViewById(R.id.txtNoMessages);
 
         lvMessages = (ExpandableHeightListView) view.findViewById(R.id.lvMessages);
         messageAdapter = new MessageListAdapter(mainActivity.getContext(), loadedMessages);
@@ -276,6 +281,16 @@ public class UserSettingsFragment extends BaseFragment {
             }
 
             messageAdapter.notifyDataSetChanged();
+            if(loadedMessages.size() == 0)
+            {
+                txtNoMessages.setVisibility(View.VISIBLE);
+                lvMessages.setVisibility(View.GONE);
+            }
+            else
+            {
+                txtNoMessages.setVisibility(View.GONE);
+                lvMessages.setVisibility(View.VISIBLE);
+            }
         }
 
     }
