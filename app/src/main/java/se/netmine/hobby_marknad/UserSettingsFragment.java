@@ -116,7 +116,6 @@ public class UserSettingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (MyHobbyMarket.getInstance().currentUser.dealerId != null && MyHobbyMarket.getInstance().currentUser.dealerName != null) {
-                    String dealerIdtest = MyHobbyMarket.getInstance().currentUser.dealerId;
                     MyHobbyMarket.getInstance().getDealer(MyHobbyMarket.getInstance().currentUser.dealerId);
                 } else {
                     DealersFragment fragment = new DealersFragment();
@@ -140,12 +139,12 @@ public class UserSettingsFragment extends BaseFragment {
         });
 
         switchNewsAndOffers = (Switch) view.findViewById(R.id.switchNewsAndOffers);
-        switchNewsAndOffers.setChecked(MyHobbyMarket.getInstance().currentUser.notifyNews);
+        switchNewsAndOffers.setChecked(MyHobbyMarket.getInstance().currentUser.subNews);
         switchNewsAndOffers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
-                    MyHobbyMarket.getInstance().currentUser.notifyNews = isChecked;
+                    MyHobbyMarket.getInstance().currentUser.subNews = isChecked;
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                 } else {
@@ -157,12 +156,12 @@ public class UserSettingsFragment extends BaseFragment {
         });
 
         switchServiceReminder = (Switch) view.findViewById(R.id.switchServiceReminder);
-        switchServiceReminder.setChecked(MyHobbyMarket.getInstance().currentUser.notifyService);
+        switchServiceReminder.setChecked(MyHobbyMarket.getInstance().currentUser.subService);
         switchServiceReminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
-                    MyHobbyMarket.getInstance().currentUser.notifyService = isChecked;
+                    MyHobbyMarket.getInstance().currentUser.subService = isChecked;
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
                 } else {

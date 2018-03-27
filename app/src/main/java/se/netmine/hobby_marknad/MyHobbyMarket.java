@@ -48,11 +48,13 @@ public class MyHobbyMarket {
     private static final int API_CAMPINGS = 10;
     private static final int API_DEALER = 11;
     private static final int API_SET_MESSAGE_AS_READ = 12;
-    private static final int API_REMOVE_MESSAGE = 1;
+    private static final int API_REMOVE_MESSAGE = 13;
+    private static final int API_USER_SETTINGS = 14;
+
 
     //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.125/hobby/";
-//    public static String url = "http://192.168.0.11/hobby/";
+//    public static String url = "http://192.168.20.125/hobby/";
+    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -466,6 +468,9 @@ public class MyHobbyMarket {
                 currentUser.userId = userId;
 
                 currentUser.save();
+
+                getUserSettings();
+
                 mainActivity.onLoggedIn();
             } else {
                 String message = jObject.getString("message");
@@ -530,56 +535,15 @@ public class MyHobbyMarket {
     }
 
     protected void logout() {
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_LOGOUT, loadingMessage,
-                currentUser.userId,
-                currentUser.email,
-                currentUser.password,
-                null, null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-        api.execute();
-    }
-
-    protected void logoutDone(String result) {
-        try {
-            if (result == null || result.isEmpty()) {
-                showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
-                return;
-            }
-
-            JSONObject jObject = new JSONObject(result);
-
-            boolean success = jObject.getBoolean("success");
-
-            if (success == true) {
-                this.currentUser.password = null;
-                this.currentUser.userId = null;
-                this.currentUser.firstName = null;
-                this.currentUser.lastName = null;
-                this.caravan = null;
-                this.currentUser.notifyNews = false;
-                this.currentUser.notifyService = false;
-                this.currentUser.save();
-
-                mainActivity.onLoggedOut();
-            } else {
-                String message = jObject.getString("message");
-                this.showErrorDialog(message);
-            }
-
-        } catch (JSONException e) {
-            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
-        }
-
-
+            this.currentUser.password = null;
+            this.currentUser.userId = null;
+            this.currentUser.firstName = null;
+            this.currentUser.lastName = null;
+            this.caravan = null;
+            this.currentUser.subNews = false;
+            this.currentUser.subService = false;
+            this.currentUser.save();
+            mainActivity.onLoggedOut();
     }
 
     protected void sync(boolean showDialog) {
@@ -997,6 +961,65 @@ public class MyHobbyMarket {
         }
     }
 
+    protected void getUserSettings () {
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
+        MyHobbyApi api = new MyHobbyApi(API_USER_SETTINGS, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+        api.execute();
+
+    }
+
+    protected void getUserSettingsDone(String result) {
+
+
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            UserSettingsResult userSettingsResult = new Gson().fromJson(result, UserSettingsResult.class);
+
+            if (userSettingsResult.success == true) {
+                System.out.println("MyHobby - return from getUserSettingsDone, result success =" + userSettingsResult.success );
+
+                UserSettings userSettings = userSettingsResult.userSettings;
+
+                currentUser.userId = userSettings.userId;
+                currentUser.email = userSettings.email;
+                currentUser.firstName = userSettings.firstName;
+                currentUser.lastName = userSettings.lastName;
+                currentUser.subNews = userSettings.subNews;
+                currentUser.subService = userSettings.subService;
+                currentUser.deviceToken = userSettings.deviceToken;
+                currentUser.dealerId = userSettings.dealerId;
+                currentUser.dealerName = userSettings.dealerName;
+                currentUser.workshopId = userSettings.workshopId;
+                currentUser.workshopName = userSettings.workshopName;
+
+                currentUser.save();
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+
+    }
+
     private class MyHobbyApi extends AsyncTask<String, String, String> {
 
         private ProgressDialog pDialog;
@@ -1096,19 +1119,10 @@ public class MyHobbyMarket {
                     }
                     break;
                     case API_LOGIN: {
-                        apiUrl = baseUrl + "loginapi";
+                        apiUrl = baseUrl + "loginApi";
 
                         builder = new Uri.Builder()
                                 .appendQueryParameter("UserName", email)
-                                .appendQueryParameter("Password", password);
-
-                    }
-                    break;
-                    case API_LOGOUT: {
-                        apiUrl = baseUrl + "logoutapi";
-
-                        builder = new Uri.Builder()
-                                .appendQueryParameter("UserId", userId)
                                 .appendQueryParameter("Password", password);
 
                     }
@@ -1122,8 +1136,8 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("FirstName", MyHobbyMarket.getInstance().currentUser.firstName)
                                 .appendQueryParameter("LastName", MyHobbyMarket.getInstance().currentUser.lastName)
                                 .appendQueryParameter("Email", MyHobbyMarket.getInstance().currentUser.email)
-                                .appendQueryParameter("SubNews", MyHobbyMarket.getInstance().currentUser.notifyNews ? "true" : "false")
-                                .appendQueryParameter("SubService", MyHobbyMarket.getInstance().currentUser.notifyService ? "true" : "false")
+                                .appendQueryParameter("SubNews", MyHobbyMarket.getInstance().currentUser.subNews ? "true" : "false")
+                                .appendQueryParameter("SubService", MyHobbyMarket.getInstance().currentUser.subService ? "true" : "false")
                                 .appendQueryParameter("DealerId", MyHobbyMarket.getInstance().currentUser.dealerId)
                                 .appendQueryParameter("WorkshopId", MyHobbyMarket.getInstance().currentUser.workshopId)
                                 .appendQueryParameter("DeviceToken", MyHobbyMarket.getInstance().currentUser.deviceToken);
@@ -1231,7 +1245,7 @@ public class MyHobbyMarket {
                         builder = new Uri.Builder()
                                 .appendQueryParameter("UserName", currentUser.email)
                                 .appendQueryParameter("Password", currentUser.password)
-                                .appendQueryParameter("messageId", messageId);
+                                .appendQueryParameter("MessageId", messageId);
                     }
                     break;
                     case API_REMOVE_MESSAGE: {
@@ -1243,6 +1257,19 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("messageId", messageId);
                     }
                     break;
+                    case API_USER_SETTINGS: {
+                        if (isUserLoggedIn())
+                        {
+                            apiUrl = baseUrlAndroid + "userSettings";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("UserId", currentUser.userId);
+                        }
+                    }
+                    break;
+
 
                 }
 
@@ -1370,9 +1397,6 @@ public class MyHobbyMarket {
                 case API_LOGIN:
                     loginDone(result, email, password);
                     break;
-                case API_LOGOUT:
-                    logoutDone(result);
-                    break;
                 case API_SYNC:
                     syncDone(result);
                     break;
@@ -1400,6 +1424,10 @@ public class MyHobbyMarket {
                 case API_REMOVE_MESSAGE:
                     removeMessageDone(result);
                     break;
+                case API_USER_SETTINGS:
+                    getUserSettingsDone(result);
+                    break;
+
             }
         }
 

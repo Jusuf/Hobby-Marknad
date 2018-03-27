@@ -18,8 +18,8 @@ public class User {
     public String dealerName;
     public String workshopId;
     public String workshopName;
-    public boolean notifyNews;
-    public boolean notifyService;
+    public boolean subNews;
+    public boolean subService;
     public String deviceToken;
 
     public void init(SharedPreferences settings)
@@ -36,8 +36,8 @@ public class User {
         this.dealerName = settings.getString("dealerName", null);
         this.workshopId = settings.getString("workshopId", null);
         this.workshopName = settings.getString("workshopName", null);
-        this.notifyNews = settings.getBoolean("notifyNews", false);
-        this.notifyService = settings.getBoolean("notifyNews", false);
+        this.subNews = settings.getBoolean("subNews", false);
+        this.subService = settings.getBoolean("subService", false);
 
     }
 
@@ -54,8 +54,8 @@ public class User {
         editor.putString("dealerName", this.dealerName);
         editor.putString("workshopId", this.dealerId);
         editor.putString("workshopName", this.workshopName);
-        editor.putBoolean("notifyNews", notifyNews);
-        editor.putBoolean("notifyService", notifyService);
+        editor.putBoolean("subNews", this.subNews);
+        editor.putBoolean("subService", this.subService);
         editor.commit();
     }
 }
