@@ -25,7 +25,7 @@ public class CatalogueAndMagazinesFragment extends BaseFragment{
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("Catalogue & Magazines");
+            mainActivity.setTitle(getString(R.string.start_catalog_and_magazines));
         }
 
         catalogueMenuButton =  (LinearLayout) view.findViewById(R.id.catalogueMenuButton);

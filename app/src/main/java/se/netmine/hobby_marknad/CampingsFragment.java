@@ -397,7 +397,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private void loadCampings() {
-        MyHobbyMarket.getInstance().getCampingList(language);
+        MyHobbyMarket.getInstance().getCampingsCount(language);
     }
 
     public class CampingListAdapter extends ArrayAdapter<Camping> {
@@ -688,7 +688,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         String name = marker.getTitle();
         marker.setIcon(BitmapDescriptorFactory.fromBitmap(choosenMarker));
 
-        for (Camping camping : loadedCampings) {
+        for (Camping camping : filteredCampings) {
 
             if (camping.name.equalsIgnoreCase(name))
             {
@@ -862,8 +862,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 }
             }
 
-
-
             return null;
 
         }
@@ -871,7 +869,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         @Override
         protected void onPostExecute(Void voids) {
 
-
+            oldMarker = null;
             adapter.notifyDataSetChanged();
             btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
 

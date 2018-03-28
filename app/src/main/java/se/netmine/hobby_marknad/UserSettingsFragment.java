@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -51,6 +52,7 @@ public class UserSettingsFragment extends BaseFragment {
 
     Button btnLogin = null;
     Button btnLogout = null;
+//    Button btnUpdateCampings = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,6 +158,15 @@ public class UserSettingsFragment extends BaseFragment {
                     MyHobbyMarket.getInstance().currentUser.subNews = isChecked;
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
+                    if(isChecked)
+                    {
+                        mainActivity.showToast(getString(R.string.dealer_offers_on));
+                    }
+                    else
+                    {
+                        mainActivity.showToast(getString(R.string.dealer_offers_off));
+                    }
+
                 } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                     switchNewsAndOffers.setChecked(false);
@@ -173,6 +184,7 @@ public class UserSettingsFragment extends BaseFragment {
                     MyHobbyMarket.getInstance().currentUser.subService = isChecked;
                     MyHobbyMarket.getInstance().currentUser.save();
                     MyHobbyMarket.getInstance().sync(true);
+
                 } else {
                     mainActivity.showToast(getString(R.string.must_be_logged_in));
                     switchServiceReminder.setChecked(false);
@@ -201,6 +213,14 @@ public class UserSettingsFragment extends BaseFragment {
                 mainActivity.onNavigateToFragment(fragment);
             }
         });
+
+//        btnUpdateCampings  = (Button) view.findViewById(R.id.btnUpdateCampings);
+//        btnUpdateCampings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MyHobbyMarket.getInstance().getLatestCampingList(Locale.getDefault().getCountry());
+//            }
+//        });
 
         btnLogin = (Button) view.findViewById(R.id.btnLogin);
         btnLogout = (Button) view.findViewById(R.id.btnLogout);

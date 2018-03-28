@@ -24,7 +24,7 @@ public class CatalogueFragment extends BaseFragment{
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("Catalogue 2017");
+            mainActivity.setTitle("Katalog 2017");
         }
 
         pdfView = (PDFView) view.findViewById(R.id.catalogueView);

@@ -37,6 +37,7 @@ public class MyHobbyMarket {
 
     private static final int API_REGISTER = 0;
     private static final int API_LOGIN = 2;
+    private static final int API_CAMPINGS_COUNT = 3;
     private static final int API_MESSAGES = 4;
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
@@ -51,8 +52,8 @@ public class MyHobbyMarket {
 
 
     //    public static  String url = "https://admin.myhobby.nu/";
-    public static String url = "http://192.168.20.148/hobby/";
-//    public static String url = "http://192.168.0.11/hobby/";
+//    public static String url = "http://192.168.20.148/hobby/";
+    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -62,7 +63,9 @@ public class MyHobbyMarket {
     public Faq[] faqs;
     public Dealer[] dealers;
     public Dealer dealer;
+    public long numberOfCampings;
     public ArrayList<Camping> loadedCampings;
+    public long numberOfFacilityOptions;
     public ArrayList<FacilityOption> campingFacilityOptions;
     public Caravan caravan;
 
@@ -108,12 +111,14 @@ public class MyHobbyMarket {
     }
 
     private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb) {
-        if (campingsFromDb.size() > 0) {
+        if (campingsFromDb.size() > 0 && campingFacilityOptionsFromDb.size() > 0) {
             mainActivity.onCampingsLoaded(campingsFromDb, campingFacilityOptionsFromDb);
+            MyHobbyMarket.getInstance().loadedCampings = campingsFromDb;
+            MyHobbyMarket.getInstance().campingFacilityOptions = campingFacilityOptionsFromDb;
         }
     }
 
-    private class UpdateDb extends AsyncTask<Void, Void, Void> {
+    private class UpdateDb extends AsyncTask<Integer, String, String> {
 
         private ArrayList<Camping> campings = new ArrayList<>();
         private ArrayList<FacilityOption> campingFacilityOptions = new ArrayList<>();
@@ -121,9 +126,22 @@ public class MyHobbyMarket {
         private ArrayList<Camping> campingsFromDb = new ArrayList<>();
         private ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
 
+
+        private int processCounter = 1;
+
+
         private UpdateDb(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions) {
             this.campings = campings;
             this.campingFacilityOptions = campingFacilityOptions;
+
+            this.processCounter += campings.size();
+            this.processCounter += campingFacilityOptions.size();
+
+            for (Camping camping : campings) {
+                this.processCounter += camping.accommodations.size();
+                this.processCounter += camping.facilities.size();
+                this.processCounter += camping.images.size();
+            }
         }
 
         private ProgressDialog pDialog;
@@ -134,39 +152,65 @@ public class MyHobbyMarket {
             if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
+                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pDialog.setMax(100);
+                pDialog.setProgress(0);
                 pDialog.setCancelable(false);
                 pDialog.show();
             }
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected String doInBackground(Integer... integers) {
+
+
+            int progress = 0;
+            int total = this.processCounter;
+
+
             Camping.deleteAll(Camping.class);
             Facility.deleteAll(Facility.class);
             FacilityOption.deleteAll(FacilityOption.class);
             CampingImage.deleteAll(CampingImage.class);
             Accommodation.deleteAll(Accommodation.class);
 
+
             try {
-                String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+
                 String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
                 String accommodationIdAsSQL = StringUtil.toSQLName("accommodationId") + "=?";
                 String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
 
                 for (Camping c : campings) {
 
+                    if(progress <= total) {
+//                try {
+//                    Thread.sleep(2000);
+//                }catch (InterruptedException e)
+//                {
+//
+//                }
+
+                        String save = "Sparar";
+
+                        this.publishProgress(String.valueOf(progress), String.valueOf(total), save);
+
+
+                        System.out.println("progress = " + progress + " total = " + total);
+                    }
+
                     if (c.campingId != null) {
 
-                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL, c.campingId);
-
-                        if (foundCampings.size() == 0) {
-                            c.save();
-                        } else {
-                            for (Camping camping : foundCampings) {
-                                Camping dbCamping = Camping.findById(Camping.class, camping.getId());
-//                                dbCamping.save();
-                            }
-                        }
+//                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL, c.campingId);
+//                        if (foundCampings.size() == 0) {
+                        c.save();
+                        progress++;
+//                        } else {
+//                            for (Camping camping : foundCampings) {
+//                                Camping dbCamping = Camping.findById(Camping.class, camping.getId());
+////                                dbCamping.save();
+//                            }
+//                        }
 
                     }
 
@@ -174,18 +218,19 @@ public class MyHobbyMarket {
 
                         if (f.facilityId != null) {
 
-                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId);
-
-                            if (foundFacilities.size() == 0) {
-                                f.camping = c;
-                                f.campingId = c.campingId;
-                                f.save();
-                            } else {
-                                for (Facility foundFacility : foundFacilities) {
-                                    Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
-//                                    dbFacility.save();
-                                }
-                            }
+//                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId);
+//
+//                            if (foundFacilities.size() == 0) {
+                            f.camping = c;
+                            f.campingId = c.campingId;
+                            f.save();
+                            progress++;
+//                            } else {
+//                                for (Facility foundFacility : foundFacilities) {
+//                                    Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
+////                                    dbFacility.save();
+//                                }
+//                            }
                         }
 
                     }
@@ -194,38 +239,40 @@ public class MyHobbyMarket {
 
                         if (a.accommodationId != null) {
 
-                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId);
+//                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId);
+//
+//                            if (foundAccommodations.size() == 0) {
+                            a.camping = c;
 
-                            if (foundAccommodations.size() == 0) {
-                                a.camping = c;
-
-                                a.campingId = c.campingId;
-                                a.save();
-                            } else {
-                                for (Accommodation foundAccommodation : foundAccommodations) {
-                                    Accommodation dbAccommodation = Accommodation.findById(Accommodation.class, foundAccommodation.getId());
-//                                    dbAccommodation.save();
-                                }
-                            }
+                            a.campingId = c.campingId;
+                            a.save();
+                            progress++;
+//                            } else {
+//                                for (Accommodation foundAccommodation : foundAccommodations) {
+//                                    Accommodation dbAccommodation = Accommodation.findById(Accommodation.class, foundAccommodation.getId());
+////                                    dbAccommodation.save();
+//                                }
+//                            }
                         }
 
                     }
 
                     for (String i : c.images) {
 
-                        List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i);
-
-                        if (foundCampingImages.size() == 0) {
-                            CampingImage campingImage = new CampingImage();
-                            campingImage.fileName = i;
-                            campingImage.campingId = c.campingId;
-                            campingImage.save();
-                        } else {
-                            for (CampingImage foundCampingImage : foundCampingImages) {
-                                CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
-//                                    dbCampingImage.save();
-                            }
-                        }
+//                        List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i);
+//
+//                        if (foundCampingImages.size() == 0) {
+                        CampingImage campingImage = new CampingImage();
+                        campingImage.fileName = i;
+                        campingImage.campingId = c.campingId;
+                        campingImage.save();
+                        progress++;
+//                        } else {
+//                            for (CampingImage foundCampingImage : foundCampingImages) {
+//                                CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
+////                                    dbCampingImage.save();
+//                            }
+//                        }
                     }
 
                 }
@@ -234,46 +281,24 @@ public class MyHobbyMarket {
                     if (campingFacilityOptions.size() > 0) {
 
                         for (FacilityOption f : campingFacilityOptions) {
-                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId);
-                            if (foundFacilityOptions.size() == 0) {
-                                f.save();
-                            } else {
-                                for (FacilityOption foundFacilityOption : foundFacilityOptions) {
-                                    FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
-//                                    dbFacilityOption.save();
-                                }
-                            }
+
+//                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId);
+//                            if (foundFacilityOptions.size() == 0) {
+                            f.save();
+                            progress++;
+//                            } else {
+//                                for (FacilityOption foundFacilityOption : foundFacilityOptions) {
+//                                    FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
+////                                    dbFacilityOption.save();
+//                                }
+//                            }
                         }
                     }
 
                 }
 
 
-                List<Camping> dbCampings = Camping.listAll(Camping.class);
-                campingsFromDb.addAll(dbCampings);
-
-                for (Camping camping : this.campingsFromDb) {
-
-                    List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
-                    camping.images = new ArrayList<>();
-
-                    for (CampingImage image : campingImages) {
-                        camping.images.add(image.fileName);
-                    }
-
-                    List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
-                    camping.facilities = new ArrayList<>();
-                    camping.facilities.addAll(campingFacilities);
-
-                    List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
-                    camping.accommodations = new ArrayList<>();
-                    camping.accommodations.addAll(campingAccommodations);
-                }
-
-                List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
-                campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
-
-                return null;
+                return "Klart";
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -281,7 +306,52 @@ public class MyHobbyMarket {
         }
 
         @Override
-        protected void onPostExecute(Void voids) {
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+            Float progress = Float.valueOf(values[0]);
+            Float total = Float.valueOf(values[1]);
+
+            String message = values[2];
+
+            pDialog.setProgress((int) ((progress / total) * 100));
+            pDialog.setMessage(message);
+
+            System.out.println(values[0] + " of " + values[1]);
+
+            if (values[0].equals(values[1])) {
+                System.out.println(values[0] + " of " + values[1]);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String values) {
+            List<Camping> dbCampings = Camping.listAll(Camping.class);
+            campingsFromDb.addAll(dbCampings);
+
+            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+
+            for (Camping camping : this.campingsFromDb) {
+
+                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+                camping.images = new ArrayList<>();
+
+                for (CampingImage image : campingImages) {
+                    camping.images.add(image.fileName);
+                }
+
+                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+                camping.facilities = new ArrayList<>();
+                camping.facilities.addAll(campingFacilities);
+
+                List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
+                camping.accommodations = new ArrayList<>();
+                camping.accommodations.addAll(campingAccommodations);
+            }
+
+            List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
+            campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
@@ -353,8 +423,7 @@ public class MyHobbyMarket {
     }
 
     public void setDeviceToken(String deviceToken) {
-        if(deviceToken.equals(""))
-        {
+        if (deviceToken.equals("")) {
             deviceToken = FirebaseInstanceId.getInstance().getToken();
         }
         FirebaseInstanceId.getInstance().getToken();
@@ -533,15 +602,15 @@ public class MyHobbyMarket {
     }
 
     protected void logout() {
-            this.currentUser.password = null;
-            this.currentUser.userId = null;
-            this.currentUser.firstName = null;
-            this.currentUser.lastName = null;
-            this.caravan = null;
-            this.currentUser.subNews = false;
-            this.currentUser.subService = false;
-            this.currentUser.save();
-            mainActivity.onLoggedOut();
+        this.currentUser.password = null;
+        this.currentUser.userId = null;
+        this.currentUser.firstName = null;
+        this.currentUser.lastName = null;
+        this.caravan = null;
+        this.currentUser.subNews = false;
+        this.currentUser.subService = false;
+        this.currentUser.save();
+        mainActivity.onLoggedOut();
     }
 
     protected void sync(boolean showDialog) {
@@ -662,6 +731,58 @@ public class MyHobbyMarket {
 
     }
 
+    protected void getCampingsCount(String deviceCulture) {
+
+            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
+            MyHobbyApi api = new MyHobbyApi(API_CAMPINGS_COUNT, loadingMessage,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    deviceCulture,
+                    null,
+                    null,
+                    null,
+                    null);
+            api.execute();
+    }
+
+    protected void getCampingsCountDone(String result) {
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            CampingsResult campingsResult = new Gson().fromJson(result, CampingsResult.class);
+            numberOfCampings = campingsResult.numbeOfCampings;
+            numberOfFacilityOptions = campingsResult.numberOfFacilityOptions;
+
+            if (campingsResult.success == true) {
+                System.out.println("numberOfCampings=" + numberOfCampings + " numberOfFacilityOptions = " + numberOfFacilityOptions);
+
+                if(loadedCampings != null && numberOfCampings == loadedCampings.size() && campingFacilityOptions != null && numberOfFacilityOptions == campingFacilityOptions.size())
+                {
+                    mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+                }
+                else
+                {
+                    getCampingList(Locale.getDefault().getCountry());
+                }
+
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+    }
+
     protected void getDealerDone(String result) {
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
@@ -686,10 +807,6 @@ public class MyHobbyMarket {
     }
 
     protected void getCampingList(String deviceCulture) {
-//        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
-//        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
-//        List<Facility> facilitiesFromDb = Facility.listAll(Facility.class);
-//        List<Accommodation> accommodationsFromDb = Accommodation.listAll(Accommodation.class);
 
         long foundCampings = Camping.count(Camping.class, null, null, null, null, null);
         long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null, null, null);
@@ -745,6 +862,27 @@ public class MyHobbyMarket {
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
+    }
+
+    protected void getLatestCampingList(String deviceCulture) {
+
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
+        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                deviceCulture,
+                null,
+                null,
+                null,
+                null);
+        api.execute();
     }
 
     protected void getFaqList(String searchQuery, String deviceCulture, String tags) {
@@ -833,7 +971,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void setMessageAsRead (String messageId) {
+    protected void setMessageAsRead(String messageId) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_SET_MESSAGE_AS_READ, loadingMessage,
                 null,
@@ -865,7 +1003,7 @@ public class MyHobbyMarket {
             MessageResult messageResult = new Gson().fromJson(result, MessageResult.class);
 
             if (messageResult.success == true) {
-                System.out.println("MyHobby - return from setMessageAsReadDone, count=" + messageResult.success );
+                System.out.println("MyHobby - return from setMessageAsReadDone, count=" + messageResult.success);
             }
 
         } catch (Exception e) {
@@ -874,7 +1012,7 @@ public class MyHobbyMarket {
 
     }
 
-    protected void removeMessage (String messageId) {
+    protected void removeMessage(String messageId) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_REMOVE_MESSAGE, loadingMessage,
                 null,
@@ -906,7 +1044,7 @@ public class MyHobbyMarket {
             MessageResult messageResult = new Gson().fromJson(result, MessageResult.class);
 
             if (messageResult.success == true) {
-                System.out.println("MyHobby - return from removeMessage, result success =" + messageResult.success );
+                System.out.println("MyHobby - return from removeMessage, result success =" + messageResult.success);
             }
 
         } catch (Exception e) {
@@ -959,7 +1097,7 @@ public class MyHobbyMarket {
         }
     }
 
-    protected void getUserSettings () {
+    protected void getUserSettings() {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
         MyHobbyApi api = new MyHobbyApi(API_USER_SETTINGS, loadingMessage,
                 null,
@@ -992,7 +1130,7 @@ public class MyHobbyMarket {
             UserSettingsResult userSettingsResult = new Gson().fromJson(result, UserSettingsResult.class);
 
             if (userSettingsResult.success == true) {
-                System.out.println("MyHobby - return from getUserSettingsDone, result success =" + userSettingsResult.success );
+                System.out.println("MyHobby - return from getUserSettingsDone, result success =" + userSettingsResult.success);
 
                 UserSettings userSettings = userSettingsResult.userSettings;
 
@@ -1206,6 +1344,17 @@ public class MyHobbyMarket {
                                 .appendQueryParameter("DealerId", dealerId);
                     }
                     break;
+                    case API_CAMPINGS_COUNT: {
+
+                            apiUrl = baseUrlAndroid + "campingCount";
+
+                            builder = new Uri.Builder()
+                                    .appendQueryParameter("UserName", currentUser.email)
+                                    .appendQueryParameter("Password", currentUser.password)
+                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+
+                    }
+                    break;
                     case API_CAMPINGS: {
                         if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "campingListAuth";
@@ -1255,8 +1404,7 @@ public class MyHobbyMarket {
                     }
                     break;
                     case API_USER_SETTINGS: {
-                        if (isUserLoggedIn())
-                        {
+                        if (isUserLoggedIn()) {
                             apiUrl = baseUrlAndroid + "userSettings";
 
                             builder = new Uri.Builder()
@@ -1408,6 +1556,9 @@ public class MyHobbyMarket {
                     break;
                 case API_DEALER:
                     getDealerDone(result);
+                    break;
+                case API_CAMPINGS_COUNT:
+                    getCampingsCountDone(result);
                     break;
                 case API_CAMPINGS:
                     getCampingListDone(result);

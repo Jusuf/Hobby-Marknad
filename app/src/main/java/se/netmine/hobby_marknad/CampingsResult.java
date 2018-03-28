@@ -10,4 +10,6 @@ public class CampingsResult {
     public boolean success;
     public ArrayList<Camping> campings;
     public ArrayList<FacilityOption> campingFacilityOptions;
+    public long numbeOfCampings;
+    public long numberOfFacilityOptions;
 }

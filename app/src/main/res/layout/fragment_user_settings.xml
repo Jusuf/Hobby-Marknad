@@ -304,6 +304,17 @@
 
                 </LinearLayout>
 
+                <!--<Button-->
+                    <!--android:id="@+id/btnUpdateCampings"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:textSize="16dp"-->
+                    <!--android:background="@drawable/info_button"-->
+                    <!--android:text="@string/update_campings"-->
+                    <!--android:textAllCaps="false"-->
+                    <!--android:textColor="#ffffff" />-->
+
                 <Button
                     android:id="@+id/btnLogin"
                     android:layout_width="fill_parent"

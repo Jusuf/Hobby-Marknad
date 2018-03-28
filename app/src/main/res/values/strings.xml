@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Hobby-Market</string>
+    <string name="app_name">Hobby</string>
 
     <string name="label_address">Adress:</string>
     <string name="label_phone">Tel:</string>
@@ -153,6 +153,7 @@
     <string name="messages">Meddelanden</string>
     <string name="not_logged_in">Ej inloggad</string>
     <string name="my_dealer_workshop">Min återförsäljare/verkstad</string>
+    <string name="update_campings">Uppdatera campingar</string>
 
     <string name="my_dealer_not_chosen">Ingen återförsäljare vald</string>
     <string name="my_workshop_not_chosen">Ingen verkstad vald</string>
@@ -169,6 +170,9 @@
     <string name="hint_last_name">Efternamn</string>
 
     <string name="no_messages">Du har inga meddelanden</string>
+
+    <string name="dealer_offers_on">Nyheter och erbjudanden från den valda återförsäljaren - PÅ</string>
+    <string name="dealer_offers_off">Nyheter och erbjudanden från den valda återförsäljaren - AV</string>
 
 
 

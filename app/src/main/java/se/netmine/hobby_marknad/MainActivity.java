@@ -1,6 +1,7 @@
 package se.netmine.hobby_marknad;
 
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -34,7 +35,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -432,7 +435,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showToast(String message)
     {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+        LinearLayout  layout = new LinearLayout(this);
+        layout.setBackgroundResource(R.drawable.info_button);
+        layout.setPadding(30,30,30,30);
+
+
+        TextView  tv = new TextView(this);
+        // set the TextView properties like color, size etc
+        tv.setTextColor(Color.WHITE);
+        tv.setTextSize(15);
+
+        tv.setGravity(Gravity.CENTER_VERTICAL);
+
+        // set the text you want to show in  Toast
+        tv.setText(message);
+        layout.addView(tv);
+
+        Toast toast=new Toast(this); //context is object of Context write "this" if you are an Activity
+        // Set The layout as Toast View
+        toast.setView(layout);
+
+        // Position you toast here toast position is 50 dp from bottom you can give any integral value
+        toast.setGravity(Gravity.BOTTOM, 0, 50);
+
+        toast.show();
     }
 
     @Override

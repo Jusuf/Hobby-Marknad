@@ -159,6 +159,10 @@ public class CampingFragment extends BaseFragment {
             if(camping.facilities != null)
             {
                 sortFacilities(camping.facilities);
+
+            }
+            if(camping.accommodations != null)
+            {
                 sortAccommodations(camping.accommodations);
             }
 
