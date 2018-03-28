@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,10 +30,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
     Toolbar toolbar;
     private TextView txtUserName = null;
+    private LinearLayout linearLayoutNavHeader = null;
     private NavigationView navigationView = null;
     public static final String PREFS_NAME = "MyHobbyMarketPrefsFile";
 
@@ -74,9 +79,31 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        navigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerLayout = navigationView.getHeaderView(0);
+
+        linearLayoutNavHeader = (LinearLayout) headerLayout.findViewById(R.id.linearLayoutNavHeader);
+        linearLayoutNavHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MyHobbyMarket.getInstance().isUserLoggedIn())
+                {
+                    UserSettingsFragment fragment = new UserSettingsFragment();
+                    onNavigateToFragment(fragment);
+                    drawer.closeDrawers();
+                }
+                else
+                {
+                    LoginFragment fragment = new LoginFragment();
+                    onNavigateToFragment(fragment);
+                    drawer.closeDrawers();
+                }
+            }
+        });
+
         txtUserName = (TextView) headerLayout.findViewById(R.id.txtUserName);
         this.setUserName();
 
@@ -221,34 +248,19 @@ public class MainActivity extends AppCompatActivity
     {
         if(MyHobbyMarket.getInstance().isUserLoggedIn())
         {
-            String firstName = MyHobbyMarket.getInstance().getFirstName();
-            String lastName = MyHobbyMarket.getInstance().getLastName();
-            String email = MyHobbyMarket.getInstance().getEmail();
-
-            if(firstName != null && firstName.isEmpty() == false)
+            if(MyHobbyMarket.getInstance().getFirstName() != null && MyHobbyMarket.getInstance().getLastName() != null)
             {
-                if(lastName != null && lastName.isEmpty() == false)
-                {
-                    txtUserName.setText(firstName + " " + lastName);
-                }
-                else {
-                    txtUserName.setText(firstName);
-                }
+                txtUserName.setText(MyHobbyMarket.getInstance().getFirstName() + " " + MyHobbyMarket.getInstance().getLastName());
             }
             else
             {
-                if(email != null && email.isEmpty() == false)
-                {
-                    txtUserName.setText(email);
-                }
-                else {
-                    txtUserName.setText("No name");
-                }
+                txtUserName.setText(MyHobbyMarket.getInstance().getEmail());
             }
         }
         else {
             txtUserName.setText(getResources().getString(R.string.menu_header_logged_out));
         }
+        txtUserName.setGravity(Gravity.CENTER);
     }
 
     @Override

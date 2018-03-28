@@ -36,9 +36,7 @@ import java.util.Locale;
 public class MyHobbyMarket {
 
     private static final int API_REGISTER = 0;
-    private static final int API_CONNECT = 1;
     private static final int API_LOGIN = 2;
-    private static final int API_LOGOUT = 3;
     private static final int API_MESSAGES = 4;
     private static final int API_SYNC = 5;
     private static final int API_CHANGE_PASSWORD = 6;
@@ -53,8 +51,8 @@ public class MyHobbyMarket {
 
 
     //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.125/hobby/";
-    public static String url = "http://192.168.0.11/hobby/";
+    public static String url = "http://192.168.20.148/hobby/";
+//    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -471,7 +469,7 @@ public class MyHobbyMarket {
 
                 getUserSettings();
 
-                mainActivity.onLoggedIn();
+
             } else {
                 String message = jObject.getString("message");
                 this.showErrorDialog(message);
@@ -984,7 +982,6 @@ public class MyHobbyMarket {
 
     protected void getUserSettingsDone(String result) {
 
-
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -1012,6 +1009,8 @@ public class MyHobbyMarket {
                 currentUser.workshopName = userSettings.workshopName;
 
                 currentUser.save();
+
+                mainActivity.onLoggedIn();
             }
 
         } catch (Exception e) {

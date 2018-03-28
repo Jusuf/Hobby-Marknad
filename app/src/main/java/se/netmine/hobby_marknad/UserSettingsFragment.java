@@ -108,7 +108,16 @@ public class UserSettingsFragment extends BaseFragment {
 
         textUserName = (TextView) view.findViewById(R.id.textUserName);
         if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
-            textUserName.setText(MyHobbyMarket.getInstance().currentUser.email);
+            if(MyHobbyMarket.getInstance().getFirstName() != null && MyHobbyMarket.getInstance().getLastName() != null)
+            {
+                String fullName = MyHobbyMarket.getInstance().getFirstName() + " " +MyHobbyMarket.getInstance().getLastName();
+                textUserName.setText(fullName);
+            }
+            else
+            {
+                textUserName.setText(MyHobbyMarket.getInstance().getEmail());
+            }
+
         }
 
         layoutChooseDealer = (LinearLayout) view.findViewById(R.id.layoutChooseDealer);

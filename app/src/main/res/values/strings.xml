@@ -29,7 +29,7 @@
     <string name="nav_faq">Vanliga frågor</string>
     <string name="nav_campings">Campingar</string>
     <string name="nav_logout">Logga ut</string>
-    <string name="menu_header_logged_out">Not signed in</string>
+    <string name="menu_header_logged_out">Ej inloggad</string>
 
     <string name="login_create_account">Inget konto ännu? Klicka här för att skapa ett!</string>
     <string name="login_email">E-post:</string>
