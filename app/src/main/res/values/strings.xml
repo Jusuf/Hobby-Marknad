@@ -133,6 +133,7 @@
     <string name="camping_choose_date">Välj datum...</string>
     <string name="camping_clear_date">Rensa</string>
     <string name="camping_read_about">Läs om campingen</string>
+    <string name="filter">Filtrerar... Var god vänta!</string>
 
     <string name="camping_general_facilities">Allmänna faciliteter</string>
     <string name="camping_activity_facilities">Aktivitetsfaciliteter</string>

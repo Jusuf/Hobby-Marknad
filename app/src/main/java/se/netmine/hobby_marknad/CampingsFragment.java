@@ -83,7 +83,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     ArrayAdapter<FacilityOption> activityFacilityAdapter;
     ArrayAdapter<FacilityOption> otherFacilityAdapter;
     String language;
-    String searchQuery;
+    String searchQuery = null;
     private Camping markedCamping = null;
 
     private Button btnMap = null;
@@ -103,8 +103,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     private Calendar mCurrentDate;
     private int year, month, day;
-    private String choosenFromDate = null;
-    private String choosenToDate = null;
+    private String chosenFromDate = null;
+    private String chosenToDate = null;
     MapFragment mapFragment = null;
     Handler uiHandler = null;
     Runnable runnable = null;
@@ -226,11 +226,12 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().equals("")) {
-                    loadCampings();
+                    searchQuery = null;
                 } else {
-                    searchQuery = charSequence.toString();
-                    searchCamping(searchQuery);
+                    searchQuery = charSequence.toString().toLowerCase();
                 }
+                FilterCampings filterCampings = new FilterCampings();
+                filterCampings.execute();
             }
 
             @Override
@@ -329,7 +330,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         String date = formatter.format(newDate.getTime());
 
                         txtFromDate.setText(date);
-                        choosenFromDate = date;
+                        chosenFromDate = date;
 
                         FilterCampings filterCampings = new FilterCampings();
                         filterCampings.execute();
@@ -340,7 +341,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         getString(R.string.camping_clear_date), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                choosenFromDate = null;
+                                chosenFromDate = null;
                                 txtFromDate.setText(getString(R.string.camping_choose_date));
 
                                 FilterCampings filterCampings = new FilterCampings();
@@ -368,7 +369,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                         String date = formatter.format(newDate.getTime());
 
-                        choosenToDate = date;
+                        chosenToDate = date;
                         txtToDate.setText(date);
 
                         FilterCampings filterCampings = new FilterCampings();
@@ -380,7 +381,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         getString(R.string.camping_clear_date), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                choosenToDate = null;
+                                chosenToDate = null;
                                 txtToDate.setText(getString(R.string.camping_choose_date));
 
                                 FilterCampings filterCampings = new FilterCampings();
@@ -396,11 +397,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private void loadCampings() {
-        MyHobbyMarket.getInstance().getCampingList("", language);
-    }
-
-    public void searchCamping(String textToSearch) {
-        MyHobbyMarket.getInstance().getCampingList(textToSearch, language);
+        MyHobbyMarket.getInstance().getCampingList(language);
     }
 
     public class CampingListAdapter extends ArrayAdapter<Camping> {
@@ -476,8 +473,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         {
                             filteredFacilities.remove(facility);
                         }
-
-//                        filterCampings();
 
                         FilterCampings filterCampings = new FilterCampings();
                         filterCampings.execute();
@@ -666,11 +661,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         }
 
-
-
     }
-
-
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -763,7 +754,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     private class FilterCampings extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.sync);
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.filter);
 
         @Override
         protected void onPreExecute() {
@@ -779,37 +770,38 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         @Override
         protected Void doInBackground(Void... voids) {
             String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+            ArrayList<Camping> filteredCampingsBySearchQuery = new ArrayList<>();
             ArrayList<Camping> filteredCampingsByDate = new ArrayList<>();
 
             filteredCampings.clear();
 
-            if(filteredFacilities.size() == 0 && choosenFromDate == null && choosenToDate == null)
+            if(filteredFacilities.size() == 0 && chosenFromDate == null && chosenToDate == null)
             {
                 filteredCampings.clear();
             }
 
-            if (choosenFromDate != null && choosenToDate == null)
+            if (chosenFromDate != null && chosenToDate == null)
             {
-                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ?", choosenFromDate.toString());
+                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ?", chosenFromDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (choosenFromDate == null && choosenToDate != null)
+            if (chosenFromDate == null && chosenToDate != null)
             {
-                List<Camping> result = Camping.find(Camping.class, "OPEN_TO = ? or OPEN_TO >= ?", choosenToDate.toString(), choosenToDate.toString());
+                List<Camping> result = Camping.find(Camping.class, "OPEN_TO = ? or OPEN_TO >= ?", chosenToDate.toString(), chosenToDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (choosenFromDate != null && choosenToDate != null)
+            if (chosenFromDate != null && chosenToDate != null)
             {
-                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ? and OPEN_TO >= ?", choosenFromDate.toString(), choosenToDate.toString());
+                List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ? and OPEN_TO >= ?", chosenFromDate.toString(), chosenToDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (choosenFromDate == null && choosenToDate == null)
+            if (chosenFromDate == null && chosenToDate == null)
             {
                 List<Camping> result = Camping.listAll(Camping.class);
                 filteredCampingsByDate.clear();
@@ -828,7 +820,27 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 camping.facilities.addAll(campingFacilities);
             }
 
-            for (Camping camping : filteredCampingsByDate)
+            if (searchQuery != null)
+            {
+                filteredCampingsBySearchQuery.clear();
+                for (Camping camping : filteredCampingsByDate)
+                {
+                    if(camping.name.toLowerCase().contains(searchQuery)
+                            || camping.city.toLowerCase().contains(searchQuery)
+                            || camping.street.toLowerCase().contains(searchQuery)
+                            || camping.postalcode.toLowerCase().contains(searchQuery))
+                    {
+                        filteredCampingsBySearchQuery.add(camping);
+                    }
+
+                }
+            }
+            else
+            {
+                filteredCampingsBySearchQuery.addAll(filteredCampingsByDate);
+            }
+
+            for (Camping camping : filteredCampingsBySearchQuery)
             {
                 boolean foundFacilityById = true;
 
@@ -862,6 +874,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             adapter.notifyDataSetChanged();
             btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
+
+            uiHandler.post(runnable);
 
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();

@@ -685,7 +685,7 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCampingList(String searchQuery, String deviceCulture) {
+    protected void getCampingList(String deviceCulture) {
 //        List<Camping> campingsFromDb = Camping.listAll(Camping.class);
 //        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
 //        List<Facility> facilitiesFromDb = Facility.listAll(Facility.class);
@@ -707,7 +707,7 @@ public class MyHobbyMarket {
                     null,
                     null,
                     null,
-                    searchQuery,
+                    null,
                     deviceCulture,
                     null,
                     null,
@@ -722,7 +722,7 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCampingListDone(String result, String searchQuery) {
+    protected void getCampingListDone(String result) {
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -1213,7 +1213,6 @@ public class MyHobbyMarket {
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
                                     .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
                         } else {
                             apiUrl = baseUrlAndroid + "campingList";
@@ -1221,7 +1220,6 @@ public class MyHobbyMarket {
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)
                                     .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("SearchQuery", searchQuery)
                                     .appendQueryParameter("DeviceCulture", deviceCulture);
                         }
 
@@ -1412,7 +1410,7 @@ public class MyHobbyMarket {
                     getDealerDone(result);
                     break;
                 case API_CAMPINGS:
-                    getCampingListDone(result, searchQuery);
+                    getCampingListDone(result);
                     break;
                 case API_SERVICE:
                     connectToServiceDone(result);
