@@ -275,65 +275,115 @@ public class MyHobbyMarket {
         }
     }
 
-    private class LoadCampingsFromDbAsync extends AsyncTask<Void, Void, Void> {
+    private class LoadCampingsFromDbAsync extends AsyncTask<Integer, String, String> {
+
+        List<Camping> campingsFromDbList;
+        List<FacilityOption> facilityOptionsFromDb;
+        ArrayList<Camping> campingsFromDb = new ArrayList<>();
+        ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
+        int processCounter = 0;
+
 
         private ProgressDialog pDialog;
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_camping_load_from_local_db_title);
+
+
+        private LoadCampingsFromDbAsync()
+        {
+            this.campingsFromDbList = Camping.listAll(Camping.class);
+            this.facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
+            this.campingsFromDb.addAll(this.campingsFromDbList);
+            this.campingFacilityOptionsFromDb.addAll(this.facilityOptionsFromDb);
+
+            this.processCounter = campingsFromDb.size();
+            this.processCounter += campingFacilityOptionsFromDb.size();
+//            this.processCounter += Facility.count(Camping.class, null, null, null, null, null);
+//            this.processCounter += Accommodation.count(Camping.class, null, null, null, null, null);
+            this.processCounter += CampingImage.count(CampingImage.class, null, null, null, null, null);
+        }
 
         @Override
         protected void onPreExecute() {
             if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
+                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pDialog.setMax(100);
+                pDialog.setProgress(0);
                 pDialog.setCancelable(false);
                 pDialog.show();
             }
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            LoadCampingsFromDb();
+        protected String doInBackground(Integer... integers) {
+
+            int progress = 0;
+            int total = this.processCounter;
+
+            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+
+            for (Camping camping : this.campingsFromDb) {
+
+                if (progress <= total) {
+                    String saveToLocalDb = "Laddar från lokala databasen... Var god vänta";
+
+                    this.publishProgress(String.valueOf(progress), String.valueOf(total), saveToLocalDb);
+
+                    System.out.println("progress = " + progress + " total = " + total);
+
+//                    progress++;
+                }
+
+                progress++;
+
+                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+                camping.images = new ArrayList<>();
+                for (CampingImage image : campingImages) {
+                    camping.images.add(image.fileName);
+                    progress++;
+                }
+
+                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+                camping.facilities = new ArrayList<>();
+                camping.facilities.addAll(campingFacilities);
+
+                List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
+                camping.accommodations = new ArrayList<>();
+                camping.accommodations.addAll(campingAccommodations);
+            }
+
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void voids) {
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+            Float progress = Float.valueOf(values[0]);
+            Float total = Float.valueOf(values[1]);
+
+            String message = values[2];
+
+            pDialog.setMessage(message);
+            pDialog.setProgress((int) ((progress / total) * 100));
+
+            System.out.println(values[0] + " of " + values[1]);
+
+            if (values[0].equals(values[1])) {
+                System.out.println(values[0] + " of " + values[1]);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String values) {
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
 
+            onUpdateCampingsFromDb(this.campingsFromDb, this.campingFacilityOptionsFromDb);
+
         }
-    }
-
-    private void LoadCampingsFromDb() {
-
-        List<Camping> campingsFromDbList = Camping.listAll(Camping.class);
-        List<FacilityOption> facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
-
-        String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
-
-        ArrayList<Camping> campingsFromDb = new ArrayList<>();
-        campingsFromDb.addAll(campingsFromDbList);
-        ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
-        campingFacilityOptionsFromDb.addAll(facilityOptionsFromDb);
-
-        for (Camping camping : campingsFromDb) {
-            List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
-            camping.images = new ArrayList<>();
-            for (CampingImage image : campingImages) {
-                camping.images.add(image.fileName);
-            }
-
-            List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
-            camping.facilities = new ArrayList<>();
-            camping.facilities.addAll(campingFacilities);
-
-            List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
-            camping.accommodations = new ArrayList<>();
-            camping.accommodations.addAll(campingAccommodations);
-        }
-
-        onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
     }
 
     public void setDeviceToken(String deviceToken) {
