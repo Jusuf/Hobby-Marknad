@@ -30,7 +30,6 @@ public class ServiceBookFragment extends BaseFragment {
         }
 
         testDemoButton = (LinearLayout) view.findViewById(R.id.testDemoButton);
-
         testDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,35 +39,29 @@ public class ServiceBookFragment extends BaseFragment {
         });
 
         connectButton = (LinearLayout) view.findViewById(R.id.connectButton);
-
-
-
-        if(MyHobbyMarket.getInstance().isUserLoggedIn())
-        {
-            connectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MyHobbyMarket.getInstance().isUserLoggedIn()) {
                     DialogFragment connectServiceDialog = new ConnectServiceDialog();
                     connectServiceDialog.show(getFragmentManager(), "Modal");
+                } else {
+                    mainActivity.showToast(getString(R.string.must_be_logged_in));
                 }
-            });
-        }
-        else
-        {
-            connectButton.setVisibility(View.GONE);
-        }
+            }
+        });
 
         return view;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         // After a pause
         super.onResume();
         mainActivity.setTitle("");
     }
 
-    public ServiceBookFragment(){}
+    public ServiceBookFragment() {
+    }
 
 }

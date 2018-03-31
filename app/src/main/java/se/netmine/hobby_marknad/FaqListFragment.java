@@ -206,8 +206,22 @@ public class FaqListFragment extends BaseFragment {
 
             convertView = inflater.inflate(R.layout.faq_tag_item, null);
 
+            ImageView imageTag = (ImageView) convertView.findViewById(R.id.imageViewTagIcon);
             TextView txtTagItem = (TextView) convertView.findViewById(R.id.txtTagItem);
             CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBoxTag);
+
+            if(item.tagText.equals("Sköta husvagnen"))
+            {
+                imageTag.setImageResource(R.drawable.ic_filter_handle_caravan);
+            }
+            if(item.tagText.equals("Tips för campinglivet"))
+            {
+                imageTag.setImageResource(R.drawable.ic_filter_tip);
+            }
+            if(item.tagText.equals("My Hobby"))
+            {
+                imageTag.setImageResource(R.drawable.ic_filter_my_hobby);
+            }
 
             txtTagItem.setText(item.tagText);
 
