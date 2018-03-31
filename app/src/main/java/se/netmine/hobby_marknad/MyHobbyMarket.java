@@ -53,7 +53,7 @@ public class MyHobbyMarket {
     private static final int API_USER_SETTINGS = 14;
 
 
-//    public static String url = "https://admin.myhobby.nu/";
+    //    public static String url = "https://admin.myhobby.nu/";
 //        public static String url = "http://192.168.20.148/hobby/";
     public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
@@ -129,9 +129,7 @@ public class MyHobbyMarket {
         private ArrayList<Camping> campingsFromDb = new ArrayList<>();
         private ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
 
-
-        private int processCounter = 1;
-
+        private int processCounter = 0;
 
         private UpdateDb(ArrayList<Camping> campings, ArrayList<FacilityOption> campingFacilityOptions) {
             this.campings = campings;
@@ -165,18 +163,14 @@ public class MyHobbyMarket {
 
         @Override
         protected String doInBackground(Integer... integers) {
-
-
             int progress = 0;
             int total = this.processCounter;
-
 
             Camping.deleteAll(Camping.class);
             Facility.deleteAll(Facility.class);
             FacilityOption.deleteAll(FacilityOption.class);
             CampingImage.deleteAll(CampingImage.class);
             Accommodation.deleteAll(Accommodation.class);
-
 
             try {
 
@@ -187,53 +181,25 @@ public class MyHobbyMarket {
                 for (Camping c : campings) {
 
                     if (progress <= total) {
-//                try {
-//                    Thread.sleep(2000);
-//                }catch (InterruptedException e)
-//                {
-//
-//                }
+                        String saveToLocalDb = "Sparar till lokala databasen... Var god vänta";
 
-                        String save = "Sparar";
-
-                        this.publishProgress(String.valueOf(progress), String.valueOf(total), save);
-
+                        this.publishProgress(String.valueOf(progress), String.valueOf(total), saveToLocalDb);
 
                         System.out.println("progress = " + progress + " total = " + total);
                     }
 
                     if (c.campingId != null) {
-
-//                        List<Camping> foundCampings = Camping.find(Camping.class, campingIdAsSQL, c.campingId);
-//                        if (foundCampings.size() == 0) {
                         c.save();
                         progress++;
-//                        } else {
-//                            for (Camping camping : foundCampings) {
-//                                Camping dbCamping = Camping.findById(Camping.class, camping.getId());
-////                                dbCamping.save();
-//                            }
-//                        }
-
                     }
 
                     for (Facility f : c.facilities) {
 
                         if (f.facilityId != null) {
-
-//                            List<Facility> foundFacilities = Facility.find(Facility.class, campingIdAsSQL + " and " + facilityIdAsSQL, c.campingId, f.facilityId);
-//
-//                            if (foundFacilities.size() == 0) {
                             f.camping = c;
                             f.campingId = c.campingId;
                             f.save();
                             progress++;
-//                            } else {
-//                                for (Facility foundFacility : foundFacilities) {
-//                                    Facility dbFacility = Facility.findById(Facility.class, foundFacility.getId());
-////                                    dbFacility.save();
-//                                }
-//                            }
                         }
 
                     }
@@ -242,40 +208,21 @@ public class MyHobbyMarket {
 
                         if (a.accommodationId != null) {
 
-//                            List<Accommodation> foundAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL + " and " + accommodationIdAsSQL, c.campingId, a.accommodationId);
-//
-//                            if (foundAccommodations.size() == 0) {
                             a.camping = c;
 
                             a.campingId = c.campingId;
                             a.save();
                             progress++;
-//                            } else {
-//                                for (Accommodation foundAccommodation : foundAccommodations) {
-//                                    Accommodation dbAccommodation = Accommodation.findById(Accommodation.class, foundAccommodation.getId());
-////                                    dbAccommodation.save();
-//                                }
-//                            }
                         }
 
                     }
 
                     for (String i : c.images) {
-
-//                        List<CampingImage> foundCampingImages = Facility.find(CampingImage.class, campingImageFileNameAsSQL, i);
-//
-//                        if (foundCampingImages.size() == 0) {
                         CampingImage campingImage = new CampingImage();
                         campingImage.fileName = i;
                         campingImage.campingId = c.campingId;
                         campingImage.save();
                         progress++;
-//                        } else {
-//                            for (CampingImage foundCampingImage : foundCampingImages) {
-//                                CampingImage dbCampingImage = Facility.findById(CampingImage.class, foundCampingImage.getId());
-////                                    dbCampingImage.save();
-//                            }
-//                        }
                     }
 
                 }
@@ -284,22 +231,12 @@ public class MyHobbyMarket {
                     if (campingFacilityOptions.size() > 0) {
 
                         for (FacilityOption f : campingFacilityOptions) {
-
-//                            List<FacilityOption> foundFacilityOptions = FacilityOption.find(FacilityOption.class, facilityIdAsSQL, f.facilityId);
-//                            if (foundFacilityOptions.size() == 0) {
                             f.save();
                             progress++;
-//                            } else {
-//                                for (FacilityOption foundFacilityOption : foundFacilityOptions) {
-//                                    FacilityOption dbFacilityOption = FacilityOption.findById(FacilityOption.class, foundFacilityOption.getId());
-////                                    dbFacilityOption.save();
-//                                }
-//                            }
                         }
                     }
 
                 }
-
 
                 return "Klart";
             } catch (Exception e) {
@@ -317,8 +254,8 @@ public class MyHobbyMarket {
 
             String message = values[2];
 
-            pDialog.setProgress((int) ((progress / total) * 100));
             pDialog.setMessage(message);
+            pDialog.setProgress((int) ((progress / total) * 100));
 
             System.out.println(values[0] + " of " + values[1]);
 
@@ -329,36 +266,10 @@ public class MyHobbyMarket {
 
         @Override
         protected void onPostExecute(String values) {
-//            List<Camping> dbCampings = Camping.listAll(Camping.class);
-//            campingsFromDb.addAll(dbCampings);
-//
-//            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
-//
-//            for (Camping camping : this.campingsFromDb) {
-//
-//                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
-//                camping.images = new ArrayList<>();
-//
-//                for (CampingImage image : campingImages) {
-//                    camping.images.add(image.fileName);
-//                }
-//
-//                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
-//                camping.facilities = new ArrayList<>();
-//                camping.facilities.addAll(campingFacilities);
-//
-//                List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
-//                camping.accommodations = new ArrayList<>();
-//                camping.accommodations.addAll(campingAccommodations);
-//            }
-//
-//            List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
-//            campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
 
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
-
 
             new LoadCampingsFromDbAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
