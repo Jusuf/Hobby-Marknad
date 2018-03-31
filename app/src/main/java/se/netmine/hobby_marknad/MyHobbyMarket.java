@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 /**
  * Created by jusuf on 2017-09-28.
@@ -51,8 +53,8 @@ public class MyHobbyMarket {
     private static final int API_USER_SETTINGS = 14;
 
 
-    //    public static  String url = "https://admin.myhobby.nu/";
-//    public static String url = "http://192.168.20.148/hobby/";
+//    public static String url = "https://admin.myhobby.nu/";
+//        public static String url = "http://192.168.20.148/hobby/";
     public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
@@ -111,6 +113,7 @@ public class MyHobbyMarket {
     }
 
     private void onUpdateCampingsFromDb(ArrayList<Camping> campingsFromDb, ArrayList<FacilityOption> campingFacilityOptionsFromDb) {
+        System.out.println("UpdateCampingsFromDb done");
         if (campingsFromDb.size() > 0 && campingFacilityOptionsFromDb.size() > 0) {
             mainActivity.onCampingsLoaded(campingsFromDb, campingFacilityOptionsFromDb);
             MyHobbyMarket.getInstance().loadedCampings = campingsFromDb;
@@ -183,7 +186,7 @@ public class MyHobbyMarket {
 
                 for (Camping c : campings) {
 
-                    if(progress <= total) {
+                    if (progress <= total) {
 //                try {
 //                    Thread.sleep(2000);
 //                }catch (InterruptedException e)
@@ -326,45 +329,45 @@ public class MyHobbyMarket {
 
         @Override
         protected void onPostExecute(String values) {
-            List<Camping> dbCampings = Camping.listAll(Camping.class);
-            campingsFromDb.addAll(dbCampings);
-
-            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
-
-            for (Camping camping : this.campingsFromDb) {
-
-                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
-                camping.images = new ArrayList<>();
-
-                for (CampingImage image : campingImages) {
-                    camping.images.add(image.fileName);
-                }
-
-                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
-                camping.facilities = new ArrayList<>();
-                camping.facilities.addAll(campingFacilities);
-
-                List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
-                camping.accommodations = new ArrayList<>();
-                camping.accommodations.addAll(campingAccommodations);
-            }
-
-            List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
-            campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
+//            List<Camping> dbCampings = Camping.listAll(Camping.class);
+//            campingsFromDb.addAll(dbCampings);
+//
+//            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+//
+//            for (Camping camping : this.campingsFromDb) {
+//
+//                List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
+//                camping.images = new ArrayList<>();
+//
+//                for (CampingImage image : campingImages) {
+//                    camping.images.add(image.fileName);
+//                }
+//
+//                List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
+//                camping.facilities = new ArrayList<>();
+//                camping.facilities.addAll(campingFacilities);
+//
+//                List<Accommodation> campingAccommodations = Accommodation.find(Accommodation.class, campingIdAsSQL, camping.campingId);
+//                camping.accommodations = new ArrayList<>();
+//                camping.accommodations.addAll(campingAccommodations);
+//            }
+//
+//            List<FacilityOption> dbFacilityOptions = FacilityOption.listAll(FacilityOption.class);
+//            campingFacilityOptionsFromDb.addAll(dbFacilityOptions);
 
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
 
 
-            onUpdateCampingsFromDb(campingsFromDb, campingFacilityOptionsFromDb);
+            new LoadCampingsFromDbAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
     private class LoadCampingsFromDbAsync extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_camping_load_from_local_db_title);
 
         @Override
         protected void onPreExecute() {
@@ -731,58 +734,6 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCampingsCount(String deviceCulture) {
-
-            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
-            MyHobbyApi api = new MyHobbyApi(API_CAMPINGS_COUNT, loadingMessage,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    deviceCulture,
-                    null,
-                    null,
-                    null,
-                    null);
-            api.execute();
-    }
-
-    protected void getCampingsCountDone(String result) {
-        if (result == null || result.isEmpty()) {
-            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
-            return;
-        }
-
-        try {
-
-            CampingsResult campingsResult = new Gson().fromJson(result, CampingsResult.class);
-            numberOfCampings = campingsResult.numbeOfCampings;
-            numberOfFacilityOptions = campingsResult.numberOfFacilityOptions;
-
-            if (campingsResult.success == true) {
-                System.out.println("numberOfCampings=" + numberOfCampings + " numberOfFacilityOptions = " + numberOfFacilityOptions);
-
-                if(loadedCampings != null && numberOfCampings == loadedCampings.size() && campingFacilityOptions != null && numberOfFacilityOptions == campingFacilityOptions.size())
-                {
-                    mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
-                }
-                else
-                {
-                    getCampingList(Locale.getDefault().getCountry());
-                }
-
-            }
-
-        } catch (Exception e) {
-            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
-        }
-    }
-
     protected void getDealerDone(String result) {
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
@@ -806,16 +757,67 @@ public class MyHobbyMarket {
 
     }
 
-    protected void getCampingList(String deviceCulture) {
+    protected void getCampingsCount(String deviceCulture) {
+        System.out.println("Get count start ");
+        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
+        new MyHobbyApi(API_CAMPINGS_COUNT, loadingMessage,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                deviceCulture,
+                null,
+                null,
+                null,
+                null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+    }
+
+    protected void getCampingsCountDone(String result) {
+        System.out.println("Get count done ");
+        if (result == null || result.isEmpty()) {
+            showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+            return;
+        }
+
+        try {
+
+            CampingsCountResult campingsCountResult = new Gson().fromJson(result, CampingsCountResult.class);
+            numberOfCampings = campingsCountResult.numbeOfCampings;
+            numberOfFacilityOptions = campingsCountResult.numberOfFacilityOptions;
+
+            if (campingsCountResult.success == true) {
+                System.out.println("numberOfCampings=" + numberOfCampings + " numberOfFacilityOptions = " + numberOfFacilityOptions);
+
+                if (loadedCampings != null && numberOfCampings == loadedCampings.size() && campingFacilityOptions != null && numberOfFacilityOptions == campingFacilityOptions.size()) {
+                    mainActivity.onCampingsLoaded(loadedCampings, campingFacilityOptions);
+                } else {
+                    getCampingList(Locale.getDefault().getCountry());
+                }
+
+            } else {
+                showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
+                return;
+            }
+
+        } catch (Exception e) {
+            this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
+        }
+    }
+
+    protected void getCampingList(String deviceCulture) {
+        System.out.println("getCampingList start ");
         long foundCampings = Camping.count(Camping.class, null, null, null, null, null);
         long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null, null, null);
-        long foundFacilities = Facility.count(Facility.class, null, null, null, null, null);
-        long foundAccommodations = Accommodation.count(Accommodation.class, null, null, null, null, null);
 
-        if (foundCampings == 0 || foundFacilityOptions == 0 || foundFacilities == 0 || foundAccommodations == 0) {
-            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
-            MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
+        if (foundCampings != numberOfCampings || foundFacilityOptions != numberOfFacilityOptions) {
+            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.update_campings);
+            new MyHobbyApi(API_CAMPINGS, loadingMessage,
                     null,
                     null,
                     null,
@@ -829,17 +831,17 @@ public class MyHobbyMarket {
                     null,
                     null,
                     null,
-                    null);
-            api.execute();
+                    null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else {
-            LoadCampingsFromDbAsync task = new LoadCampingsFromDbAsync();
-            task.execute();
+            System.out.println("LoadCampingsFromDbAsync start ");
+            new LoadCampingsFromDbAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
     }
 
     protected void getCampingListDone(String result) {
+        System.out.println("getCampingList done ");
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -854,35 +856,12 @@ public class MyHobbyMarket {
             if (campingsResult.success == true) {
                 System.out.println("MyHobby - return from getDealer, count=" + loadedCampings.size());
 
-                UpdateDb task = new UpdateDb(loadedCampings, campingFacilityOptions);
-
-                task.execute();
+                new UpdateDb(loadedCampings, campingFacilityOptions).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
 
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
-    }
-
-    protected void getLatestCampingList(String deviceCulture) {
-
-        String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
-        MyHobbyApi api = new MyHobbyApi(API_CAMPINGS, loadingMessage,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                deviceCulture,
-                null,
-                null,
-                null,
-                null);
-        api.execute();
     }
 
     protected void getFaqList(String searchQuery, String deviceCulture, String tags) {
@@ -1346,12 +1325,10 @@ public class MyHobbyMarket {
                     break;
                     case API_CAMPINGS_COUNT: {
 
-                            apiUrl = baseUrlAndroid + "campingCount";
+                        apiUrl = baseUrlAndroid + "campingCount";
 
-                            builder = new Uri.Builder()
-                                    .appendQueryParameter("UserName", currentUser.email)
-                                    .appendQueryParameter("Password", currentUser.password)
-                                    .appendQueryParameter("DeviceCulture", deviceCulture);
+                        builder = new Uri.Builder()
+                                .appendQueryParameter("DeviceCulture", deviceCulture);
 
                     }
                     break;
@@ -1418,13 +1395,13 @@ public class MyHobbyMarket {
 
                 }
 
-
                 System.out.println("MyHobby - connect to:" + apiUrl);
                 URL url = new URL(apiUrl);
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setReadTimeout(30000);
-                urlConnection.setConnectTimeout(25000);
+
+                urlConnection.setReadTimeout(60000);
+                urlConnection.setConnectTimeout(5000);
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
@@ -1441,6 +1418,7 @@ public class MyHobbyMarket {
                 os.close();
 
                 int HttpResult = urlConnection.getResponseCode();
+
                 StringBuilder sb = new StringBuilder();
 
                 if (HttpResult == HttpURLConnection.HTTP_OK) {

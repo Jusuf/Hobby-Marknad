@@ -13,7 +13,9 @@
     <string name="app_send_command_messsage">Var god vänta...</string>
     <string name="app_error_title">Ett fel uppstod.</string>
 
-    <string name="app_loading_title">Laddar... Var god vänta.</string>
+    <string name="app_loading_title">Laddar... Var god vänta</string>
+    <string name="app_camping_update_title">Uppdaterar campingar... Var god vänta</string>
+    <string name="app_camping_load_from_local_db_title">Hämtar från lokala databasen... Var god vänta</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -174,7 +176,7 @@
     <string name="dealer_offers_on">Nyheter och erbjudanden från den valda återförsäljaren - PÅ</string>
     <string name="dealer_offers_off">Nyheter och erbjudanden från den valda återförsäljaren - AV</string>
 
-
+    <string name="search">Sök</string>
 
     <string name="go_to_reseller">Gå till återförsäljare</string>
 

@@ -1,4 +1,5 @@
 package se.netmine.hobby_marknad;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,10 +15,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+
 import android.support.v4.content.ContextCompat;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -41,7 +45,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
     EditText txtSearchDealer = null;
     ListView listViewDealers = null;
     LinearLayout layoutDealerList = null;
-    public ArrayList<Dealer> loadedDealers = new  ArrayList<Dealer>();
+    public ArrayList<Dealer> loadedDealers = new ArrayList<Dealer>();
     ArrayAdapter<Dealer> adapter;
     String language;
     String searchQuery;
@@ -55,7 +59,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
     private TextView txtShowDealerAddress = null;
     private Button btnShow = null;
 
-    public DealersFragment(){
+    public DealersFragment() {
 
     }
 
@@ -64,7 +68,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
                              Bundle savedInstanceState) {
 
         this.inflater = inflater;
-        View view =  inflater.inflate(R.layout.fragment_dealers, container, false);
+        View view = inflater.inflate(R.layout.fragment_dealers, container, false);
 
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(map);
@@ -127,7 +131,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
             }
         });
 
-        btnList.setOnClickListener( new View.OnClickListener(){
+        btnList.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -141,7 +145,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
             }
         });
 
-        btnMap.setOnClickListener( new View.OnClickListener(){
+        btnMap.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -163,7 +167,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         txtShowDealerAddress = (TextView) view.findViewById(R.id.txtShowDealerAddress);
 
         btnShow = (Button) view.findViewById(R.id.btnDealerShowDealer);
-        btnShow.setOnClickListener( new View.OnClickListener(){
+        btnShow.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -215,7 +219,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         mMap.clear();
 
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
                 layoutShowDealer.setVisibility(View.GONE);
@@ -228,41 +232,56 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         Double avgLat;
         Double avgLng;
 
-        if(loadedDealers != null)
-        {
+        int dealerWithPos = 0;
+
+        if (loadedDealers != null) {
             for (Dealer dealer : loadedDealers) {
-
-                LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
-                mMap.addMarker(new MarkerOptions()
-                        .title(dealer.name)
-                        .snippet(dealer.city)
-                        .position(marker));
+                try {
+                    if (dealer.lat != null && dealer.lng != null) {
+                        Double lat = Double.parseDouble(dealer.lat);
+                        Double lng = Double.parseDouble(dealer.lng);
 
 
-                sumLat += Double.parseDouble(dealer.lat);
-                sumLng += Double.parseDouble(dealer.lng);
+                        LatLng marker = new LatLng(lat, lng);
+                        mMap.addMarker(new MarkerOptions()
+                                .title(dealer.name)
+                                .snippet(dealer.city)
+                                .position(marker));
 
+
+                        sumLat += lat;
+                        sumLng += lng;
+
+                        dealerWithPos++;
+                    }
+
+                } catch (NumberFormatException e) {
+                    String message = e.getMessage();
+                }
             }
-            avgLat = sumLat / loadedDealers.size();
-            avgLng = sumLng / loadedDealers.size();
 
-            LatLng avgPosition = new LatLng(avgLat, avgLng);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
+
         }
+
+        avgLat = sumLat / dealerWithPos;
+        avgLng = sumLng / dealerWithPos;
+
+        LatLng avgPosition = new LatLng(avgLat, avgLng);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 5));
+
+
     }
 
     @Override
-    public void onDealersUpdated(Dealer[] dealers)
-    {
+    public void onDealersUpdated(Dealer[] dealers) {
         loadedDealers.clear();
 
-        if (dealers != null)
-        {
+        if (dealers != null) {
             for (Dealer dealer : dealers) {
                 loadedDealers.add(dealer);
             }
 
-            if(mMap != null){
+            if (mMap != null) {
                 MapFragment mapFrag = (MapFragment) getChildFragmentManager().findFragmentById(map);
                 mapFrag.getMapAsync(this);
             }
@@ -279,8 +298,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
 
         for (Dealer dealer : loadedDealers) {
 
-            if (dealer.name.equalsIgnoreCase(name))
-            {
+            if (dealer.name.equalsIgnoreCase(name)) {
                 markedDealer = dealer;
 
                 txtShowDealerName.setText(dealer.name);
@@ -295,8 +313,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         // After a pause
         super.onResume();
         mainActivity.setTitle(getString(R.string.reseller));

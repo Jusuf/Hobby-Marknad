@@ -39,6 +39,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.orm.StringUtil;
 
 import java.io.InputStream;
@@ -48,6 +52,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 import static se.netmine.hobby_marknad.R.id.map;
 
@@ -74,10 +81,10 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     ImageView imageSearchFilter = null;
     public ArrayList<Camping> loadedCampings = new ArrayList<>();
     public ArrayList<Camping> filteredCampings = new ArrayList<>();
-    public ArrayList<FacilityOption> loadedGeneralFacilities = new  ArrayList<>();
-    public ArrayList<FacilityOption> loadedActivityFacilities = new  ArrayList<>();
-    public ArrayList<FacilityOption> loadedOtherFacilities = new  ArrayList<>();
-    public ArrayList<FacilityOption> filteredFacilities = new  ArrayList<>();
+    public ArrayList<FacilityOption> loadedGeneralFacilities = new ArrayList<>();
+    public ArrayList<FacilityOption> loadedActivityFacilities = new ArrayList<>();
+    public ArrayList<FacilityOption> loadedOtherFacilities = new ArrayList<>();
+    public ArrayList<FacilityOption> filteredFacilities = new ArrayList<>();
     ArrayAdapter<Camping> adapter;
     ArrayAdapter<FacilityOption> generalFacilityAdapter;
     ArrayAdapter<FacilityOption> activityFacilityAdapter;
@@ -110,7 +117,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     Runnable runnable = null;
     Marker oldMarker = null;
 
-    public CampingsFragment(){
+    public CampingsFragment() {
 
     }
 
@@ -119,8 +126,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                              Bundle savedInstanceState) {
 
         this.inflater = inflater;
-        view =  inflater.inflate(R.layout.fragment_campings, container, false);
+        view = inflater.inflate(R.layout.fragment_campings, container, false);
 
+        loadCampings();
 
         mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(map);
@@ -133,7 +141,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
 
         uiHandler = new Handler(Looper.getMainLooper());
-            runnable = new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 refreshMarkers();
@@ -143,7 +151,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         language = Locale.getDefault().getCountry();
 
-        loadCampings();
+
 
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
         adapter = new CampingListAdapter(mainActivity.getContext(), filteredCampings);
@@ -193,15 +201,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         imageSearchFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(scrollViewFacilityOptions.getVisibility() == View.VISIBLE)
-                {
+                if (scrollViewFacilityOptions.getVisibility() == View.VISIBLE) {
                     scrollViewFacilityOptions.setVisibility(View.GONE);
                     layoutShowCampingResults.setVisibility(View.GONE);
                     linearLayoutCampingsWrapper.setVisibility(View.VISIBLE);
 
                     layoutShowCamping.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     scrollViewFacilityOptions.setVisibility(View.VISIBLE);
                     layoutShowCampingResults.setVisibility(View.VISIBLE);
                     linearLayoutCampingsWrapper.setVisibility(View.GONE);
@@ -218,8 +224,11 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         txtSearchCamping = (EditText) view.findViewById(R.id.txtSearchCamping);
         txtSearchCamping.addTextChangedListener(new TextWatcher() {
 
+            final android.os.Handler handler = new android.os.Handler();
+            Runnable runnable;
+
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 layoutShowCamping.setVisibility(View.GONE);
             }
 
@@ -230,25 +239,37 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 } else {
                     searchQuery = charSequence.toString().toLowerCase();
                 }
-                FilterCampings filterCampings = new FilterCampings();
-                filterCampings.execute();
+
+                handler.removeCallbacks(runnable);
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(final Editable s) {
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        //do some work with s.toString()
 
+                        new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
+                };
+                handler.postDelayed(runnable, 1000);
             }
+
         });
 
-        txtSearchCamping.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        txtSearchCamping.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+        {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 layoutShowCamping.setVisibility(View.GONE);
             }
         });
 
-        btnList.setOnClickListener( new View.OnClickListener(){
+        btnList.setOnClickListener(new View.OnClickListener()
 
+        {
             @Override
             public void onClick(View v) {
                 layoutMap.setVisibility(View.GONE);
@@ -262,8 +283,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             }
         });
 
-        btnMap.setOnClickListener( new View.OnClickListener(){
+        btnMap.setOnClickListener(new View.OnClickListener()
 
+        {
             @Override
             public void onClick(View v) {
                 layoutMap.setVisibility(View.VISIBLE);
@@ -284,7 +306,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         txtShowCampingAddress = (TextView) view.findViewById(R.id.txtShowCampingAddress);
 
         btnShow = (Button) view.findViewById(R.id.btnCampingShowCamping);
-        btnShow.setOnClickListener( new View.OnClickListener(){
+        btnShow.setOnClickListener(new View.OnClickListener()
+
+        {
 
             @Override
             public void onClick(View v) {
@@ -297,8 +321,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         btnCampingShowCampingResults = (Button) view.findViewById(R.id.btnCampingShowCampingResults);
         btnCampingShowCampingResults.setText("Visa " + filteredCampings.size() + " träffar");
-        btnCampingShowCampingResults.setOnClickListener( new View.OnClickListener(){
+        btnCampingShowCampingResults.setOnClickListener(new View.OnClickListener()
 
+        {
             @Override
             public void onClick(View v) {
                 scrollViewFacilityOptions.setVisibility(View.GONE);
@@ -316,7 +341,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         layoutFromDate = (LinearLayout) view.findViewById(R.id.layoutFromDate);
         txtFromDate = (TextView) view.findViewById(R.id.txtFromDate);
-        layoutFromDate.setOnClickListener(new View.OnClickListener() {
+        layoutFromDate.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(mainActivity.getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -356,7 +383,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         layoutToDate = (LinearLayout) view.findViewById(R.id.layoutToDate);
         txtToDate = (TextView) view.findViewById(R.id.txtToDate);
 
-        layoutToDate.setOnClickListener(new View.OnClickListener() {
+        layoutToDate.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(mainActivity.getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -417,7 +446,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
 
-            if(item.images != null && item.images.size() > 0){
+            if (item.images != null && item.images.size() > 0) {
 
                 DownloadImage task = new DownloadImage(new AsyncResponse() {
                     @Override
@@ -429,7 +458,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                     }
                 });
 
-                task.execute(new String[] {imageBaseAddress + item.images.get(0)});
+                task.execute(new String[]{imageBaseAddress + item.images.get(0)});
             }
 
             txtCampingItemName.setText(item.name);
@@ -460,17 +489,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int pos = listViewGeneralFacilities.getPositionForView(buttonView);
 
-                    if(pos != ListView.INVALID_POSITION)
-                    {
+                    if (pos != ListView.INVALID_POSITION) {
                         FacilityOption facility = loadedGeneralFacilities.get(pos);
                         facility.setSelected(isChecked);
 
-                        if(isChecked)
-                        {
+                        if (isChecked) {
                             filteredFacilities.add(facility);
-                        }
-                        else
-                        {
+                        } else {
                             filteredFacilities.remove(facility);
                         }
 
@@ -508,17 +533,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int pos = listViewActivityFacilities.getPositionForView(buttonView);
 
-                    if(pos != ListView.INVALID_POSITION)
-                    {
+                    if (pos != ListView.INVALID_POSITION) {
                         FacilityOption facility = loadedActivityFacilities.get(pos);
                         facility.setSelected(isChecked);
 
-                        if(isChecked)
-                        {
+                        if (isChecked) {
                             filteredFacilities.add(facility);
-                        }
-                        else
-                        {
+                        } else {
                             filteredFacilities.remove(facility);
                         }
 
@@ -557,17 +578,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int pos = listViewOtherFacilities.getPositionForView(buttonView);
 
-                    if(pos != ListView.INVALID_POSITION)
-                    {
+                    if (pos != ListView.INVALID_POSITION) {
                         FacilityOption facility = loadedOtherFacilities.get(pos);
                         facility.setSelected(isChecked);
 
-                        if(isChecked)
-                        {
+                        if (isChecked) {
                             filteredFacilities.add(facility);
-                        }
-                        else
-                        {
+                        } else {
                             filteredFacilities.remove(facility);
                         }
 
@@ -606,36 +623,30 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onCampingsUpdated(ArrayList<Camping> campings, ArrayList<FacilityOption> loadedCampingFacilityOptions)
-    {
+    public void onCampingsUpdated(ArrayList<Camping> campings, ArrayList<FacilityOption> loadedCampingFacilityOptions) {
         String facilityCategoryGeneral = "Allmänna faciliteter";
         String facilityCategoryActivity = "Aktivitetsfaciliteter";
         String facilityCategoryOther = "Övriga faciliteter";
 
         loadedCampings.clear();
 
-        if (campings != null)
-        {
+        if (campings != null) {
             for (Camping camping : campings) {
                 loadedCampings.add(camping);
             }
 
         }
 
-        if (loadedCampingFacilityOptions != null)
-        {
+        if (loadedCampingFacilityOptions != null) {
 
             for (FacilityOption facilityOption : loadedCampingFacilityOptions) {
-                if(facilityOption.facilityCategoryName.equals(facilityCategoryGeneral))
-                {
+                if (facilityOption.facilityCategoryName.equals(facilityCategoryGeneral)) {
                     loadedGeneralFacilities.add(facilityOption);
                 }
-                if(facilityOption.facilityCategoryName.equals(facilityCategoryActivity))
-                {
+                if (facilityOption.facilityCategoryName.equals(facilityCategoryActivity)) {
                     loadedActivityFacilities.add(facilityOption);
                 }
-                if(facilityOption.facilityCategoryName.equals(facilityCategoryOther))
-                {
+                if (facilityOption.facilityCategoryName.equals(facilityCategoryOther)) {
                     loadedOtherFacilities.add(facilityOption);
                 }
             }
@@ -655,7 +666,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         filteredCampings.addAll(loadedCampings);
 
 
-        if(mMap != null){
+        if (mMap != null) {
 
             uiHandler.post(runnable);
 
@@ -669,19 +680,18 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         int defaultWidth = 150;
         int defaultHeight = 150;
 
-        BitmapDrawable bitmapDefault =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker);
+        BitmapDrawable bitmapDefault = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
         Bitmap bDefault = bitmapDefault.getBitmap();
         Bitmap defaultMarker = Bitmap.createScaledBitmap(bDefault, defaultWidth, defaultHeight, false);
 
-        if(oldMarker != null)
-        {
+        if (oldMarker != null) {
             oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(defaultMarker));
         }
 
         int chosenWidth = 180;
         int chosenHeight = 180;
 
-        BitmapDrawable bitmapChosen =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker_choosen);
+        BitmapDrawable bitmapChosen = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker_choosen);
         Bitmap bChosen = bitmapChosen.getBitmap();
         Bitmap choosenMarker = Bitmap.createScaledBitmap(bChosen, chosenWidth, chosenHeight, false);
 
@@ -690,8 +700,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         for (Camping camping : filteredCampings) {
 
-            if (camping.name.equalsIgnoreCase(name))
-            {
+            if (camping.name.equalsIgnoreCase(name)) {
                 markedCamping = camping;
 
                 txtShowCampingName.setText(camping.name);
@@ -707,7 +716,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         return true;
     }
 
-    public static boolean empty( final String s ) {
+    public static boolean empty(final String s) {
         // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
     }
@@ -741,14 +750,31 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         void processFinish(Drawable output);
     }
 
-    public boolean containsFacility(ArrayList<Facility> campingFacilities, FacilityOption filteredFacility)
-    {
-        for(Facility f : campingFacilities) {
-            if(f != null && f.facilityId.equals(filteredFacility.facilityId)) {
+    public boolean containsFacility(ArrayList<Facility> campingFacilities, FacilityOption filteredFacility) {
+        for (Facility f : campingFacilities) {
+
+            if (f != null && f.facilityId.equals(filteredFacility.facilityId)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public final class ArticleFilter
+            implements Predicate<Camping> {
+        private final Pattern pattern;
+
+        public ArticleFilter(final String regex) {
+            pattern = Pattern.compile(regex.trim().toLowerCase());
+        }
+
+        @Override
+        public boolean apply(final Camping input) {
+            return pattern.matcher(input.name.trim().toLowerCase()).find() ||
+                    pattern.matcher(input.city.trim().toLowerCase()).find() ||
+                    pattern.matcher(input.street.trim().toLowerCase()).find() ||
+                    pattern.matcher(input.postalcode.trim().toLowerCase()).find();
+        }
     }
 
     private class FilterCampings extends AsyncTask<Void, Void, Void> {
@@ -758,8 +784,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         @Override
         protected void onPreExecute() {
-            if(loadingMessage != null)
-            {
+            if (loadingMessage != null) {
                 pDialog = new ProgressDialog(mainActivity.getContext());
                 pDialog.setMessage(loadingMessage);
                 pDialog.setCancelable(false);
@@ -769,49 +794,47 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         @Override
         protected Void doInBackground(Void... voids) {
+
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
             String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
             ArrayList<Camping> filteredCampingsBySearchQuery = new ArrayList<>();
             ArrayList<Camping> filteredCampingsByDate = new ArrayList<>();
 
             filteredCampings.clear();
 
-            if(filteredFacilities.size() == 0 && chosenFromDate == null && chosenToDate == null)
-            {
+            if (filteredFacilities.size() == 0 && chosenFromDate == null && chosenToDate == null) {
                 filteredCampings.clear();
             }
 
-            if (chosenFromDate != null && chosenToDate == null)
-            {
+            if (chosenFromDate != null && chosenToDate == null) {
                 List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ?", chosenFromDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (chosenFromDate == null && chosenToDate != null)
-            {
+            if (chosenFromDate == null && chosenToDate != null) {
                 List<Camping> result = Camping.find(Camping.class, "OPEN_TO = ? or OPEN_TO >= ?", chosenToDate.toString(), chosenToDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (chosenFromDate != null && chosenToDate != null)
-            {
+            if (chosenFromDate != null && chosenToDate != null) {
                 List<Camping> result = Camping.find(Camping.class, "OPEN_FROM <= ? and OPEN_TO >= ?", chosenFromDate.toString(), chosenToDate.toString());
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            if (chosenFromDate == null && chosenToDate == null)
-            {
+            if (chosenFromDate == null && chosenToDate == null) {
                 List<Camping> result = Camping.listAll(Camping.class);
                 filteredCampingsByDate.clear();
                 filteredCampingsByDate.addAll(result);
             }
 
-            for (Camping camping: filteredCampingsByDate) {
+            for (Camping camping : filteredCampingsByDate) {
                 List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
                 camping.images = new ArrayList<>();
-                for (CampingImage image: campingImages) {
+                for (CampingImage image : campingImages) {
                     camping.images.add(image.fileName);
                 }
 
@@ -820,44 +843,42 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 camping.facilities.addAll(campingFacilities);
             }
 
-            if (searchQuery != null)
-            {
-                filteredCampingsBySearchQuery.clear();
-                for (Camping camping : filteredCampingsByDate)
-                {
-                    if(camping.name.toLowerCase().contains(searchQuery)
-                            || camping.city.toLowerCase().contains(searchQuery)
-                            || camping.street.toLowerCase().contains(searchQuery)
-                            || camping.postalcode.toLowerCase().contains(searchQuery))
-                    {
-                        filteredCampingsBySearchQuery.add(camping);
-                    }
+            if (searchQuery != null) {
+                ArrayList<Camping> filteredList
+                        = Lists.newArrayList(Collections2.filter(filteredCampingsByDate,
+                        new ArticleFilter(searchQuery)));
 
-                }
-            }
-            else
-            {
+                filteredCampingsBySearchQuery.clear();
+//                for (Camping camping : filteredCampingsByDate)
+//                {
+//                    if(camping.name.toLowerCase().contains(searchQuery)
+//                            || camping.city.toLowerCase().contains(searchQuery)
+//                            || camping.street.toLowerCase().contains(searchQuery)
+//                            || camping.postalcode.toLowerCase().contains(searchQuery))
+//                    {
+//                        filteredCampingsBySearchQuery.add(camping);
+//                    }
+//
+//                }
+
+                filteredCampingsBySearchQuery.addAll(filteredList);
+            } else {
                 filteredCampingsBySearchQuery.addAll(filteredCampingsByDate);
             }
 
-            for (Camping camping : filteredCampingsBySearchQuery)
-            {
+            for (Camping camping : filteredCampingsBySearchQuery) {
                 boolean foundFacilityById = true;
 
-                for (FacilityOption filteredFacility : filteredFacilities)
-                {
-                    if(containsFacility(camping.facilities, filteredFacility))
-                    {
+                for (FacilityOption filteredFacility : filteredFacilities) {
+                    if (containsFacility(camping.facilities, filteredFacility)) {
                         foundFacilityById = true;
-                    }
-                    else {
+                    } else {
                         foundFacilityById = false;
                         break;
                     }
                 }
 
-                if(foundFacilityById)
-                {
+                if (foundFacilityById) {
                     filteredCampings.add(camping);
                 }
             }
@@ -885,19 +906,18 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         // After a pause
         super.onResume();
         mainActivity.setTitle(getString(R.string.nav_campings));
 
     }
 
-    public void refreshMarkers(){
+    public void refreshMarkers() {
         mMap.clear();
 
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
                 layoutShowCamping.setVisibility(View.GONE);
@@ -910,15 +930,13 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         Double avgLat;
         Double avgLng;
 
-        if(filteredCampings != null)
-        {
+        if (filteredCampings != null) {
             for (Camping camping : filteredCampings) {
 
-                if(!empty( camping.lng ) || !empty( camping.lat ))
-                {
+                if (!empty(camping.lng) || !empty(camping.lat)) {
                     int height = 150;
                     int width = 150;
-                    BitmapDrawable bitmapdraw =(BitmapDrawable)getResources().getDrawable(R.drawable.ic_map_marker);
+                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
                     Bitmap b = bitmapdraw.getBitmap();
                     Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
