@@ -2,6 +2,7 @@ package se.netmine.hobby_marknad;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class FaqFragment extends BaseFragment{
         if (faq != null)
         {
             faqQuestion.setText(faq.question);
-            faqAnswer.setText(faq.answer);
+            faqAnswer.setText(Html.fromHtml(faq.answer));
         }
 
         return view;

@@ -106,7 +106,12 @@ public class FacilityListFragment extends BaseFragment {
 
             TextView txtFacilityName = (TextView) convertView.findViewById(R.id.txtFacilityName);
 
+
             txtFacilityName.setText(item.name);
+
+
+
+
 
             return convertView;
         }

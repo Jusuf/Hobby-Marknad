@@ -184,9 +184,12 @@ public class FaqListFragment extends BaseFragment {
             convertView = inflater.inflate(R.layout.faq_item, null);
 
             TextView txtFaqItemTitle = (TextView) convertView.findViewById(R.id.txtFaqItem);
+            ImageView imageViewFaqIcon = (ImageView) convertView.findViewById(R.id.imageViewFaqIcon);
+
 
             txtFaqItemTitle.setText(item.question);
 
+            imageViewFaqIcon.setImageResource(R.drawable.ic_faq_text);
 
             return convertView;
         }
