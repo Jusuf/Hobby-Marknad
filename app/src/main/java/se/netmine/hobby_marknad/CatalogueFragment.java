@@ -24,11 +24,11 @@ public class CatalogueFragment extends BaseFragment{
 
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
-            mainActivity.setTitle("Katalog 2017");
+            mainActivity.setTitle(getString(R.string.catalogue));
         }
 
         pdfView = (PDFView) view.findViewById(R.id.catalogueView);
-        pdfView.fromAsset("hobby2017.pdf").load();
+        pdfView.fromAsset("Hobby_Katalog_2018.pdf").load();
 
         return view;
     }

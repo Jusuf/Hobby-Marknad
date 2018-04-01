@@ -235,7 +235,6 @@ public class MyHobbyMarket {
                             progress++;
                         }
                     }
-
                 }
 
                 return "Klart";
@@ -283,10 +282,8 @@ public class MyHobbyMarket {
         ArrayList<FacilityOption> campingFacilityOptionsFromDb = new ArrayList<>();
         int processCounter = 0;
 
-
         private ProgressDialog pDialog;
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_camping_load_from_local_db_title);
-
 
         private LoadCampingsFromDbAsync()
         {
@@ -297,8 +294,6 @@ public class MyHobbyMarket {
 
             this.processCounter = campingsFromDb.size();
             this.processCounter += campingFacilityOptionsFromDb.size();
-//            this.processCounter += Facility.count(Camping.class, null, null, null, null, null);
-//            this.processCounter += Accommodation.count(Camping.class, null, null, null, null, null);
             this.processCounter += CampingImage.count(CampingImage.class, null, null, null, null, null);
         }
 
@@ -326,13 +321,11 @@ public class MyHobbyMarket {
             for (Camping camping : this.campingsFromDb) {
 
                 if (progress <= total) {
-                    String saveToLocalDb = "Laddar från lokala databasen... Var god vänta";
+                    String saveToLocalDb = mainActivity.getContext().getString(R.string.app_camping_load_from_local_db_title);
 
                     this.publishProgress(String.valueOf(progress), String.valueOf(total), saveToLocalDb);
 
                     System.out.println("progress = " + progress + " total = " + total);
-
-//                    progress++;
                 }
 
                 progress++;
@@ -382,7 +375,6 @@ public class MyHobbyMarket {
             }
 
             onUpdateCampingsFromDb(this.campingsFromDb, this.campingFacilityOptionsFromDb);
-
         }
     }
 
@@ -719,7 +711,6 @@ public class MyHobbyMarket {
     }
 
     protected void getCampingsCount(String deviceCulture) {
-        System.out.println("Get count start ");
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_loading_title);
         new MyHobbyApi(API_CAMPINGS_COUNT, loadingMessage,
                 null,
@@ -736,11 +727,9 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
     }
 
     protected void getCampingsCountDone(String result) {
-        System.out.println("Get count done ");
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -772,12 +761,11 @@ public class MyHobbyMarket {
     }
 
     protected void getCampingList(String deviceCulture) {
-        System.out.println("getCampingList start ");
         long foundCampings = Camping.count(Camping.class, null, null, null, null, null);
         long foundFacilityOptions = FacilityOption.count(FacilityOption.class, null, null, null, null, null);
 
         if (foundCampings != numberOfCampings || foundFacilityOptions != numberOfFacilityOptions) {
-            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.update_campings);
+            String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_camping_update_title);
             new MyHobbyApi(API_CAMPINGS, loadingMessage,
                     null,
                     null,
@@ -795,7 +783,6 @@ public class MyHobbyMarket {
                     null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else {
-            System.out.println("LoadCampingsFromDbAsync start ");
             new LoadCampingsFromDbAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
@@ -846,6 +833,7 @@ public class MyHobbyMarket {
     }
 
     protected void getFaqListDone(String result, String searchQuery) {
+
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -865,7 +853,6 @@ public class MyHobbyMarket {
         } catch (Exception e) {
             this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_internal));
         }
-
 
     }
 

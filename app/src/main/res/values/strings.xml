@@ -15,14 +15,12 @@
 
     <string name="app_loading_title">Laddar... Var god vänta</string>
     <string name="app_camping_update_title">Uppdaterar campingar... Var god vänta</string>
-    <string name="app_camping_load_from_local_db_title">Hämtar från lokala databasen... Var god vänta</string>
+    <string name="app_camping_load_from_local_db_title">Läser in campingar från lokala databasen... Var god vänta</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Inställningar</string>
-
-
 
     <string name="nav_myhobby">My Hobby</string>
     <string name="nav_service_book">Serviceboken</string>
@@ -155,7 +153,6 @@
     <string name="messages">Meddelanden</string>
     <string name="not_logged_in">Ej inloggad</string>
     <string name="my_dealer_workshop">Min återförsäljare/verkstad</string>
-    <string name="update_campings">Uppdatera campingar</string>
 
     <string name="my_dealer_not_chosen">Ingen återförsäljare vald</string>
     <string name="my_workshop_not_chosen">Ingen verkstad vald</string>
@@ -177,6 +174,8 @@
     <string name="dealer_offers_off">Nyheter och erbjudanden från den valda återförsäljaren - AV</string>
 
     <string name="search">Sök</string>
+
+    <string name="catalogue">Katalog 2018</string>
 
     <string name="go_to_reseller">Gå till återförsäljare</string>
 
