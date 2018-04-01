@@ -680,13 +680,9 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
         filteredCampings.addAll(loadedCampings);
 
-
         if (mMap != null) {
-
             uiHandler.post(runnable);
-
         }
-
     }
 
     @Override
@@ -864,17 +860,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                         new ArticleFilter(searchQuery)));
 
                 filteredCampingsBySearchQuery.clear();
-//                for (Camping camping : filteredCampingsByDate)
-//                {
-//                    if(camping.name.toLowerCase().contains(searchQuery)
-//                            || camping.city.toLowerCase().contains(searchQuery)
-//                            || camping.street.toLowerCase().contains(searchQuery)
-//                            || camping.postalcode.toLowerCase().contains(searchQuery))
-//                    {
-//                        filteredCampingsBySearchQuery.add(camping);
-//                    }
-//
-//                }
 
                 filteredCampingsBySearchQuery.addAll(filteredList);
             } else {
@@ -916,8 +901,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             }
 
         }
-
-
     }
 
     @Override

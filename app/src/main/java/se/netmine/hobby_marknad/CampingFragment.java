@@ -41,7 +41,7 @@ public class CampingFragment extends BaseFragment {
     View view = null;
     ScrollView scrollViewCamping = null;
 
-    ViewPager viewPagerCaravanimages = null;
+    ViewPager viewPagerCampingimages = null;
 
     public Camping camping = null;
     private String imageBaseAddress = "http://scr.basetool.se/upload/";
@@ -102,11 +102,11 @@ public class CampingFragment extends BaseFragment {
             mainActivity.setTitle(camping.name);
         }
 
-        viewPagerCaravanimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
+        viewPagerCampingimages = (ViewPager) view.findViewById(R.id.viewPagerCampingImages);
         pageAdapter = new ImagePagerAdapter(mainActivity.getContext(), imageUrls);
-        viewPagerCaravanimages.setAdapter(pageAdapter);
+        viewPagerCampingimages.setAdapter(pageAdapter);
 
-        viewPagerCaravanimages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPagerCampingimages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -176,6 +176,10 @@ public class CampingFragment extends BaseFragment {
                 }
                 pageAdapter.notifyDataSetChanged();
                 createDotlayout();
+            }
+            else
+            {
+                viewPagerCampingimages.setVisibility(View.GONE);
             }
 
             if(!empty(camping.stars))
@@ -417,7 +421,7 @@ public class CampingFragment extends BaseFragment {
         }
         else
         {
-            viewPagerCaravanimages.setVisibility(View.GONE);
+            viewPagerCampingimages.setVisibility(View.GONE);
             sliderDotspanel.setVisibility(View.GONE);
         }
 
