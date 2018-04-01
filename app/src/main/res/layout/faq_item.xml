@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/faq_item_bg"
         android:weightSum="10">
 
         <TextView
@@ -16,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:background="@drawable/faq_item_bg"
             android:padding="15dp"
             android:text="Faq Item"
             android:textColor="@color/faq_text_dark_grey"

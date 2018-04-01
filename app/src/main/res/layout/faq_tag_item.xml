@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="Faq Item"
+            android:text="Faq tag Item"
             android:textColor="@color/text_dark_grey"
             android:textSize="16sp"
             android:layout_weight="8"/>
@@ -31,7 +31,7 @@
             android:id="@+id/checkBoxTag"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:buttonTint="@color/myhobby_blue" />
 
     </LinearLayout>
