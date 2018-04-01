@@ -34,13 +34,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.orm.StringUtil;
@@ -52,8 +50,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import static se.netmine.hobby_marknad.R.id.map;
@@ -116,6 +112,12 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     Handler uiHandler = null;
     Runnable runnable = null;
     Marker oldMarker = null;
+
+    LinearLayout layoutCampingOneStar = null;
+    LinearLayout layoutCampingTwoStars = null;
+    LinearLayout layoutCampingThreeStars = null;
+    LinearLayout layoutCampingFourStars = null;
+    LinearLayout layoutCampingFiveStars = null;
 
     public CampingsFragment() {
 
@@ -337,6 +339,17 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
         month = mCurrentDate.get(Calendar.MONTH);
         year = mCurrentDate.get(Calendar.YEAR);
+
+        layoutCampingOneStar = (LinearLayout) view.findViewById(R.id.layoutCampingOneStar);
+        addStarsToFilterByGrade(1, layoutCampingOneStar);
+        layoutCampingTwoStars = (LinearLayout) view.findViewById(R.id.layoutCampingTwoStars);
+        addStarsToFilterByGrade(2, layoutCampingTwoStars);
+        layoutCampingThreeStars = (LinearLayout) view.findViewById(R.id.layoutCampingThreeStars);
+        addStarsToFilterByGrade(3, layoutCampingThreeStars);
+        layoutCampingFourStars = (LinearLayout) view.findViewById(R.id.layoutCampingFourStars);
+        addStarsToFilterByGrade(4, layoutCampingFourStars);
+        layoutCampingFiveStars = (LinearLayout) view.findViewById(R.id.layoutCampingFiveStars);
+        addStarsToFilterByGrade(5, layoutCampingFiveStars);
 
 
         layoutFromDate = (LinearLayout) view.findViewById(R.id.layoutFromDate);
@@ -955,6 +968,21 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             LatLng avgPosition = new LatLng(avgLat, avgLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 7));
+        }
+    }
+
+    private void addStarsToFilterByGrade(int numberOfStars, LinearLayout gradeLayout)
+    {
+        for (int i = 0; i < numberOfStars; i++) {
+            ImageView imageview = new ImageView(mainActivity.getContext());
+            LinearLayout.LayoutParams params = new LinearLayout
+                    .LayoutParams(120, 120);
+            imageview.setLayoutParams(params);
+            imageview.setImageResource(R.drawable.ic_orange_star);
+            imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            gradeLayout.addView(imageview);
+//            campingDetailsCampingStarLayout.addView(imageview);
         }
     }
 

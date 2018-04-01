@@ -147,6 +147,7 @@
     <string name="contact_address">Adress:</string>
     <string name="contact_phone">Telefon:</string>
     <string name="contact_email">E-postadress:</string>
+    <string name="camping_grade_title">Betyg</string>
 
     <string name="my_page">Min sida</string>
     <string name="my_settings">Mina inställningar</string>
