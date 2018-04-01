@@ -119,6 +119,18 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
     LinearLayout layoutCampingFourStars = null;
     LinearLayout layoutCampingFiveStars = null;
 
+    CheckBox checkboxOneStar = null;
+    CheckBox checkboxTwoStars = null;
+    CheckBox checkboxThreeStars = null;
+    CheckBox checkboxFourStars = null;
+    CheckBox checkboxFiveStars = null;
+
+    private boolean oneStar = false;
+    private boolean twoStars = false;
+    private boolean threetars = false;
+    private boolean fourStars = false;
+    private boolean fiveStars = false;
+
     public CampingsFragment() {
 
     }
@@ -350,6 +362,51 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         addStarsToFilterByGrade(4, layoutCampingFourStars);
         layoutCampingFiveStars = (LinearLayout) view.findViewById(R.id.layoutCampingFiveStars);
         addStarsToFilterByGrade(5, layoutCampingFiveStars);
+
+        checkboxOneStar = (CheckBox) view.findViewById(R.id.checkboxOneStar);
+        checkboxOneStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                oneStar = isChecked;
+                new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        checkboxTwoStars = (CheckBox) view.findViewById(R.id.checkboxTwoStars);
+        checkboxTwoStars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                twoStars = isChecked;
+                new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        checkboxThreeStars = (CheckBox) view.findViewById(R.id.checkboxThreeStars);
+        checkboxThreeStars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                threetars = isChecked;
+                new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        checkboxFourStars = (CheckBox) view.findViewById(R.id.checkboxFourStars);
+        checkboxFourStars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fourStars = isChecked;
+                new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        checkboxFiveStars = (CheckBox) view.findViewById(R.id.checkboxFiveStars);
+        checkboxFiveStars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fiveStars = isChecked;
+                new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
 
 
         layoutFromDate = (LinearLayout) view.findViewById(R.id.layoutFromDate);
