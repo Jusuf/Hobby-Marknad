@@ -445,6 +445,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             final ImageView layoutCampingItem = (ImageView) convertView.findViewById(R.id.iv__camping_background);
             TextView txtCampingItemName = (TextView) convertView.findViewById(R.id.txtCampingItemName);
             TextView txtCampingItemCity = (TextView) convertView.findViewById(R.id.txtCampingItemCity);
+            LinearLayout campingDetailsCampingStarLayout = (LinearLayout) convertView.findViewById(R.id.campingDetailsCampingStarLayout);
 
             if (item.images != null && item.images.size() > 0) {
 
@@ -459,6 +460,20 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 });
 
                 task.execute(new String[]{imageBaseAddress + item.images.get(0)});
+            }
+
+            if(!empty(item.stars))
+            {
+                int numberOfStars = Integer.parseInt(item.stars);
+                for (int i = 0; i < numberOfStars; i++) {
+                    ImageView imageview = new ImageView(mainActivity.getContext());
+                    LinearLayout.LayoutParams params = new LinearLayout
+                            .LayoutParams(100, 100);
+                    imageview.setLayoutParams(params);
+                    imageview.setImageResource(R.drawable.ic_orange_star);
+                    imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+                    campingDetailsCampingStarLayout.addView(imageview);
+                }
             }
 
             txtCampingItemName.setText(item.name);

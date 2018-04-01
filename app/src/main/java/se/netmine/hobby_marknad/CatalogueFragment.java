@@ -21,7 +21,6 @@ public class CatalogueFragment extends BaseFragment{
 
         View view = inflater.inflate(R.layout.fragment_catalogue, container, false);
 
-
         if (getActivity() instanceof IMainActivity) {
             mainActivity = (IMainActivity) getActivity();
             mainActivity.setTitle(getString(R.string.catalogue));
