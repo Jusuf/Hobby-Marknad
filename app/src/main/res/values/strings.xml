@@ -157,6 +157,7 @@
 
     <string name="my_dealer_not_chosen">Ingen återförsäljare vald</string>
     <string name="my_workshop_not_chosen">Ingen verkstad vald</string>
+    <string name="no_workshop">Erbjuder ej verkstad</string>
 
     <string name="settings_for_notifications">Inställningar för notiser</string>
     <string name="news_and_offers">Nyheter &amp; erbjudanden</string>

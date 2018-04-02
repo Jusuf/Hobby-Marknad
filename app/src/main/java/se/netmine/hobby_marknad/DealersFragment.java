@@ -237,7 +237,8 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         if (loadedDealers != null) {
             for (Dealer dealer : loadedDealers) {
                 try {
-                    if (dealer.lat != null && dealer.lng != null) {
+                    if(!empty(dealer.lat) && !empty(dealer.lng))
+                    {
                         Double lat = Double.parseDouble(dealer.lat);
                         Double lng = Double.parseDouble(dealer.lng);
 
@@ -318,6 +319,11 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         super.onResume();
         mainActivity.setTitle(getString(R.string.reseller));
         layoutShowDealer.setVisibility(View.GONE);
+    }
+
+    public static boolean empty(final String s) {
+        // Null-safe, short-circuit evaluation.
+        return s == null || s.trim().isEmpty();
     }
 
 }

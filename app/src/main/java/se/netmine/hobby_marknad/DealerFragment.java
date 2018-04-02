@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +30,7 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
 
     private IMainActivity mainActivity;
     LayoutInflater inflater = null;
+    LinearLayout dealerDetailsMapLayout = null;
     private GoogleMap mMap;
     public Dealer dealer = null;
 
@@ -36,6 +38,8 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
     private TextView dealerAddress = null;
     private TextView dealerTel = null;
     private TextView dealerEmail = null;
+
+    private TextView txtDealerServiceWorkShop = null;
 
     private ImageView imageDealerHeart = null;
     private ImageView imageWorkshopHeart = null;
@@ -63,6 +67,8 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         final MapFragment mapFragment = (MapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapDealerDetails);
 
+        dealerDetailsMapLayout = (LinearLayout) view.findViewById(R.id.dealerDetailsMapLayout);
+
         mapFragment.getMapAsync(this);
 
         dealerName = (TextView) view.findViewById(R.id.txtDealerName);
@@ -77,6 +83,8 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         btnDealerSendEmail = (Button) view.findViewById(R.id.btnDealerSendEmail);
         btnDealerVisitHompage = (Button) view.findViewById(R.id.btnDealerVisitHomepage);
         btnDealerShowRoute = (Button) view.findViewById(R.id.btnDealerShowRoute);
+
+        txtDealerServiceWorkShop = (TextView) view.findViewById(R.id.txtDealerServiceWorkShop);
 
         imageDealerHeart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +132,18 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             dealerAddress.setText(dealer.street + ", " + dealer.postalcode + " " + dealer.city);
             dealerTel.setText(dealer.phone);
             dealerEmail.setText(dealer.email);
+
+            if(!dealer.isWorkShop)
+            {
+                txtDealerServiceWorkShop.setText(getString(R.string.no_workshop));
+                txtDealerServiceWorkShop.setTextColor(getResources().getColor(R.color.light_grey));
+                imageWorkshopHeart.setVisibility(View.GONE);
+            }
+
+            if(empty(dealer.lat) || empty(dealer.lng))
+            {
+                dealerDetailsMapLayout.setVisibility(View.GONE);
+            }
 
             setUserDealerAndWorkshopIcon();
         }
@@ -184,7 +204,8 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
         mMap = map;
         map.clear();
 
-        if (dealer != null) {
+        if (dealer != null && !empty(dealer.lat) && !empty(dealer.lng))
+        {
             LatLng marker = new LatLng(Double.parseDouble(dealer.lat), Double.parseDouble(dealer.lng));
 
             map.addMarker(new MarkerOptions()
@@ -214,6 +235,11 @@ public class DealerFragment extends BaseFragment implements OnMapReadyCallback {
             Drawable d = getResources().getDrawable(R.drawable.ic_heart_empty, mainActivity.getContext().getTheme());
             imageWorkshopHeart.setImageDrawable(d);
         }
+    }
+
+    public static boolean empty(final String s) {
+        // Null-safe, short-circuit evaluation.
+        return s == null || s.trim().isEmpty();
     }
 
 }

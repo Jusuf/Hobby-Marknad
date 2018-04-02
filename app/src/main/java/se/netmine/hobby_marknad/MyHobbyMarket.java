@@ -52,10 +52,9 @@ public class MyHobbyMarket {
     private static final int API_REMOVE_MESSAGE = 13;
     private static final int API_USER_SETTINGS = 14;
 
-
-//        public static String url = "https://admin.myhobby.nu/";
+    public static String url = "https://admin.myhobby.nu/";
 //        public static String url = "http://192.168.20.148/hobby/";
-    public static String url = "http://192.168.0.11/hobby/";
+//    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
