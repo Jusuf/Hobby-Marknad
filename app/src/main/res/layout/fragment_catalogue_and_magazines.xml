@@ -17,17 +17,13 @@
         <LinearLayout
             android:id="@+id/catalogueMenuButton"
             android:layout_width="match_parent"
-            android:layout_height="324dp"
+            android:layout_height="284dp"
             android:background="@drawable/catalog_2018"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="1">
-
         </LinearLayout>
 
-
-
     </LinearLayout>
-
 
 </ScrollView>
