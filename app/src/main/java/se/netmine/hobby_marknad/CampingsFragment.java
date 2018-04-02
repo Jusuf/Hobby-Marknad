@@ -901,6 +901,74 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public void onResume() {
+        // After a pause
+        super.onResume();
+        mainActivity.setTitle(getString(R.string.nav_campings));
+
+    }
+
+    public void refreshMarkers() {
+        mMap.clear();
+
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                layoutShowCamping.setVisibility(View.GONE);
+            }
+        });
+
+        Double sumLat = 0.0;
+        Double sumLng = 0.0;
+
+        Double avgLat;
+        Double avgLng;
+
+        if (filteredCampings != null) {
+            for (Camping camping : filteredCampings) {
+
+                if (!empty(camping.lng) || !empty(camping.lat)) {
+                    int height = 150;
+                    int width = 150;
+                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
+                    Bitmap b = bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+
+                    LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
+                    mMap.addMarker(new MarkerOptions()
+                            .title(camping.name)
+                            .snippet(camping.city)
+                            .position(marker).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+
+                    sumLat += Double.parseDouble(camping.lng);
+                    sumLng += Double.parseDouble(camping.lat);
+                }
+
+            }
+            avgLat = sumLat / filteredCampings.size();
+            avgLng = sumLng / filteredCampings.size();
+
+            LatLng avgPosition = new LatLng(avgLat, avgLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 7));
+        }
+    }
+
+    private void addStarsToFilterByGrade(int numberOfStars, LinearLayout gradeLayout) {
+        for (int i = 0; i < numberOfStars; i++) {
+            ImageView imageview = new ImageView(mainActivity.getContext());
+            LinearLayout.LayoutParams params = new LinearLayout
+                    .LayoutParams(120, 120);
+            imageview.setLayoutParams(params);
+            imageview.setImageResource(R.drawable.ic_orange_star);
+            imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            gradeLayout.addView(imageview);
+        }
+    }
+
     private class FilterCampings extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
@@ -1039,74 +1107,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        // After a pause
-        super.onResume();
-        mainActivity.setTitle(getString(R.string.nav_campings));
-
-    }
-
-    public void refreshMarkers() {
-        mMap.clear();
-
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
-                layoutShowCamping.setVisibility(View.GONE);
-            }
-        });
-
-        Double sumLat = 0.0;
-        Double sumLng = 0.0;
-
-        Double avgLat;
-        Double avgLng;
-
-        if (filteredCampings != null) {
-            for (Camping camping : filteredCampings) {
-
-                if (!empty(camping.lng) || !empty(camping.lat)) {
-                    int height = 150;
-                    int width = 150;
-                    BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
-                    Bitmap b = bitmapdraw.getBitmap();
-                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-
-
-                    LatLng marker = new LatLng(Double.parseDouble(camping.lng), Double.parseDouble(camping.lat));
-                    mMap.addMarker(new MarkerOptions()
-                            .title(camping.name)
-                            .snippet(camping.city)
-                            .position(marker).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
-
-                    sumLat += Double.parseDouble(camping.lng);
-                    sumLng += Double.parseDouble(camping.lat);
-                }
-
-            }
-            avgLat = sumLat / filteredCampings.size();
-            avgLng = sumLng / filteredCampings.size();
-
-            LatLng avgPosition = new LatLng(avgLat, avgLng);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(avgPosition, 7));
-        }
-    }
-
-    private void addStarsToFilterByGrade(int numberOfStars, LinearLayout gradeLayout) {
-        for (int i = 0; i < numberOfStars; i++) {
-            ImageView imageview = new ImageView(mainActivity.getContext());
-            LinearLayout.LayoutParams params = new LinearLayout
-                    .LayoutParams(120, 120);
-            imageview.setLayoutParams(params);
-            imageview.setImageResource(R.drawable.ic_orange_star);
-            imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-
-            gradeLayout.addView(imageview);
         }
     }
 
