@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -48,6 +49,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -127,7 +129,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     private boolean oneStar = false;
     private boolean twoStars = false;
-    private boolean threetars = false;
+    private boolean threeStars = false;
     private boolean fourStars = false;
     private boolean fiveStars = false;
 
@@ -164,7 +166,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         };
 
         language = Locale.getDefault().getCountry();
-
 
 
         listViewCampings = (ListView) view.findViewById(R.id.listViewCampings);
@@ -385,7 +386,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         checkboxThreeStars.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                threetars = isChecked;
+                threeStars = isChecked;
                 new FilterCampings().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
@@ -532,8 +533,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 task.execute(new String[]{imageBaseAddress + item.images.get(0)});
             }
 
-            if(!empty(item.stars))
-            {
+            if (!empty(item.stars)) {
                 int numberOfStars = Integer.parseInt(item.stars);
                 for (int i = 0; i < numberOfStars; i++) {
                     ImageView imageview = new ImageView(mainActivity.getContext());
@@ -700,11 +700,8 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap map) {
-
         mMap = map;
-
         refreshMarkers();
-
     }
 
     @Override
@@ -735,7 +732,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                     loadedOtherFacilities.add(facilityOption);
                 }
             }
-
         }
 
         if (generalFacilityAdapter != null) {
@@ -858,6 +854,53 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
     }
 
+    public final class GradeFilter
+            implements Predicate<Camping> {
+        private final Pattern patternOne;
+        private final Pattern patternTwo;
+        private final Pattern patternThree;
+        private final Pattern patternFour;
+        private final Pattern patternFive;
+
+        public GradeFilter(boolean oneStar, boolean twoStars, boolean threeStars, boolean fourStars, boolean fiveStars) {
+            if (oneStar) {
+                patternOne = Pattern.compile("1");
+            } else {
+                patternOne = Pattern.compile("z");
+            }
+            if (twoStars) {
+                patternTwo = Pattern.compile("2");
+            } else {
+                patternTwo = Pattern.compile("z");
+            }
+            if (threeStars) {
+                patternThree = Pattern.compile("3");
+            } else {
+                patternThree = Pattern.compile("z");
+            }
+            if (fourStars) {
+                patternFour = Pattern.compile("4");
+            } else {
+                patternFour = Pattern.compile("z");
+            }
+            if (fiveStars) {
+                patternFive = Pattern.compile("5");
+            } else {
+                patternFive = Pattern.compile("z");
+            }
+        }
+
+        @Override
+        public boolean apply(final Camping input) {
+
+            return patternOne.matcher(input.stars).find() ||
+                    patternTwo.matcher(input.stars).find() ||
+                    patternThree.matcher(input.stars).find()||
+                    patternFour.matcher(input.stars).find() ||
+                    patternFive.matcher(input.stars).find();
+        }
+    }
+
     private class FilterCampings extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
@@ -879,12 +922,21 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
             String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
-            ArrayList<Camping> filteredCampingsBySearchQuery = new ArrayList<>();
+
+            boolean filterByGrade = false;
+
+            if (oneStar || twoStars || threeStars || fourStars || fiveStars) {
+                filterByGrade = true;
+            }
+
+            ArrayList<Camping> filteredCampingsByGrade = new ArrayList<>();
             ArrayList<Camping> filteredCampingsByDate = new ArrayList<>();
+            ArrayList<Camping> filteredCampingsBySearchQuery = new ArrayList<>();
+
 
             filteredCampings.clear();
 
-            if (filteredFacilities.size() == 0 && chosenFromDate == null && chosenToDate == null) {
+            if (filteredFacilities.size() == 0 && chosenFromDate == null && chosenToDate == null || filterByGrade) {
                 filteredCampings.clear();
             }
 
@@ -912,12 +964,31 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
                 filteredCampingsByDate.addAll(result);
             }
 
-            for (Camping camping : filteredCampingsByDate) {
+            if (oneStar || twoStars || threeStars || fourStars || fiveStars) {
+                ArrayList<Camping> filteredList
+                        = Lists.newArrayList(Collections2.filter(filteredCampingsByDate,
+                        new GradeFilter(oneStar, twoStars, threeStars, fourStars, fiveStars)));
+
+                filteredCampingsByGrade.addAll(filteredList);
+            } else {
+                filteredCampingsByGrade.addAll(filteredCampingsByDate);
+            }
+
+            for (Camping camping : filteredCampingsByGrade) {
                 List<CampingImage> campingImages = CampingImage.find(CampingImage.class, campingIdAsSQL, camping.campingId);
                 camping.images = new ArrayList<>();
-                for (CampingImage image : campingImages) {
-                    camping.images.add(image.fileName);
-                }
+
+                Collection<String> imageUrls = Collections2.transform(
+                        campingImages,
+                        new Function<CampingImage, String>() {
+                            @Override
+                            public String apply(CampingImage entity) {
+                                return entity.fileName;
+                            }
+                        }
+                );
+
+                camping.images.addAll(imageUrls);
 
                 List<Facility> campingFacilities = Facility.find(Facility.class, campingIdAsSQL, camping.campingId);
                 camping.facilities = new ArrayList<>();
@@ -926,14 +997,14 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             if (searchQuery != null) {
                 ArrayList<Camping> filteredList
-                        = Lists.newArrayList(Collections2.filter(filteredCampingsByDate,
+                        = Lists.newArrayList(Collections2.filter(filteredCampingsByGrade,
                         new ArticleFilter(searchQuery)));
 
                 filteredCampingsBySearchQuery.clear();
 
                 filteredCampingsBySearchQuery.addAll(filteredList);
             } else {
-                filteredCampingsBySearchQuery.addAll(filteredCampingsByDate);
+                filteredCampingsBySearchQuery.addAll(filteredCampingsByGrade);
             }
 
             for (Camping camping : filteredCampingsBySearchQuery) {
@@ -954,7 +1025,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             }
 
             return null;
-
         }
 
         @Override
@@ -969,7 +1039,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             if (pDialog != null && pDialog.isShowing()) {
                 pDialog.dismiss();
             }
-
         }
     }
 
@@ -1028,8 +1097,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         }
     }
 
-    private void addStarsToFilterByGrade(int numberOfStars, LinearLayout gradeLayout)
-    {
+    private void addStarsToFilterByGrade(int numberOfStars, LinearLayout gradeLayout) {
         for (int i = 0; i < numberOfStars; i++) {
             ImageView imageview = new ImageView(mainActivity.getContext());
             LinearLayout.LayoutParams params = new LinearLayout
@@ -1039,7 +1107,6 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
             imageview.setScaleType(ImageView.ScaleType.FIT_XY);
 
             gradeLayout.addView(imageview);
-//            campingDetailsCampingStarLayout.addView(imageview);
         }
     }
 
