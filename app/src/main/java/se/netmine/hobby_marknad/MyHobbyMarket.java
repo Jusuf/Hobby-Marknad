@@ -52,9 +52,9 @@ public class MyHobbyMarket {
     private static final int API_REMOVE_MESSAGE = 13;
     private static final int API_USER_SETTINGS = 14;
 
-    public static String url = "https://admin.myhobby.nu/";
+//    public static String url = "https://admin.myhobby.nu/";
 //        public static String url = "http://192.168.20.148/hobby/";
-//    public static String url = "http://192.168.0.11/hobby/";
+    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -622,7 +622,7 @@ public class MyHobbyMarket {
 
     protected void getDealerList(String searchQuery, String deviceCulture) {
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_send_command_messsage);
-        MyHobbyApi api = new MyHobbyApi(API_DEALERS, loadingMessage,
+        new MyHobbyApi(API_DEALERS, loadingMessage,
                 null,
                 null,
                 null,
@@ -636,8 +636,8 @@ public class MyHobbyMarket {
                 null,
                 null,
                 null,
-                null);
-        api.execute();
+                null).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//        api.execute();
 
     }
 

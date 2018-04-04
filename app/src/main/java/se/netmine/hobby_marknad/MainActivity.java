@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity
 //        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
         LinearLayout  layout = new LinearLayout(this);
-        layout.setBackgroundResource(R.drawable.info_button);
+        layout.setBackgroundResource(R.drawable.warning_bg);
         layout.setPadding(30,30,30,30);
 
 
