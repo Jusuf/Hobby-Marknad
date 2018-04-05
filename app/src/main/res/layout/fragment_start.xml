@@ -10,9 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="2.5dp"
-        android:layout_marginRight="2.5dp">
+        android:layout_marginRight="2.5dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/myHobbyMenu"
@@ -61,17 +61,17 @@
                     android:id="@+id/serviceBookMenu"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:layout_margin="2.5dp"
                     android:layout_weight="1"
                     android:background="@mipmap/start_servicebook"
                     android:gravity="bottom"
-                    android:orientation="vertical"
-                    android:layout_margin="2.5dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="82dp"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView4"
@@ -86,10 +86,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:paddingTop="5dp"
                             android:text="@string/start_service_book_keep_control"
                             android:textAllCaps="true"
-                            android:textSize="14sp"
-                            android:paddingTop="5dp"/>
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -99,17 +99,17 @@
                     android:id="@+id/resellersMenu"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_margin="2.5dp"
                     android:layout_weight="1"
-                    android:gravity="bottom"
                     android:background="@mipmap/start_resellers"
-                    android:orientation="vertical"
-                    android:layout_margin="2.5dp">
+                    android:gravity="bottom"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="82dp"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView8"
@@ -118,7 +118,6 @@
                             android:gravity="center"
                             android:text="@string/start_resellers"
                             android:textSize="20sp" />
-
 
 
                     </LinearLayout>
@@ -139,17 +138,17 @@
                     android:id="@+id/catalogueAndMagazinesMenu"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_margin="2.5dp"
                     android:layout_weight="1"
                     android:background="@mipmap/start_catalogue"
                     android:gravity="bottom"
-                    android:orientation="vertical"
-                    android:layout_margin="2.5dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="82dp"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView6"
@@ -168,17 +167,17 @@
                     android:id="@+id/faqStartMenu"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
+                    android:layout_margin="2.5dp"
                     android:layout_weight="1"
-                    android:gravity="bottom"
                     android:background="@mipmap/start_faq"
-                    android:orientation="vertical"
-                    android:layout_margin="2.5dp">
+                    android:gravity="bottom"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="82dp"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView9"
@@ -193,10 +192,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:paddingTop="5dp"
                             android:text="@string/start_faq_for_caravan_owners"
                             android:textAllCaps="true"
-                            android:textSize="14sp"
-                            android:paddingTop="5dp"/>
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -249,17 +248,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.66"
-            android:paddingTop="30dp"
+            android:orientation="horizontal"
             android:paddingBottom="30dp"
-            android:orientation="horizontal">
+            android:paddingTop="30dp">
 
             <LinearLayout
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:orientation="vertical"
                 android:weightSum="1">
 
 
@@ -314,4 +313,4 @@
     </LinearLayout>
 
 
-    </ScrollView>
+</ScrollView>

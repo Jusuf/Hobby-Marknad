@@ -6,14 +6,13 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
-import com.orm.StringUtil;
+import com.orm.util.NamingHelper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,8 +26,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import javax.net.ssl.HttpsURLConnection;
 
 
 /**
@@ -52,9 +49,9 @@ public class MyHobbyMarket {
     private static final int API_REMOVE_MESSAGE = 13;
     private static final int API_USER_SETTINGS = 14;
 
-//    public static String url = "https://admin.myhobby.nu/";
-//        public static String url = "http://192.168.20.148/hobby/";
-    public static String url = "http://192.168.0.11/hobby/";
+    public static String url = "https://admin.myhobby.nu/";
+    //        public static String url = "http://192.168.20.148/hobby/";
+//    public static String url = "http://192.168.0.11/hobby/";
     public static String baseUrl = url + "api/myHobby/";
     public static String baseUrlAndroid = url + "api/hobbyMarketAndroid/";
 
@@ -173,9 +170,9 @@ public class MyHobbyMarket {
 
             try {
 
-                String facilityIdAsSQL = StringUtil.toSQLName("facilityId") + "=?";
-                String accommodationIdAsSQL = StringUtil.toSQLName("accommodationId") + "=?";
-                String campingImageFileNameAsSQL = StringUtil.toSQLName("fileName") + "=?";
+                String facilityIdAsSQL = NamingHelper.toSQLNameDefault("facilityId") + "=?";
+                String accommodationIdAsSQL = NamingHelper.toSQLNameDefault("accommodationId") + "=?";
+                String campingImageFileNameAsSQL = NamingHelper.toSQLNameDefault("fileName") + "=?";
 
                 for (Camping c : campings) {
 
@@ -188,39 +185,50 @@ public class MyHobbyMarket {
                     }
 
                     if (c.campingId != null) {
-                        c.save();
+                        Camping newCamping = new Camping(c.campingId,
+                                c.name,
+                                c.phone,
+                                c.email,
+                                c.webpage,
+                                c.openFrom,
+                                c.openTo,
+                                c.fullServiceFrom,
+                                c.fullServiceTo,
+                                c.street,
+                                c.postalcode,
+                                c.city,
+                                c.lat,
+                                c.lng,
+                                c.descSV,
+                                c.stars);
+                        newCamping.save();
                         progress++;
                     }
 
                     for (Facility f : c.facilities) {
 
                         if (f.facilityId != null) {
-                            f.camping = c;
-                            f.campingId = c.campingId;
-                            f.save();
+
+                            Facility newFacility = new Facility(f.facilityId, f.name, f.facilityCategoryId, c.campingId, f.facilityCategoryName);
+                            newFacility.save();
                             progress++;
                         }
-
                     }
 
                     for (Accommodation a : c.accommodations) {
 
                         if (a.accommodationId != null) {
 
-                            a.camping = c;
-
-                            a.campingId = c.campingId;
-                            a.save();
+                            Accommodation accommodationToSave = new Accommodation(a.accommodationId, a.name, c.campingId);
+                            accommodationToSave.save();
                             progress++;
                         }
 
                     }
 
                     for (String i : c.images) {
-                        CampingImage campingImage = new CampingImage();
-                        campingImage.fileName = i;
-                        campingImage.campingId = c.campingId;
-                        campingImage.save();
+                        CampingImage campingImagetoSave = new CampingImage(i, c.campingId );
+                        campingImagetoSave.save();
                         progress++;
                     }
 
@@ -284,8 +292,7 @@ public class MyHobbyMarket {
         private ProgressDialog pDialog;
         String loadingMessage = mainActivity.getContext().getResources().getString(R.string.app_camping_load_from_local_db_title);
 
-        private LoadCampingsFromDbAsync()
-        {
+        private LoadCampingsFromDbAsync() {
             this.campingsFromDbList = Camping.listAll(Camping.class);
             this.facilityOptionsFromDb = FacilityOption.listAll(FacilityOption.class);
             this.campingsFromDb.addAll(this.campingsFromDbList);
@@ -315,7 +322,7 @@ public class MyHobbyMarket {
             int progress = 0;
             int total = this.processCounter;
 
-            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+            String campingIdAsSQL = NamingHelper.toSQLNameDefault("campingId") + "=?";
 
             for (Camping camping : this.campingsFromDb) {
 
@@ -1300,7 +1307,7 @@ public class MyHobbyMarket {
                     break;
                     case API_SERVICE: {
                         if (isUserLoggedIn()) {
-                            apiUrl = baseUrl + "syncServices";
+                            apiUrl = baseUrlAndroid + "syncServices";
 
                             builder = new Uri.Builder()
                                     .appendQueryParameter("UserName", currentUser.email)

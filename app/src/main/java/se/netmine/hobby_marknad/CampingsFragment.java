@@ -42,7 +42,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.orm.StringUtil;
+import com.orm.util.NamingHelper;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -989,7 +989,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
 
             Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
-            String campingIdAsSQL = StringUtil.toSQLName("campingId") + "=?";
+            String campingIdAsSQL = NamingHelper.toSQLNameDefault("campingId") + "=?";
 
             boolean filterByGrade = false;
 

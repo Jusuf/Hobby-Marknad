@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Created by jusuf on 2017-10-03.
  */
 
-public class Facility extends SugarRecord<Facility>{
+public class Facility extends SugarRecord{
     public String facilityId;
     public String name;
     public String facilityCategoryId;

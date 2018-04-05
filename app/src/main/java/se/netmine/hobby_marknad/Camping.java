@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by jusuf on 2017-10-03.
  */
 
-public class Camping extends SugarRecord<Camping>{
+public class Camping extends SugarRecord {
 
     public String campingId;
     public String name;

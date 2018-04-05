@@ -2,6 +2,8 @@ package se.netmine.hobby_marknad;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.MapFragment;
 import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -58,6 +61,7 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
     private TextView txtShowDealerName = null;
     private TextView txtShowDealerAddress = null;
     private Button btnShow = null;
+    Marker oldMarker = null;
 
     public DealersFragment() {
 
@@ -239,15 +243,20 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
                 try {
                     if(!empty(dealer.lat) && !empty(dealer.lng))
                     {
+                        int height = 150;
+                        int width = 150;
+                        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
+                        Bitmap b = bitmapdraw.getBitmap();
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
                         Double lat = Double.parseDouble(dealer.lat);
                         Double lng = Double.parseDouble(dealer.lng);
-
 
                         LatLng marker = new LatLng(lat, lng);
                         mMap.addMarker(new MarkerOptions()
                                 .title(dealer.name)
                                 .snippet(dealer.city)
-                                .position(marker));
+                                .position(marker).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
 
 
                         sumLat += lat;
@@ -295,6 +304,26 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
+        int defaultWidth = 150;
+        int defaultHeight = 150;
+
+        BitmapDrawable bitmapDefault = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker);
+        Bitmap bDefault = bitmapDefault.getBitmap();
+        Bitmap defaultMarker = Bitmap.createScaledBitmap(bDefault, defaultWidth, defaultHeight, false);
+
+        if (oldMarker != null) {
+            oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(defaultMarker));
+        }
+
+        int chosenWidth = 180;
+        int chosenHeight = 180;
+
+        BitmapDrawable bitmapChosen = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_map_marker_choosen);
+        Bitmap bChosen = bitmapChosen.getBitmap();
+        Bitmap choosenMarker = Bitmap.createScaledBitmap(bChosen, chosenWidth, chosenHeight, false);
+
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(choosenMarker));
+
         String name = marker.getTitle();
 
         for (Dealer dealer : loadedDealers) {
@@ -309,6 +338,8 @@ public class DealersFragment extends BaseFragment implements OnMapReadyCallback,
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+
+        oldMarker = marker;
 
         return true;
     }

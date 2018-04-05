@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Created by jusuf on 2017-10-03.
  */
 
-public class FacilityOption extends SugarRecord<FacilityOption>{
+public class FacilityOption extends SugarRecord{
     public String facilityId;
     public String name;
     boolean isSelected = false;

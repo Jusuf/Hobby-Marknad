@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by jusuf on 2017-10-03.
  */
 
-public class Accommodation extends SugarRecord<Facility> {
+public class Accommodation extends SugarRecord {
     public String accommodationId;
     public String name;
 

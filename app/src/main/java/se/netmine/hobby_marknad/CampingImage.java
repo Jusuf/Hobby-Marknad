@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
  * Created by jusuf on 2017-10-03.
  */
 
-public class CampingImage extends SugarRecord<CampingImage>{
+public class CampingImage extends SugarRecord{
     public String fileName;
 
     public String campingId;
