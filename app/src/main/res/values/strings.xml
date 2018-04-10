@@ -14,8 +14,10 @@
     <string name="app_error_title">Ett fel uppstod.</string>
 
     <string name="app_loading_title">Laddar... Var god vänta</string>
-    <string name="app_camping_update_title">Uppdaterar campingar... Var god vänta</string>
-    <string name="app_camping_load_from_local_db_title">Läser in campingar från lokala databasen... Var god vänta</string>
+    <string name="app_camping_update_title">Hämtar och uppdaterar campingar... Var god vänta!</string>
+    <string name="app_camping_load_from_local_db_title">Läser in campingar från lokala databasen... Det kan ta några minuter! Var god vänta!</string>
+    <string name="app_camping_save_to_local_db_title">Sparar till lokala databasen... Det kan ta några minuter! Var god vänta!"</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

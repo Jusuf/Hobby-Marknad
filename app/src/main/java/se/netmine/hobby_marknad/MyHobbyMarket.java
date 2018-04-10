@@ -177,7 +177,7 @@ public class MyHobbyMarket {
                 for (Camping c : campings) {
 
                     if (progress <= total) {
-                        String saveToLocalDb = "Sparar till lokala databasen... Var god vänta";
+                        String saveToLocalDb =  mainActivity.getContext().getResources().getString(R.string.app_camping_save_to_local_db_title);
 
                         this.publishProgress(String.valueOf(progress), String.valueOf(total), saveToLocalDb);
 
