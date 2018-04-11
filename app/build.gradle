@@ -7,26 +7,11 @@ android {
         applicationId "se.netmine.hobby_marknad"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        debug {
-            storeFile file("google_maps_api_key.keystore.jks")
-            storePassword "abc.123"
-            keyAlias "key0"
-            keyPassword "abc.123"
-            v2SigningEnabled false
-        }
-        release {
-            storeFile file("google_maps_api_key.keystore.jks")
-            storePassword "abc.123"
-            keyAlias "key0"
-            keyPassword "abc.123"
-            v2SigningEnabled false
-        }
-    }
+
     buildTypes {
         release {
             minifyEnabled false
