@@ -47,6 +47,13 @@ public class ConnectToServiceFragment extends BaseFragment {
 
         txtVinNumber = (EditText) view.findViewById(R.id.txtVinNumber);
 
+        vin = MyHobbyMarket.getInstance().getVinNumber();
+
+        if (vin != null && !vin.equals(""))
+        {
+            txtVinNumber.setText(vin);
+        }
+
         txtVinNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

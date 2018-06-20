@@ -21,6 +21,7 @@ public class User {
     public boolean subNews;
     public boolean subService;
     public String deviceToken;
+    public String vinNumber;
 
     public void init(SharedPreferences settings)
     {
@@ -38,7 +39,7 @@ public class User {
         this.workshopName = settings.getString("workshopName", null);
         this.subNews = settings.getBoolean("subNews", false);
         this.subService = settings.getBoolean("subService", false);
-
+        this.vinNumber = settings.getString("vinNumber", "");
     }
 
     public void save() {
@@ -56,6 +57,7 @@ public class User {
         editor.putString("workshopName", this.workshopName);
         editor.putBoolean("subNews", this.subNews);
         editor.putBoolean("subService", this.subService);
+        editor.putString("vinNumber", this.vinNumber);
         editor.commit();
     }
 }

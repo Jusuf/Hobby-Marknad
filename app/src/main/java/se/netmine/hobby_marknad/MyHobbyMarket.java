@@ -103,6 +103,9 @@ public class MyHobbyMarket {
     public String getDealerName() {
         return this.currentUser.dealerName;
     }
+    public String getVinNumber() {
+        return this.currentUser.vinNumber;
+    }
 
     public String getWorkshopName() {
         return this.currentUser.workshopName;
@@ -1006,7 +1009,7 @@ public class MyHobbyMarket {
         api.execute();
     }
 
-    protected void connectToServiceDone(String result) {
+    protected void connectToServiceDone(String result, String vin) {
         if (result == null || result.isEmpty()) {
             showErrorDialog(mainActivity.getContext().getResources().getString(R.string.app_error_no_response));
             return;
@@ -1020,6 +1023,8 @@ public class MyHobbyMarket {
                 System.out.println("MyHobby - return from connectToService, count=" + caravan.serviceEntries.size());
                 ServiceBookConnectedFragment fragment = new ServiceBookConnectedFragment();
                 fragment.caravan = caravan;
+                currentUser.vinNumber = vin;
+                currentUser.save();
                 mainActivity.onNavigateToFragment(fragment);
             } else {
                 this.showErrorDialog(mainActivity.getContext().getResources().getString(R.string.caravan_not_found));
@@ -1496,7 +1501,7 @@ public class MyHobbyMarket {
                     getCampingListDone(result);
                     break;
                 case API_SERVICE:
-                    connectToServiceDone(result);
+                    connectToServiceDone(result, vin);
                     break;
                 case API_SET_MESSAGE_AS_READ:
                     setMessageAsReadDone(result);
