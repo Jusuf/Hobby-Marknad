@@ -175,7 +175,7 @@ public class CampingsFragment extends BaseFragment implements OnMapReadyCallback
         listViewCampings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                Camping node = loadedCampings.get(pos);
+                Camping node = filteredCampings.get(pos);
                 CampingFragment fragment = new CampingFragment();
                 fragment.camping = node;
                 mainActivity.onNavigateToFragment(fragment);
