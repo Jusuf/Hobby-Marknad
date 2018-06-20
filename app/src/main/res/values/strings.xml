@@ -110,6 +110,7 @@
     <string name="service_book_demo">Servicebok DEMO</string>
     <string name="find_reseller">Hitta återförsäljare för att boka servicetid!</string>
     <string name="logout_secvice_book">Logga ut servicebok</string>
+    <string name="service_book_hint">Ange 7 sista tecknen av ditt chassinummr</string>
 
     <!--Service details -->
     <string name="responsible_title">Ansvarig för utförande:</string>
