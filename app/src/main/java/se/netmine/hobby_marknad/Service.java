@@ -11,4 +11,5 @@ public class Service {
     public String protocol;
     public boolean passed;
     public String dealerId;
+    public String dealerName;
 }

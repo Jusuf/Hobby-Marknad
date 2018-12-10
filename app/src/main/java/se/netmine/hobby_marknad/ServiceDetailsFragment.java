@@ -51,7 +51,7 @@ public class ServiceDetailsFragment extends BaseFragment{
                 mainActivity.setTitle(getResources().getString(R.string.warranty));
             }
 
-            txtResponsibleName.setText("-");
+            txtResponsibleName.setText(service.dealerName);
 
             if (service.passed == true) {
                 txtStatus.setText(getResources().getString(R.string.approved));
