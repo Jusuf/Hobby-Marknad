@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "se.netmine.hobby_marknad"
         minSdkVersion 21
-        targetSdkVersion 25
-        versionCode 4
-        versionName "1.4"
+        targetSdkVersion 26
+        versionCode 5
+        versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,10 +23,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:25.2.0'
-    implementation 'com.android.support:design:25.2.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'com.google.code.gson:gson:2.8.1'
-    implementation 'com.android.support:support-v4:25.2.0'
+    implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.barteksc:android-pdf-viewer:2.3.0'
     implementation 'com.google.firebase:firebase-messaging:11.4.2'
